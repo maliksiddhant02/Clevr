@@ -265,19 +265,34 @@ plain.
 
 ---
 
-## 6. Responsive, including the projector
+## 6. Mobile only
 
-Standard mobile-first stacking, plus one constraint the design system doc doesn't
-know about:
+**There is no desktop layout, on purpose.** Both real surfaces are phones: a stall
+owner's handset on the counter, and a stranger's handset in their hand. A desktop
+breakpoint would be a layout nobody in this business ever looks at.
 
-**`/m/[ref]` must be legible from ~10m at 1080p.** At `lg:` and up, the QR card,
-the tick and "PAID!" scale to roughly double. This screen is the demo's climax
-projected behind you — if the judges can't see the tick land, the entire build
-didn't happen. Everything else on the page shrinks or hides at that breakpoint.
+The app shell is a centred phone-width column, set once in `app/layout.tsx`:
 
-Decorative elements (bouncing circle, dashed arrows, squiggle connectors) are
-`hidden md:block` per spec. Rotations soften from `-rotate-2` to `-rotate-1` below
-`md` so tilted cards don't clip the viewport on a 390px screen.
+```tsx
+<div className="mx-auto flex min-h-dvh w-full max-w-[430px] flex-col px-6">
+```
+
+Design at 390px. No `md:` / `lg:` variants anywhere until a screen genuinely
+needs one.
+
+**This also solves the projector.** `/m/[ref]` is the demo's climax shown behind
+you, and if the judges can't see the tick land the build may as well not exist.
+The answer is screen-mirroring the actual phone rather than building a desktop
+view of it — a centred phone column on a 1080p projector reads as deliberate, and
+the tick and "PAID!" at `text-6xl` are legible from the back of a room at that
+scale. Mirroring also means what the judges see is provably the same screen the
+stranger just paid on, which is worth more than a bespoke wide layout.
+
+Rotations stay at the softer `-rotate-1` end so tilted cards never clip a 390px
+viewport. Decorative flourishes that the spec gates behind `md:` are simply not
+built (§8).
+
+`ponytail: no desktop layout, no breakpoints. Add when a merchant asks for a tablet till — not before.`
 
 ---
 
