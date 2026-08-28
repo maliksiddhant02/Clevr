@@ -13,10 +13,10 @@ Mobile only — design at 390px. There is no desktop layout.
 
 | | |
 |---|---|
-| [BUSINESS.md](BUSINESS.md) | The idea, the model, the income streams |
-| [BRIEF.md](BRIEF.md) | Hackathon theme, pillars, judges |
-| [TECHNICAL.md](TECHNICAL.md) | Architecture, the rail interface, build order |
-| [DESIGN.md](DESIGN.md) | Tokens, primitives, the three screens |
+| [BUSINESS.md](docs/BUSINESS.md) | The idea, the model, the income streams |
+| [BRIEF.md](docs/BRIEF.md) | Hackathon theme, pillars, judges |
+| [TECHNICAL.md](docs/TECHNICAL.md) | Architecture, the rail interface, build order |
+| [DESIGN.md](docs/DESIGN.md) | Tokens, primitives, the three screens |
 
 ## Stack
 
