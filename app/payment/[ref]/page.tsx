@@ -1,6 +1,5 @@
 import { notFound } from "next/navigation";
 import { ScreenHeader } from "@/components/ScreenHeader";
-import { Card } from "@/components/Card";
 import { Avatar } from "@/components/Avatar";
 import { cardFeeCents, formatAud, splitAud } from "@/lib/money";
 import { findPayment } from "@/lib/sample";
@@ -19,50 +18,56 @@ export default async function PaymentDetail({
     { label: "Shop asked for", value: formatAud(listPrice), strike: true },
     { label: "You paid", value: formatAud(payment.paidCents) },
     { label: "You kept", value: `+${formatAud(payment.savedCents)}`, good: true },
-    { label: "Reference", value: payment.ref },
+    { label: "Reference", value: payment.ref, mono: true },
     { label: "Settled in", value: `${payment.settledSeconds}s` },
   ];
 
   return (
-    <main className="stagger flex flex-col gap-5 pb-10">
+    <main className="pb-12">
       <ScreenHeader title="Payment" back="/activity" />
 
-      <Card className="relative overflow-hidden text-center">
-        <div
-          aria-hidden
-          className="from-accent/20 pointer-events-none absolute -top-20 left-1/2 h-44 w-44 -translate-x-1/2 rounded-full bg-gradient-to-b to-transparent blur-2xl"
-        />
-        <div className="relative">
-          <div className="mb-3 flex justify-center">
-            <Avatar name={payment.merchant} size="lg" />
-          </div>
-          <p className="text-[0.9375rem] font-semibold">{payment.merchant}</p>
+      <div className="flex items-center gap-3 pt-6">
+        <Avatar name={payment.merchant} size="lg" />
+        <div>
+          <p className="text-foreground text-[1.0625rem] font-semibold">
+            {payment.merchant}
+          </p>
           <p className="text-muted-foreground text-[0.8125rem]">
             {payment.day} · {payment.time}
           </p>
-          <p className="mt-4 text-[2.75rem] leading-none font-semibold tracking-[-0.03em]">
-            {whole}
-            <span className="text-muted-foreground text-2xl">.{fraction}</span>
-          </p>
-          <p className="text-success mt-2 text-[0.875rem] font-semibold">
-            you kept {formatAud(payment.savedCents)}
-          </p>
         </div>
-      </Card>
+      </div>
 
-      <dl className="border-border bg-card divide-border divide-y rounded-2xl border px-4 shadow-md">
+      <p className="display text-foreground mt-7 text-[4rem] tabular-nums">
+        {whole}
+        <span className="text-muted-foreground text-[1.75rem]">.{fraction}</span>
+      </p>
+      <p className="text-success mt-3 text-[0.9375rem] font-semibold tabular-nums">
+        you kept {formatAud(payment.savedCents)}
+      </p>
+
+      <dl className="border-border mt-9 divide-y divide-[rgb(14_15_12/0.12)] border-y">
         {rows.map((row) => (
           <div
             key={row.label}
-            className="flex items-center justify-between py-3.5"
+            className="flex items-center justify-between py-4"
           >
             <dt className="text-muted-foreground text-[0.875rem]">
               {row.label}
             </dt>
+            {/* The reference is the one value a human reads back aloud, so it
+                is the one value set in mono. A misread reference means the
+                merchant's tick never fires. */}
             <dd
-              className={`font-mono text-[0.875rem] font-medium ${
-                row.good ? "text-success" : ""
-              } ${row.strike ? "text-muted-foreground line-through" : ""}`}
+              className={`text-[0.875rem] ${
+                row.mono ? "font-mono tracking-[0.04em]" : "tabular-nums"
+              } ${
+                row.strike
+                  ? "text-muted-foreground font-normal line-through"
+                  : row.good
+                    ? "text-success font-semibold"
+                    : "text-foreground font-semibold"
+              }`}
             >
               {row.value}
             </dd>
@@ -70,10 +75,10 @@ export default async function PaymentDetail({
         ))}
       </dl>
 
-      <p className="text-muted-foreground px-1 text-[0.8125rem] leading-relaxed">
-        Straight from your account to {payment.merchant}, settled in seconds on
-        Australia&rsquo;s instant rail. The{" "}
-        <span className="text-foreground font-mono font-medium">
+      <p className="text-muted-foreground mt-8 text-[0.875rem] leading-relaxed">
+        Paid straight from your account to {payment.merchant} and settled in
+        seconds on Australia&rsquo;s instant rail. The{" "}
+        <span className="text-foreground font-semibold tabular-nums">
           {formatAud(cardFeeCents(listPrice))}
         </span>{" "}
         a card network would have taken stayed with the shop.

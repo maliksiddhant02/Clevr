@@ -1,12 +1,9 @@
-import { ScanLine } from "lucide-react";
 import { ScreenHeader } from "@/components/ScreenHeader";
-import { Card } from "@/components/Card";
-import { SectionLabel } from "@/components/SectionLabel";
 
 const STEPS = [
   {
     title: "Point your camera",
-    body: "Scan the card on the counter. No app, no signup — your normal camera is enough.",
+    body: "Scan the card on the counter. Your phone's camera is enough, with no app and no signup.",
   },
   {
     title: "Check the amount",
@@ -14,70 +11,49 @@ const STEPS = [
   },
   {
     title: "Pay",
-    body: "The shop's screen confirms while you're still standing there.",
+    body: "The shop's screen confirms the payment before you leave the counter.",
   },
 ];
 
 export default function Pay() {
   return (
-    <main className="stagger flex flex-col gap-5 pb-10">
+    <main className="pb-12">
       <ScreenHeader title="Pay by bank" back="/" />
 
-      <Card className="relative overflow-hidden">
-        <div
-          aria-hidden
-          className="from-accent/25 pointer-events-none absolute -top-16 -right-12 h-40 w-40 rounded-full bg-gradient-to-br to-transparent blur-2xl"
-        />
-        <div className="relative flex items-center gap-4">
-          <span
-            aria-hidden
-            className="from-accent to-accent-secondary shadow-accent flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br text-white"
-          >
-            <ScanLine size={22} strokeWidth={2} />
-          </span>
-          <div>
-            <p className="font-display text-lg leading-tight">
-              Look for the card on the counter
-            </p>
-            <p className="text-muted-foreground mt-0.5 text-[0.8125rem]">
-              You don&rsquo;t need this app open to pay.
-            </p>
-          </div>
-        </div>
-      </Card>
+      <p className="display text-foreground pt-8 text-[2.75rem] leading-[0.9]">
+        Look for the card on the counter.
+      </p>
+      <p className="text-muted-foreground mt-5 text-[0.9375rem] leading-relaxed">
+        You don&rsquo;t need this app open to pay. Everything below happens in
+        your own banking app.
+      </p>
 
-      <section aria-labelledby="steps-heading">
-        <div className="mb-3">
-          <SectionLabel>Three steps</SectionLabel>
-        </div>
-        <h2 id="steps-heading" className="sr-only">
-          How to pay
-        </h2>
-        <ol className="border-border bg-card divide-border divide-y rounded-2xl border shadow-md">
-          {STEPS.map((step, i) => (
-            <li key={step.title} className="flex gap-3 p-4">
-              <span
-                aria-hidden
-                className="bg-muted text-accent flex h-7 w-7 shrink-0 items-center justify-center rounded-full font-mono text-[0.75rem] font-medium"
-              >
-                {i + 1}
-              </span>
-              <div>
-                <p className="text-[0.9375rem] font-medium">{step.title}</p>
-                <p className="text-muted-foreground mt-0.5 text-[0.8125rem] leading-relaxed">
-                  {step.body}
-                </p>
-              </div>
-            </li>
-          ))}
-        </ol>
-      </section>
+      <ol className="border-border mt-10 divide-y divide-[rgb(14_15_12/0.12)] border-y">
+        {STEPS.map((step, i) => (
+          <li key={step.title} className="flex gap-4 py-5">
+            <span
+              aria-hidden
+              className="bg-muted text-foreground flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-[0.8125rem] font-semibold tabular-nums"
+            >
+              {i + 1}
+            </span>
+            <div className="pt-0.5">
+              <p className="text-foreground text-[1rem] font-semibold">
+                {step.title}
+              </p>
+              <p className="text-muted-foreground mt-1.5 text-[0.875rem] leading-relaxed">
+                {step.body}
+              </p>
+            </div>
+          </li>
+        ))}
+      </ol>
 
-      {/* ponytail: no manual code entry yet — it would submit into /p/[ref],
+      {/* ponytail: no manual code entry yet. It would submit into /p/[ref],
           which doesn't exist. Add the field when the pay page lands. */}
-      <p className="border-border text-muted-foreground rounded-2xl border border-dashed p-4 text-[0.8125rem] leading-relaxed">
-        Camera not cooperating? Typing the shop&rsquo;s code by hand is coming —
-        for now, the shop can show the code on their screen.
+      <p className="text-muted-foreground mt-8 text-[0.875rem] leading-relaxed">
+        Manual code entry is coming. Until then, ask the shop to show the code
+        on their screen.
       </p>
     </main>
   );

@@ -1,13 +1,12 @@
 import { Card } from "@/components/Card";
 import { DonutChart } from "@/components/DonutChart";
 import { SavingsChart } from "@/components/SavingsChart";
-import { SectionLabel } from "@/components/SectionLabel";
 import { cardFeeCents, formatAud } from "@/lib/money";
 import { PAYMENTS, SAVED_CENTS, topMerchants } from "@/lib/sample";
 
 export default function Insights() {
   // What a card acquirer would have taken on the same baskets, less what we
-  // handed back to the shopper — the part that stayed with the business.
+  // handed back to the shopper. The remainder stayed with the business.
   const feesKept = PAYMENTS.reduce(
     (n, p) => n + cardFeeCents(p.paidCents) - p.savedCents,
     0,
@@ -16,30 +15,38 @@ export default function Insights() {
   const merchants = topMerchants();
 
   return (
-    <main className="stagger flex flex-col gap-6 pt-6 pb-4">
-      <h1 className="font-display text-2xl">Insights</h1>
+    <main className="pt-6 pb-28">
+      <h1 className="display text-foreground text-[3.5rem]">Insights</h1>
 
-      <SavingsChart />
-
-      <div className="grid grid-cols-2 gap-3">
-        <Card className="!p-4">
-          <p className="font-mono text-xl font-medium">
-            {formatAud(avgSaved)}
-          </p>
-          <p className="text-muted-foreground mt-0.5 text-[0.75rem]">
-            kept per payment
-          </p>
-        </Card>
-        <Card className="!p-4">
-          <p className="font-mono text-xl font-medium">{PAYMENTS.length}</p>
-          <p className="text-muted-foreground mt-0.5 text-[0.75rem]">
-            payments by bank
-          </p>
-        </Card>
+      <div className="pt-8">
+        <SavingsChart />
       </div>
 
-      <section aria-labelledby="where-heading">
-        <h2 id="where-heading" className="mb-2 text-base font-semibold">
+      {/* Two numbers, not two more boxes. Rules carry the division. */}
+      <div className="border-border mt-8 grid grid-cols-2 border-y">
+        <div className="border-border border-r py-5 pr-4">
+          <p className="display text-foreground text-[1.75rem] tabular-nums">
+            {formatAud(avgSaved)}
+          </p>
+          <p className="text-muted-foreground mt-1.5 text-[0.8125rem]">
+            kept per payment
+          </p>
+        </div>
+        <div className="py-5 pl-5">
+          <p className="display text-foreground text-[1.75rem] tabular-nums">
+            {PAYMENTS.length}
+          </p>
+          <p className="text-muted-foreground mt-1.5 text-[0.8125rem]">
+            payments by bank
+          </p>
+        </div>
+      </div>
+
+      <section aria-labelledby="where-heading" className="pt-10">
+        <h2
+          id="where-heading"
+          className="display text-foreground mb-4 text-[1.5rem]"
+        >
           Where you shop
         </h2>
         <Card>
@@ -53,19 +60,17 @@ export default function Insights() {
         </Card>
       </section>
 
-      {/* Inverted spotlight — the merchant-side number, which is the part the
-          shopper never sees anywhere else. */}
-      <Card tone="inverted">
-        <SectionLabel>Your shops kept</SectionLabel>
-        <p className="mt-3 text-4xl leading-none font-semibold tracking-[-0.02em]">
+      {/* The merchant-side number, which the shopper sees nowhere else. Full
+          bleed to the bottom edge, with the tab-bar clearance inside it. */}
+      <section className="bg-foreground text-background -mx-5 -mb-28 mt-12 px-5 pt-12 pb-32">
+        <p className="display text-lime text-[4rem] tabular-nums">
           {formatAud(feesKept)}
         </p>
-        <p className="mt-3 text-[0.875rem] leading-relaxed text-white/70">
-          in card fees they would have paid on these sales. That money stayed in
-          the business instead of the card networks.
+        <p className="text-on-forest mt-5 text-[0.9375rem] leading-relaxed">
+          in card fees your shops avoided on these sales. That money stayed with
+          the businesses you bought from rather than the card networks.
         </p>
-      </Card>
-
+      </section>
     </main>
   );
 }

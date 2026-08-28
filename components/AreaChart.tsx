@@ -6,7 +6,7 @@ const PAD_X = 6;
 const PAD_TOP = 14;
 const PAD_BOTTOM = 22;
 
-/** Smooth the polyline through midpoints — cheaper than a spline, reads the same. */
+/** Smooth the polyline through midpoints. Cheaper than a spline, reads the same. */
 function smoothPath(pts: { x: number; y: number }[]): string {
   if (pts.length < 2) return "";
   let d = `M ${pts[0].x} ${pts[0].y}`;
@@ -21,11 +21,8 @@ function smoothPath(pts: { x: number; y: number }[]): string {
 
 export function AreaChart({
   data,
-  id,
 }: {
   data: readonly { label: string; cents: number }[];
-  /** Unique per instance: SVG gradient ids are document-global. */
-  id: string;
 }) {
   const peak = Math.max(...data.map((d) => d.cents), 1);
   const innerW = W - PAD_X * 2;
@@ -49,32 +46,23 @@ export function AreaChart({
         role="img"
         aria-label={`Kept per period. Peak of ${formatAud(peak)} at ${data[peakIndex].label}.`}
       >
-        <defs>
-          <linearGradient id={`${id}-fill`} x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="var(--color-accent)" stopOpacity="0.22" />
-            <stop offset="100%" stopColor="var(--color-accent)" stopOpacity="0" />
-          </linearGradient>
-          <linearGradient id={`${id}-stroke`} x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stopColor="var(--color-accent)" />
-            <stop offset="100%" stopColor="var(--color-accent-secondary)" />
-          </linearGradient>
-        </defs>
-
-        {/* Baseline only — gridlines would compete with the fill. */}
+        {/* Baseline only. Gridlines would compete with the fill. */}
         <line
           x1={PAD_X}
           y1={PAD_TOP + innerH}
           x2={W - PAD_X}
           y2={PAD_TOP + innerH}
-          stroke="var(--color-border)"
+          stroke="var(--color-foreground)"
           strokeWidth="1"
+          opacity="0.2"
         />
 
-        <path d={area} fill={`url(#${id}-fill)`} />
+        {/* Flat wash, no gradient: the system has no gradients anywhere. */}
+        <path d={area} fill="var(--color-muted)" />
         <path
           d={line}
           fill="none"
-          stroke={`url(#${id}-stroke)`}
+          stroke="var(--color-foreground)"
           strokeWidth="2.5"
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -82,25 +70,24 @@ export function AreaChart({
           style={{ ["--draw-length" as string]: "900" }}
         />
 
-        {/* Peak marker, matching the reference's dashed drop line. */}
+        {/* Drop line and marker at the peak. */}
         <line
           x1={marker.x}
           y1={marker.y}
           x2={marker.x}
           y2={PAD_TOP + innerH}
-          stroke="var(--color-accent)"
+          stroke="var(--color-foreground)"
           strokeWidth="1"
           strokeDasharray="3 3"
-          opacity="0.4"
+          opacity="0.35"
         />
-        <circle cx={marker.x} cy={marker.y} r="6" fill="var(--color-accent)" opacity="0.18" />
         <circle
           cx={marker.x}
           cy={marker.y}
-          r="3.5"
-          fill="var(--color-accent)"
+          r="4"
+          fill="var(--color-foreground)"
           stroke="var(--color-card)"
-          strokeWidth="2"
+          strokeWidth="2.5"
         />
       </svg>
 

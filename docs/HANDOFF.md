@@ -38,7 +38,7 @@ reading hardcoded sample data:
 
 | Route | Screen |
 |---|---|
-| `/` | Home — total kept, quick actions, recent payments, hidden-fee card |
+| `/` | Home: total kept, one CTA, the card-fee band, recent payments |
 | `/activity` | Full history grouped by day |
 | `/insights` | Savings chart, stat pair, merchant donut, fees-kept spotlight |
 | `/account` | Disclosures, privacy position |
@@ -65,7 +65,7 @@ app/
   globals.css     every design token, one @theme block
   layout.tsx      fonts + the 430px mobile column
 components/       Card Button TabBar ScreenHeader PaymentRow Avatar
-                  SectionLabel AreaChart DonutChart SavingsChart
+                  AreaChart DonutChart SavingsChart
 lib/
   money.ts        pure arithmetic — imports nothing, hence trivially testable
   money.test.ts   node --test, no framework
@@ -94,6 +94,9 @@ Three dependencies: `@supabase/supabase-js` (not wired yet), `lucide-react`,
   through route handlers on the service key. Fails closed for one line of SQL.
 - **Mobile only, no breakpoints.** The projector is solved by mirroring a phone.
 - **No emoji in the UI.** Monogram avatars instead.
+- **Forest green and one lime, and the system is flat.** No gradients, no
+  shadows, no blur, one animation. Those are the marks of a generic template,
+  and they were removed on purpose. Read DESIGN.md §1 before adding any back.
 
 ## 6. Gotchas
 
@@ -106,8 +109,9 @@ Three dependencies: `@supabase/supabase-js` (not wired yet), `lucide-react`,
   the `.ts` extension in imports and `tsc` rejects it otherwise.
 - **Sample dates are strings, not `Date` objects.** Deriving "Today" from
   `Date.now()` at render is a hydration mismatch waiting to happen.
-- **SVG gradient `id`s are document-global** — `AreaChart` takes an `id` prop for
-  exactly this reason.
+- **Colour classes do not stack.** `text-foreground text-success` resolves by
+  stylesheet order, not by the order you wrote them. A conditional colour picks
+  exactly one class.
 - **`git add -A` in this repo sweeps `.claude/`.** A local skills directory got
   committed once already.
 
@@ -134,7 +138,7 @@ riskiest integration lands last, against a loop that already provably works.
 - **Which bank will the volunteer on stage use?** Several AU banking apps strip
   the payment description, which is why the amount-fallback match exists. Test
   with at least two real banks before the pitch.
-- **`Button`/`ButtonLink` are currently unused.** Kept because the merchant keypad
-  needs them next. If that flow changes shape, delete them.
+- **`Button`/`ButtonLink` are in use.** `ButtonLink` is Home's single CTA. The
+  merchant keypad is the next consumer.
 - **The 3-minute pitch is ~450 words** and the live demo eats about 60 seconds of
   it. Everything else is a Q&A answer, not a pitch line.

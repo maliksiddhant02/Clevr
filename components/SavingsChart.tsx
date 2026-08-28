@@ -39,12 +39,12 @@ export function SavingsChart() {
   const total = bars.reduce((sum, b) => sum + b.cents, 0);
 
   return (
-    <div className="border-border bg-card rounded-2xl border p-5 shadow-md">
-      <div className="mb-3 flex items-center justify-between">
+    <div className="bg-card rounded-2xl p-5">
+      <div className="mb-4 flex items-center justify-between">
         <div
           role="group"
           aria-label="Time range"
-          className="bg-muted flex gap-0.5 rounded-full p-0.5"
+          className="bg-background flex gap-0.5 rounded-full p-0.5"
         >
           {(["week", "month"] as const).map((r) => (
             <button
@@ -52,30 +52,28 @@ export function SavingsChart() {
               type="button"
               onClick={() => setRange(r)}
               aria-pressed={range === r}
-              className={`min-h-8 rounded-full px-3 text-[0.8125rem] font-medium capitalize transition-all duration-200 ${
-                range === r
-                  ? "bg-card text-foreground shadow-sm"
-                  : "text-muted-foreground hover:text-foreground"
+              className={`text-foreground min-h-11 rounded-full px-4 text-[0.8125rem] font-medium capitalize transition-colors duration-200 ${
+                range === r ? "bg-lime" : ""
               }`}
             >
               This {r}
             </button>
           ))}
         </div>
-        <span className="text-success inline-flex items-center gap-1 text-[0.8125rem] font-semibold">
+        <span className="text-success inline-flex items-center gap-1 text-[0.8125rem] font-semibold tabular-nums">
           <TrendingUp size={14} strokeWidth={2.4} aria-hidden />
           {delta}
         </span>
       </div>
 
-      <p className="mb-1 text-3xl font-semibold tracking-[-0.02em]">
+      <p className="display text-foreground mb-1.5 text-[3rem] tabular-nums">
         {formatAud(total)}
       </p>
       <p className="text-muted-foreground mb-4 text-[0.8125rem]">
         kept by paying from your bank
       </p>
 
-      <AreaChart data={bars} id={`savings-${range}`} />
+      <AreaChart data={bars} />
     </div>
   );
 }

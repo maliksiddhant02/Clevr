@@ -1,6 +1,5 @@
-import { Card } from "@/components/Card";
-import { PaymentRow } from "@/components/PaymentRow";
 import { formatAud, splitAud } from "@/lib/money";
+import { PaymentRow } from "@/components/PaymentRow";
 import { PAYMENTS, SAVED_CENTS, SPENT_CENTS, byDay } from "@/lib/sample";
 
 export default function Activity() {
@@ -8,46 +7,54 @@ export default function Activity() {
   const { whole, fraction } = splitAud(SPENT_CENTS);
 
   return (
-    <main className="stagger flex flex-col gap-6 pt-6 pb-4">
-      <h1 className="font-display text-2xl">Activity</h1>
+    <main className="pt-6 pb-28">
+      <h1 className="display text-foreground text-[3.5rem]">Activity</h1>
 
-      <Card>
-        <p className="text-muted-foreground text-[0.8125rem] font-medium">
+      <section className="pt-8">
+        <h2 className="text-muted-foreground text-[0.75rem] font-semibold tracking-[0.12em] uppercase">
           Paid by bank
-        </p>
-        <p className="mt-1 text-3xl leading-none font-semibold tracking-[-0.02em]">
+        </h2>
+        <p className="display text-foreground mt-3 text-[3.25rem] tabular-nums">
           {whole}
-          <span className="text-muted-foreground text-lg">.{fraction}</span>
+          <span className="text-muted-foreground text-[1.5rem]">.{fraction}</span>
         </p>
-        <div className="border-border mt-4 grid grid-cols-2 gap-4 border-t pt-4">
-          <div>
-            <p className="font-mono text-lg font-medium">{PAYMENTS.length}</p>
-            <p className="text-muted-foreground text-[0.75rem]">payments</p>
+        <div className="border-border mt-6 grid grid-cols-2 border-y">
+          <div className="border-border border-r py-4 pr-4">
+            <p className="display text-foreground text-[1.5rem] tabular-nums">
+              {PAYMENTS.length}
+            </p>
+            <p className="text-muted-foreground mt-1.5 text-[0.8125rem]">
+              payments
+            </p>
           </div>
-          <div>
-            <p className="text-success font-mono text-lg font-medium">
+          <div className="py-4 pl-5">
+            <p className="display text-success text-[1.5rem] tabular-nums">
               {formatAud(SAVED_CENTS)}
             </p>
-            <p className="text-muted-foreground text-[0.75rem]">kept by you</p>
+            <p className="text-muted-foreground mt-1.5 text-[0.8125rem]">
+              kept by you
+            </p>
           </div>
         </div>
-      </Card>
+      </section>
 
-      {days.map(([day, payments]) => (
-        <section key={day} aria-labelledby={`day-${day.replace(/\s/g, "-")}`}>
-          <h2
-            id={`day-${day.replace(/\s/g, "-")}`}
-            className="text-muted-foreground mb-1 font-mono text-[0.6875rem] tracking-[0.15em] uppercase"
-          >
-            {day}
-          </h2>
-          <ul>
-            {payments.map((p) => (
-              <PaymentRow key={p.ref} payment={p} />
-            ))}
-          </ul>
-        </section>
-      ))}
+      <div className="flex flex-col gap-7 pt-9">
+        {days.map(([day, payments]) => (
+          <section key={day} aria-labelledby={`day-${day.replace(/\s/g, "-")}`}>
+            <h2
+              id={`day-${day.replace(/\s/g, "-")}`}
+              className="text-muted-foreground mb-2 text-[0.75rem] font-semibold tracking-[0.12em] uppercase"
+            >
+              {day}
+            </h2>
+            <ul>
+              {payments.map((p) => (
+                <PaymentRow key={p.ref} payment={p} />
+              ))}
+            </ul>
+          </section>
+        ))}
+      </div>
     </main>
   );
 }

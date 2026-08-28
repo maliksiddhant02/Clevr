@@ -1,6 +1,5 @@
 import { ChevronRight, Landmark, Lock, RotateCcw, Zap } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
-import { SectionLabel } from "@/components/SectionLabel";
 
 // Native <details> rather than four more routes: these are disclosures, not
 // destinations, and a chevron that opens a stub screen is worse than one that
@@ -15,12 +14,12 @@ const ROWS: {
     Icon: Zap,
     title: "One-tap payments",
     status: "Not set up",
-    body: "Authorise CLEVR once inside your own banking app and every future payment becomes a single tap, at card speed, still with the discount. The authorisation lives at your bank — we never hold it. Rolling out after launch.",
+    body: "Authorise CLEVR once inside your own banking app and every future payment becomes a single tap, at card speed, still with the discount. The authorisation is held by your bank, not by CLEVR. Rolling out after launch.",
   },
   {
     Icon: Landmark,
     title: "How CLEVR works",
-    body: "Scan the shop's QR, pay from your own bank account over Australia's instant payment rail, and keep a slice of the card fee the shop just avoided. The money goes straight from you to them — it never passes through CLEVR.",
+    body: "Scan the shop's QR, pay from your own bank account over Australia's instant payment rail, and keep a slice of the card fee the shop just avoided. The money goes straight from you to the shop. It never passes through CLEVR.",
   },
   {
     Icon: RotateCcw,
@@ -30,31 +29,31 @@ const ROWS: {
   {
     Icon: Lock,
     title: "Your data",
-    body: "We never sell shopper data — not to merchants, not to anyone. Shops only ever see their own sales. Your payment history stays on this device unless you set up an account.",
+    body: "CLEVR does not sell shopper data, to merchants or to anyone else. Shops only ever see their own sales. Your payment history stays on this device unless you set up an account.",
   },
 ];
 
 export default function Account() {
   return (
-    <main className="stagger flex flex-col gap-6 pt-6 pb-4">
-      <h1 className="font-display text-2xl">Account</h1>
+    <main className="pt-6 pb-28">
+      <h1 className="display text-foreground text-[3.5rem]">Account</h1>
 
-      <ul className="border-border bg-card divide-border divide-y overflow-hidden rounded-2xl border shadow-md">
+      <ul className="border-border mt-8 divide-y divide-[rgb(14_15_12/0.12)] border-y">
         {ROWS.map(({ Icon, title, status, body }) => (
           <li key={title}>
             <details className="group">
-              <summary className="hover:bg-muted/60 flex min-h-14 cursor-pointer list-none items-center gap-3 p-4 transition-colors duration-200 [&::-webkit-details-marker]:hidden">
+              <summary className="flex min-h-16 cursor-pointer list-none items-center gap-3 py-4 [&::-webkit-details-marker]:hidden">
                 <span
                   aria-hidden
-                  className="bg-muted text-accent flex h-9 w-9 shrink-0 items-center justify-center rounded-full"
+                  className="bg-muted text-foreground flex h-9 w-9 shrink-0 items-center justify-center rounded-full"
                 >
                   <Icon size={17} strokeWidth={2} />
                 </span>
-                <span className="flex-1 text-[0.9375rem] font-medium">
+                <span className="text-foreground flex-1 text-[0.9375rem] font-semibold">
                   {title}
                 </span>
                 {status && (
-                  <span className="text-muted-foreground bg-muted shrink-0 rounded-full px-2 py-0.5 font-mono text-[0.6875rem]">
+                  <span className="text-foreground bg-card shrink-0 rounded-full px-2.5 py-1 text-[0.6875rem] font-medium">
                     {status}
                   </span>
                 )}
@@ -65,7 +64,7 @@ export default function Account() {
                   className="text-muted-foreground shrink-0 transition-transform duration-200 group-open:rotate-90"
                 />
               </summary>
-              <p className="text-muted-foreground px-4 pb-4 text-[0.8125rem] leading-relaxed">
+              <p className="text-muted-foreground pb-5 text-[0.875rem] leading-relaxed">
                 {body}
               </p>
             </details>
@@ -73,18 +72,22 @@ export default function Account() {
         ))}
       </ul>
 
-      <div className="border-accent/20 bg-accent/5 rounded-2xl border p-5">
-        <SectionLabel>Where your money sits</SectionLabel>
-        <p className="mt-3 text-[0.9375rem] leading-relaxed">
-          <span className="font-semibold">
-            CLEVR never touches your money.
-          </span>{" "}
-          <span className="text-muted-foreground">
-            Payments go straight from your bank account to the shop&rsquo;s. We
-            are not a bank, and we never hold your funds.
-          </span>
+      {/* Full bleed to the bottom edge, tab-bar clearance inside. */}
+      <section
+        aria-labelledby="money-heading"
+        className="bg-muted -mx-5 -mb-28 mt-12 px-5 pt-12 pb-32"
+      >
+        <h2
+          id="money-heading"
+          className="display text-foreground text-[2.125rem] leading-[0.9]"
+        >
+          CLEVR never touches your money.
+        </h2>
+        <p className="mt-5 text-[0.9375rem] leading-relaxed">
+          Payments go straight from your bank account to the shop&rsquo;s. We
+          are not a bank, and we never hold your funds.
         </p>
-      </div>
+      </section>
     </main>
   );
 }

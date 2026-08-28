@@ -3,10 +3,10 @@
 // actually falls back to when a logo is missing.
 
 const TINTS = [
-  "bg-[#0052ff]/10 text-[#0052ff]",
-  "bg-[#4d7cff]/12 text-[#3763d4]",
-  "bg-[#0f172a]/8 text-[#334155]",
-  "bg-[#8ba6ff]/18 text-[#3d5bbf]",
+  "bg-[#e2f6d5] text-[#163300]",
+  "bg-[#163300] text-[#9fe870]",
+  "bg-[#e8ebe6] text-[#054d28]",
+  "bg-[#9fe870] text-[#163300]",
 ] as const;
 
 function initials(name: string): string {

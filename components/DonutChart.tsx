@@ -1,7 +1,8 @@
 import { formatAud } from "@/lib/money";
 
-// Accent-led ramp: the story is one colour with variations, not a rainbow.
-const COLORS = ["#0052ff", "#4d7cff", "#8ba6ff", "#b9c8ff", "#dde4ff"] as const;
+// A tonal green ramp with one lime spark, not a rainbow: one colour with
+// variations tells a story, five unrelated hues tell none.
+const COLORS = ["#163300", "#054d28", "#9fe870", "#c9d3c2", "#e2f6d5"] as const;
 
 const R = 52;
 const STROKE = 18;
@@ -58,7 +59,7 @@ export function DonutChart({
           x="70"
           y="66"
           textAnchor="middle"
-          className="fill-foreground rotate-90 text-[17px] font-semibold"
+          className="fill-foreground rotate-90 text-[17px] font-bold tabular-nums"
           style={{ transformOrigin: "70px 70px" }}
         >
           {formatAud(totalCents)}
@@ -79,11 +80,11 @@ export function DonutChart({
           <li key={s.label} className="flex items-center gap-2 text-[0.8125rem]">
             <span
               aria-hidden
-              className="h-2 w-2 shrink-0 rounded-full"
+              className="h-2.5 w-2.5 shrink-0 rounded-full"
               style={{ backgroundColor: s.color }}
             />
             <span className="min-w-0 flex-1 truncate">{s.label}</span>
-            <span className="text-muted-foreground shrink-0 font-mono">
+            <span className="text-muted-foreground shrink-0 font-medium tabular-nums">
               {s.percent}%
             </span>
           </li>
