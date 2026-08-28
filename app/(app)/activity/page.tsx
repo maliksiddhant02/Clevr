@@ -9,12 +9,7 @@ export default function Activity() {
 
   return (
     <main className="stagger flex flex-col gap-6 pt-6 pb-4">
-      <header>
-        <h1 className="font-display text-2xl">Activity</h1>
-        <p className="text-muted-foreground text-[0.8125rem]">
-          Every payment you&rsquo;ve made from your bank.
-        </p>
-      </header>
+      <h1 className="font-display text-2xl">Activity</h1>
 
       <Card>
         <p className="text-muted-foreground text-[0.8125rem] font-medium">

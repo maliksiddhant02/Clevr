@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Avatar } from "@/components/Avatar";
 import { formatAud } from "@/lib/money";
 import type { SamplePayment } from "@/lib/sample";
 
@@ -9,12 +10,7 @@ export function PaymentRow({ payment }: { payment: SamplePayment }) {
         href={`/payment/${payment.ref}`}
         className="hover:bg-muted/60 -mx-2 flex items-center gap-3 rounded-xl px-2 py-2.5 transition-colors duration-200"
       >
-        <span
-          aria-hidden
-          className="bg-muted border-border flex h-11 w-11 shrink-0 items-center justify-center rounded-full border text-lg"
-        >
-          {payment.emoji}
-        </span>
+        <Avatar name={payment.merchant} />
         <span className="min-w-0 flex-1">
           <span className="block truncate text-[0.9375rem] font-semibold tracking-[-0.01em]">
             {payment.merchant}

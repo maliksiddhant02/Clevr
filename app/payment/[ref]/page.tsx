@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { ScreenHeader } from "@/components/ScreenHeader";
 import { Card } from "@/components/Card";
+import { Avatar } from "@/components/Avatar";
 import { cardFeeCents, formatAud, splitAud } from "@/lib/money";
 import { findPayment } from "@/lib/sample";
 
@@ -32,12 +33,9 @@ export default async function PaymentDetail({
           className="from-accent/20 pointer-events-none absolute -top-20 left-1/2 h-44 w-44 -translate-x-1/2 rounded-full bg-gradient-to-b to-transparent blur-2xl"
         />
         <div className="relative">
-          <span
-            aria-hidden
-            className="bg-muted border-border mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-full border text-2xl"
-          >
-            {payment.emoji}
-          </span>
+          <div className="mb-3 flex justify-center">
+            <Avatar name={payment.merchant} size="lg" />
+          </div>
           <p className="text-[0.9375rem] font-semibold">{payment.merchant}</p>
           <p className="text-muted-foreground text-[0.8125rem]">
             {payment.day} · {payment.time}
@@ -73,13 +71,12 @@ export default async function PaymentDetail({
       </dl>
 
       <p className="text-muted-foreground px-1 text-[0.8125rem] leading-relaxed">
-        Paid straight from your bank account to {payment.merchant} over
-        Australia&rsquo;s instant payment rail. No card, no waiting until
-        tomorrow — and{" "}
+        Straight from your account to {payment.merchant}, settled in seconds on
+        Australia&rsquo;s instant rail. The{" "}
         <span className="text-foreground font-mono font-medium">
           {formatAud(cardFeeCents(listPrice))}
         </span>{" "}
-        that a card network would have taken stayed in the shop.
+        a card network would have taken stayed with the shop.
       </p>
     </main>
   );

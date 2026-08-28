@@ -1,338 +1,139 @@
-# CLEVR — Design System Plan
+# CLEVR — Design System
 
-Hand-drawn / sketchbook aesthetic, applied to a payments product.
-Companion to [TECHNICAL.md](TECHNICAL.md). Three screens, one token layer, four primitives.
+Minimalist Modern, applied to a mobile payments app. Mobile only, light only.
 
----
-
-## 0. What I'm designing into
-
-Greenfield. The repo is `BUSINESS.md` + `TECHNICAL.md` — no components, no CSS, no
-existing tokens to reconcile. So this is not an integration, it's a foundation, and
-the only real risk is over-building it before there's an app to hold it.
-
-Stack decisions this doc assumes (from TECHNICAL.md):
-
-- **Next.js App Router + Tailwind v4.** Tokens live in `@theme` inside
-  `app/globals.css`, not a `tailwind.config.ts`. If you scaffold on Tailwind v3
-  instead, the same tokens go in `theme.extend` — identical names, identical output.
-- **`next/font/google`** for Kalam + Patrick Hand. Self-hosted, no layout shift,
-  no render-blocking request to fonts.gstatic on a stall's 4G.
-- **`lucide-react`** for icons, `strokeWidth={2.5}`.
-- No component library. shadcn/ui would fight the wobble on every primitive and
-  we need four components, not forty.
-
-### One deliberate deviation from the design system spec
-
-The spec says to apply wobbly radii via inline `style={{ borderRadius: ... }}`.
-I'm not doing that. Inline styles are the one-off style problem the brief asks me
-to avoid: unthemeable, undiffable, and repeated in every file.
-
-Same pixels, tokenized instead:
-
-```css
---radius-wobble-1: 255px 15px 225px 15px / 15px 225px 15px 255px;
-```
-
-…gives you `rounded-wobble-1` as a normal Tailwind utility. Zero inline styles in
-the codebase, one place to tune the wobble. This is the only place I depart from
-the spec and it's a maintainability call, not an aesthetic one — the rendered
-border-radius is byte-identical.
+The source of truth for every token is [`app/globals.css`](../app/globals.css).
+This document carries the *rules and intent* behind them — the things a token
+file can't tell you.
 
 ---
 
-## 1. The tension, and how it resolves
+## 1. The idea
 
-A hand-drawn interface says *unfinished, playful, work-in-progress, low-stakes*.
-That is exactly the wrong signal on the one screen where a stranger at a market
-stall is deciding whether to send real money out of their real bank account to a
-name they've never seen.
+Clarity through structure, character through bold detail. Restraint in quantity,
+confidence in execution. Whitespace directs attention; motion communicates rather
+than decorates; colour is concentrated into one electric accent instead of
+scattered.
 
-Wobbly borders and correction-marker red on a payment page can read as *scam* or
-*prototype*. This is a genuine risk and it is worth naming before writing any CSS.
+The trap this style falls into is sterility — a white background, grey text, safe
+choices, forgettable. Three things keep it out of that trap:
 
-It does **not** mean toning the style down. It means splitting the surface into
-two zones and being disciplined about which is which.
+- **The signature gradient** `#0052FF → #4D7CFF`, on buttons, icon tiles, the
+  chart stroke and the donut ramp. A gradient reads as alive where a flat fill
+  reads as a swatch.
+- **Inverted sections** — deep slate ground with light text and a dot texture.
+  Used exactly twice in the whole app (Home's hidden-fee card, Insights' fees-kept
+  number). A spotlight used everywhere is just lighting.
+- **Texture over flatness** — an accent bloom behind hero numbers, a dot grid on
+  inverted surfaces. Felt more than seen.
 
-### Zone A — Personality (full sketchbook)
+## 2. Tokens
 
-Merchant screens, pitch/marketing surfaces, empty states, success states,
-decoration, headings, everything the merchant sees. The merchant knows what CLEVR
-is, they're standing at their own till, and the sketchbook look is what makes this
-memorable on a projector in front of three judges. Go all the way here.
+| Token | Value | Role |
+|---|---|---|
+| `background` | `#FAFAFA` | Canvas. Warm off-white, easier than pure white. |
+| `foreground` | `#0F172A` | Text and inverted-section grounds. Deep slate, never black. |
+| `muted` | `#F1F5F9` | Secondary surfaces, avatar discs, segmented-control track. |
+| `muted-foreground` | `#64748B` | Secondary text. **4.56:1 on canvas — measured, passes AA.** |
+| `border` | `#E2E8F0` | Card and divider strokes. |
+| `card` | `#FFFFFF` | Elevated surfaces. Pure white is what creates lift. |
+| `accent` | `#0052FF` | Actions, links, active tab, chart stroke. |
+| `accent-secondary` | `#4D7CFF` | Gradient endpoint only. |
+| `success` | `#10B981` | Money the shopper kept. Nothing else. |
 
-### Zone B — Trust (sketchbook frame, plain contents)
+Shadows are a five-step diffuse scale (`shadow-sm` → `shadow-xl`) plus
+accent-tinted `shadow-accent` / `shadow-accent-lg` for gradient surfaces. No hard
+offsets, no heavy blurs.
 
-The shopper's money block: the amount, the PayID, the reference code. Paper
-background, wobbly card, handwritten heading around it — but the values inside are
-plain, high-contrast, and unambiguous.
+Radii: `rounded-xl` (12px) for controls, `rounded-2xl` (16px) for cards,
+`rounded-full` for avatars, pills and the segmented control.
 
-**The rule: anything the shopper must transcribe exactly renders in a system mono
-stack, never in a handwritten font.**
+## 3. Type
 
-```css
-/* PayID, reference code, and the payable amount */
-font-family: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, monospace;
-```
+Three faces, one job each:
 
-Patrick Hand's `1`/`l`, `0`/`O`, `5`/`S` are genuinely ambiguous at a glance. A
-shopper mistyping a PayID sends money to nobody; a shopper mistyping the reference
-means the green tick never fires and the demo dies on stage. This is a correctness
-constraint wearing a typography hat.
+- **Calistoga** (`font-display`) — screen titles and the brand mark. Warm serif,
+  the personality voice. Never below 18px, never for long copy.
+- **Inter** (`font-sans`) — everything else. Real weights (400/500/600), so
+  hierarchy comes from weight rather than size alone.
+- **JetBrains Mono** (`font-mono`) — section labels, and **any value a human reads
+  back exactly**: payment references, PayIDs, percentages, amounts in detail rows.
 
-(The reference codes are Crockford base32, which already excludes I, L, O and U —
-the two decisions reinforce each other.)
+That last rule is a correctness rule wearing a typography hat. A mistyped
+reference means the merchant's tick never fires.
 
-The wobbly border, the paper, the hard shadow and the handwritten headline all
-stay. Only the transcribable characters go plain. It still looks hand-drawn; it
-just can't be mistyped.
+**Money display:** `splitAud()` in [`lib/money.ts`](../lib/money.ts) renders
+dollars large and cents small (`$2` + `.35`). Every screen uses it, so money
+looks like money everywhere.
 
----
+## 4. Components
 
-## 2. The signature gesture
+All in [`components/`](../components). Variants are `const` maps of literal class
+strings — no `cva`, no `tailwind-merge`. Six components with 2–3 variants each
+don't justify two dependencies, and the map is greppable.
 
-The design system's core idiom is **the correction marker**. CLEVR's core product
-moment is **a price being corrected downward**. These are the same gesture, and
-that coincidence is the whole visual identity — use it and don't invent a second one.
+| Component | Notes |
+|---|---|
+| `Card` | `card` / `muted` / `inverted`. Inverted carries the dot texture. |
+| `Button` / `ButtonLink` | Gradient primary, outline, ghost. `h-12` = 48px. |
+| `TabBar` | Fixed, translucent, `backdrop-blur`. Active tab is accent + heavier icon stroke. |
+| `ScreenHeader` | Back chevron + optically centred title, for pushed screens. |
+| `PaymentRow` | Avatar, merchant, timestamp, amount, kept-delta. |
+| `Avatar` | Monogram on a tinted disc, tint hashed from the name. |
+| `SectionLabel` | The signature pill badge: accent dot, mono, uppercase, wide tracking. |
+| `AreaChart` / `DonutChart` | Hand-rolled SVG. See §6. |
 
-```
-      ╭─ $9.95 ─╮        <- Kalam, huge, ink black
-   $̶1̶0̶.̶0̶0̶              <- struck through, red marker, hand-drawn curve
-```
+> **Tailwind gotcha:** class names are only detected as whole literal strings.
+> `` `rounded-${n}` `` silently renders unstyled. Keep variants in literal maps.
 
-Implementation notes that matter:
+## 5. Motion
 
-- The strike is an **inline SVG path**, not CSS `line-through`. A CSS strike is a
-  perfectly straight line — it violates the one hard rule of this design system and
-  it wastes the single most on-brand moment in the product.
-- The path is a slight arc with a small overshoot past the last digit, the way a
-  real pen overshoots. Draw it on mount with `stroke-dasharray` / `stroke-dashoffset`
-  over ~350ms.
-- Old price ~`text-2xl`, muted ink. New price ~`text-6xl`, Kalam 700. The size gap
-  *is* the message.
+CSS keyframes in `globals.css`, no animation library:
 
-This gesture appears on the shopper page and nowhere else. One signature, used once,
-reads as confident. Used everywhere, it reads as a template.
+- `.stagger` — children fade up on mount with nth-child delays. App screens are
+  short; a scroll observer would be a dependency earning nothing.
+- `.pulse-dot` — the live indicator in section labels.
+- `.draw-line` — the chart stroke draws itself once via `stroke-dashoffset`.
 
----
+Everything is disabled under `prefers-reduced-motion`. **Nothing may be required
+to understand the interface** — motion is confirmation, never information.
 
-## 3. Token layer
+## 6. Charts
 
-Everything centralizes here. One file, no exceptions.
+Hand-rolled SVG, no charting library (Recharts would be ~100KB for two charts).
 
-```css
-/* app/globals.css */
-@import "tailwindcss";
+- `AreaChart` — smoothed path through midpoints, gradient fill, dashed drop-line
+  and marker at the peak. Gradient `id`s are document-global, so each instance
+  takes an `id` prop.
+- `DonutChart` — `stroke-dasharray` arcs on concentric circles. Colours are an
+  accent ramp, not a rainbow: one colour with variations tells a story, five
+  unrelated hues tell none.
 
-@theme {
-  /* Palette — single light mode, no dark variant */
-  --color-paper:  #fdfbf7;   /* warm paper, page background      */
-  --color-ink:    #2d2d2d;   /* soft pencil black, never #000    */
-  --color-muted:  #e5e0d8;   /* erased pencil, dividers, fills   */
-  --color-marker: #ff4d4d;   /* red correction marker, accent    */
-  --color-pen:    #2d5da1;   /* blue ballpoint, focus + success  */
-  --color-postit: #fff9c4;   /* post-it yellow, highlight cards  */
+Both carry `role="img"` and a text alternative describing the actual values.
 
-  /* Type */
-  --font-display: var(--font-kalam), ui-rounded, cursive;
-  --font-body:    var(--font-hand), ui-rounded, cursive;
-  --font-exact:   ui-monospace, "SF Mono", "Cascadia Mono", Menlo, monospace;
+## 7. Rules that aren't negotiable
 
-  /* Wobble — three variants so repeated cards aren't identically irregular */
-  --radius-wobble-1: 255px 15px 225px 15px / 15px 225px 15px 255px;
-  --radius-wobble-2: 15px 225px 15px 255px / 225px 15px 255px 15px;
-  --radius-wobble-3: 180px 20px 200px 25px / 20px 190px 20px 210px;
-  --radius-wobble-sm: 30px 6px 26px 8px / 6px 28px 6px 30px;
+1. **Contrast is measured, not eyeballed.** Body 17.1:1, secondary 4.56:1. Any new
+   text colour gets checked before it ships.
+2. **Focus is always visible** — 2px accent outline, 2px offset. Never
+   `outline-none` without a replacement; the tab bar and list rows are the app.
+3. **Touch targets ≥ 44px.** Buttons are 48px, tab items 48px, rows 44px+.
+4. **Gradients are atmosphere, never a text background.** Blooms sit behind
+   `relative` content, never under the characters.
+5. **No emoji in the UI.** Emoji placeholders read as filler; monogram avatars are
+   what a payments app actually falls back to when a logo is missing.
+6. **`aria-live` on anything that changes without a tap** — currently the range
+   toggle; later, the merchant's settlement tick.
 
-  /* Hard offset shadows — no blur, ever */
-  --shadow-hard-sm: 2px 2px 0 0 #2d2d2d;
-  --shadow-hard:    4px 4px 0 0 #2d2d2d;
-  --shadow-hard-lg: 8px 8px 0 0 #2d2d2d;
-  --shadow-paper:   3px 3px 0 0 rgb(45 45 45 / 0.1);
-}
+## 8. Mobile only
 
-body {
-  background-color: var(--color-paper);
-  background-image: radial-gradient(var(--color-muted) 1px, transparent 1px);
-  background-size: 24px 24px;
-  color: var(--color-ink);
-  font-family: var(--font-body);
-}
-```
+There is no desktop layout, on purpose. Both real surfaces are phones: a stall
+owner's handset and a stranger's handset. The app shell is a centred 430px column
+set once in [`app/layout.tsx`](../app/layout.tsx). Design at 390px. No `md:` or
+`lg:` variants anywhere.
 
-**Why three wobble radii.** A single shared radius string applied to eight cards
-produces eight *identically* irregular shapes — the eye reads that as machine-made
-instantly, which defeats the entire premise. Three variants, alternated by index,
-costs nothing and is the difference between "hand-drawn" and "hand-drawn asset used
-eight times."
-
-**No dark mode.** The palette is literally paper. A dark sketchbook is a different
-design system, and the merchant is standing outdoors in Brisbane sun anyway.
-`color-scheme: light` on `:root`, done.
-
----
-
-## 4. Primitives
-
-Four. Every screen is built from these plus layout.
-
-### `<Button>`
-Per spec. Variants `primary` (white → marker red on hover) and `secondary`
-(muted → pen blue on hover).
-
-- `rounded-wobble-sm`, `border-[3px] border-ink`, `shadow-hard`
-- hover: fill, `shadow-hard-sm`, `translate-x-[2px] translate-y-[2px]`
-- active: `shadow-none`, `translate-x-[4px] translate-y-[4px]` — presses flat
-- `transition-all duration-100`
-- `min-h-12` (48px touch target), `text-xl` minimum — see §7 for why not `text-lg`
-
-### `<Card>`
-White or `postit` surface, `border-2 border-ink`, `rounded-wobble-{1|2|3}`,
-`shadow-paper`. Props: `tilt` (`-2 … 2` deg), `decoration` (`none | tape | tack`),
-`radius` (1–3).
-
-Tape and tack are pure CSS/absolute-positioned divs. No images.
-
-### `<CopyField>`
-Not in the design system spec — invented for the shopper page, and the most
-important component in the build.
-
-A labelled value the shopper must transcribe or copy: PayID, amount, reference.
-
-- Handwritten label above (`font-body`, ink)
-- Value in `font-exact`, `text-2xl`, `tracking-wide`, ink on white
-- Whole field is one tap target, `min-h-14`, wobbly border, `shadow-hard-sm`
-- Tap copies → the button label swaps to "copied!" in Kalam with a 1-frame jiggle
-- `aria-live="polite"` on the confirmation so it's announced, not just seen
-
-### `<Tick>`
-The success state. Animated hand-drawn checkmark, SVG path, `stroke-dasharray`
-draw-on over ~400ms, `strokeLinecap="round"`.
-
-**The tick is ballpoint blue (`--color-pen`), not green.** There is no green in this
-palette, and adding one for a single state breaks a deliberately limited system.
-A blue biro tick on paper is already the universal "done" mark — it's more on-brand
-than green would be. Paired with **"PAID!"** in Kalam at `text-6xl`, because that
-word has to be readable from the back of a room on a projector.
-
----
-
-## 5. The three screens
-
-Designed at 390px first. The merchant screen is a phone on a stall counter; the
-shopper screen is a phone in a stranger's hand. Desktop exists only as the pitch
-projector — which is a real requirement, not an afterthought (§6).
-
-### `/m` — merchant keypad
-Big paper page. Kalam heading "How much?". Amount displays huge in `font-exact`
-(a till total is a transcribable number — Zone B rules apply). Keypad is a
-`grid-cols-3` of wobbly `<Button>`s, each rotated 0.5–1° in an alternating pattern
-so the grid never looks aligned. Keys `min-h-16` — thumb targets on a busy counter.
-Primary action: a wide marker-red "Charge $10.00" button.
-
-### `/m/[ref]` — QR + waiting → PAID
-The QR sits on a white `<Card>` with `tilt={-2}` and tape decoration. QR itself is
-**never wobbled, never rotated, never tinted** — it's a scannable target, and
-prettiness that costs a scan costs the demo. The frame around it carries all the
-personality.
-
-Below: "waiting for payment…" with three bouncing pencil dots (staggered
-`animation-delay`). On settlement the card flips to `<Tick>` + "PAID!" + the payer's
-first name if the rail returned one — *"PAID! — thanks, Sam"* in Kalam is the single
-most human moment in the demo and it costs one line.
-
-### `/p/[ref]` — shopper page (Zone B)
-The one screen a stranger sees. Order matters:
-
-1. Kalam headline: **"Pay by bank, pay less."**
-2. The correction gesture (§2) — struck `$10.00`, huge `$9.95`
-3. One line, handwritten: *"straight from your bank account. no card, no fee."*
-4. Three `<CopyField>`s: **Pay to** (PayID) · **Amount** · **Reference**
-5. Small dashed-border note: *"open your banking app → pay someone → paste these"*
-6. Savings counter (TECHNICAL.md §5), only on repeat visits: post-it yellow card,
-   `tilt={1}`. Total in Kalam, large; the rate beneath it in body font, smaller:
-   *"$2.35 back"* / *"about $60/year at this pace"*
-
-The strikethrough at (2) and the counter at (6) are the two theme moments on this
-screen — the hidden cost made visible, and the gain made forecastable (BRIEF.md).
-They bookend the page deliberately: the first thing the shopper sees is what they
-were losing, the last thing is what they're now keeping.
-
-Trust details that earn their pixels: the merchant's real business name at the top,
-and a plain line stating CLEVR never touches the money. Both in the handwritten
-font — warmth is the right register for reassurance, as long as the *numbers* stay
-plain.
-
----
-
-## 6. Mobile only
-
-**There is no desktop layout, on purpose.** Both real surfaces are phones: a stall
-owner's handset on the counter, and a stranger's handset in their hand. A desktop
-breakpoint would be a layout nobody in this business ever looks at.
-
-The app shell is a centred phone-width column, set once in `app/layout.tsx`:
-
-```tsx
-<div className="mx-auto flex min-h-dvh w-full max-w-[430px] flex-col px-6">
-```
-
-Design at 390px. No `md:` / `lg:` variants anywhere until a screen genuinely
-needs one.
-
-**This also solves the projector.** `/m/[ref]` is the demo's climax shown behind
-you, and if the judges can't see the tick land the build may as well not exist.
-The answer is screen-mirroring the actual phone rather than building a desktop
-view of it — a centred phone column on a 1080p projector reads as deliberate, and
-the tick and "PAID!" at `text-6xl` are legible from the back of a room at that
-scale. Mirroring also means what the judges see is provably the same screen the
-stranger just paid on, which is worth more than a bespoke wide layout.
-
-Rotations stay at the softer `-rotate-1` end so tilted cards never clip a 390px
-viewport. Decorative flourishes that the spec gates behind `md:` are simply not
-built (§8).
+The pitch projector is solved by screen-mirroring the actual phone, not by
+building a desktop view of it — and mirroring proves the judges are watching the
+same screen the stranger just paid on.
 
 `ponytail: no desktop layout, no breakpoints. Add when a merchant asks for a tablet till — not before.`
-
----
-
-## 7. Accessibility — the non-negotiables
-
-This style is a legibility risk by construction. Six rules, none optional:
-
-1. **Patrick Hand never below 18px.** Body copy is `text-lg` minimum. Handwritten
-   fonts lose their distinguishing strokes at small sizes far earlier than a grotesk.
-2. **Marker red never on small text.** `#ff4d4d` on white is ~3.4:1 — it fails
-   WCAG AA for body copy. Red is for borders, fills, strikes, and large bold text
-   only. Same for white-on-red button labels: hence `text-xl` (20px) minimum on
-   buttons rather than the spec's `text-lg`, which lands just under the large-text
-   threshold. Ink on paper is ~14:1 and carries all real reading.
-3. **Never rotate anything the user must read carefully.** Cards, tags and
-   decorations tilt. Amounts, PayIDs, and reference codes sit at exactly 0°.
-4. **Focus is visible and wobbly.** `outline: 3px solid var(--color-pen);
-   outline-offset: 3px`. Never `outline-none` without a replacement — the keypad
-   and the copy fields are the whole interface.
-5. **`prefers-reduced-motion`** kills the bounce, the jiggle, the strike-draw and
-   the tick-draw. The tick simply appears. Success must never *depend* on motion
-   to be perceived.
-6. **Success is not colour-alone.** The tick is accompanied by the word "PAID!"
-   and an `aria-live="assertive"` announcement. A merchant with a colour-vision
-   deficiency, glancing at a phone in sunlight, gets the same information.
-
----
-
-## 8. What I'm not building
-
-The design system describes a marketing landing page. We're shipping three
-screens. Skipping, deliberately:
-
-- speech-bubble testimonials, pricing cards with dashed-circle overlays, blog
-  card treatments, drop caps, wavy nav underlines, footer line-through hovers
-- the squiggly "How It Works" connector and the hand-drawn hero arrow
-- grayscale→colour image transitions
-- a dark mode
-
-All of it belongs on the landing page you build *after* the hackathon, and every
-one of them is an hour that isn't spent on the tick landing reliably.
-
-Add when: there's a marketing site to put them on.

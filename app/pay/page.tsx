@@ -6,15 +6,15 @@ import { SectionLabel } from "@/components/SectionLabel";
 const STEPS = [
   {
     title: "Point your camera",
-    body: "Find the CLEVR card on the counter and scan it. No app, no signup — your normal camera is enough.",
+    body: "Scan the card on the counter. No app, no signup — your normal camera is enough.",
   },
   {
     title: "Check the amount",
-    body: "Your own banking app opens with the amount already filled in, and it's lower than the sticker price.",
+    body: "Your banking app opens with the amount filled in, already lower than the sticker price.",
   },
   {
     title: "Pay",
-    body: "The shop's screen confirms while you're still standing there. Money moves bank to bank in seconds.",
+    body: "The shop's screen confirms while you're still standing there.",
   },
 ];
 

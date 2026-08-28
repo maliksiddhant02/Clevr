@@ -27,12 +27,7 @@ export default function Home() {
   return (
     <main className="stagger flex flex-col gap-6 pt-5 pb-4">
       <header className="flex items-center justify-between">
-        <div>
-          <h1 className="font-display text-xl leading-tight">Hi there 👋</h1>
-          <p className="text-muted-foreground text-[0.8125rem]">
-            You pay by bank now.
-          </p>
-        </div>
+        <h1 className="font-display text-xl tracking-[-0.01em]">CLEVR</h1>
         <Link
           href="/account"
           aria-label="Account"
@@ -118,8 +113,8 @@ export default function Home() {
           <span className="text-accent-secondary">1.4%</span>.
         </p>
         <p className="mt-2 text-[0.875rem] leading-relaxed text-white/70">
-          You&rsquo;ve never been shown that number. Paying from your bank keeps
-          a slice of it in your pocket, and the rest in the shop&rsquo;s.
+          Nobody has ever shown it to you. Paying from your bank keeps a slice
+          of it with you, and the rest with them.
         </p>
       </Card>
     </main>

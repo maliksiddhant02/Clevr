@@ -9,7 +9,6 @@
 export type SamplePayment = {
   ref: string;
   merchant: string;
-  emoji: string;
   paidCents: number;
   savedCents: number;
   day: string;
@@ -18,13 +17,13 @@ export type SamplePayment = {
 };
 
 export const PAYMENTS: SamplePayment[] = [
-  { ref: "CLVR7K2QX", merchant: "Brew & Co", emoji: "☕", paidCents: 495, savedCents: 3, day: "Today", time: "9:24", settledSeconds: 3 },
-  { ref: "CLVR4M8ZT", merchant: "West End Markets", emoji: "🥬", paidCents: 1840, savedCents: 9, day: "Today", time: "8:51", settledSeconds: 2 },
-  { ref: "CLVRQ3W7N", merchant: "Sunny's Banh Mi", emoji: "🥖", paidCents: 1195, savedCents: 6, day: "Yesterday", time: "12:07", settledSeconds: 4 },
-  { ref: "CLVRB6HY2", merchant: "Brew & Co", emoji: "☕", paidCents: 495, savedCents: 3, day: "Yesterday", time: "8:33", settledSeconds: 2 },
-  { ref: "CLVRD9F4K", merchant: "Kanga Cuts", emoji: "✂️", paidCents: 3500, savedCents: 18, day: "Wed 26 Aug", time: "16:20", settledSeconds: 5 },
-  { ref: "CLVRS2P8V", merchant: "West End Markets", emoji: "🥬", paidCents: 2260, savedCents: 11, day: "Wed 26 Aug", time: "9:02", settledSeconds: 3 },
-  { ref: "CLVRT5J1M", merchant: "Brew & Co", emoji: "☕", paidCents: 950, savedCents: 5, day: "Tue 25 Aug", time: "8:47", settledSeconds: 2 },
+  { ref: "CLVR7K2QX", merchant: "Brew & Co", paidCents: 495, savedCents: 3, day: "Today", time: "9:24", settledSeconds: 3 },
+  { ref: "CLVR4M8ZT", merchant: "West End Markets", paidCents: 1840, savedCents: 9, day: "Today", time: "8:51", settledSeconds: 2 },
+  { ref: "CLVRQ3W7N", merchant: "Sunny's Banh Mi", paidCents: 1195, savedCents: 6, day: "Yesterday", time: "12:07", settledSeconds: 4 },
+  { ref: "CLVRB6HY2", merchant: "Brew & Co", paidCents: 495, savedCents: 3, day: "Yesterday", time: "8:33", settledSeconds: 2 },
+  { ref: "CLVRD9F4K", merchant: "Kanga Cuts", paidCents: 3500, savedCents: 18, day: "Wed 26 Aug", time: "16:20", settledSeconds: 5 },
+  { ref: "CLVRS2P8V", merchant: "West End Markets", paidCents: 2260, savedCents: 11, day: "Wed 26 Aug", time: "9:02", settledSeconds: 3 },
+  { ref: "CLVRT5J1M", merchant: "Brew & Co", paidCents: 950, savedCents: 5, day: "Tue 25 Aug", time: "8:47", settledSeconds: 2 },
 ];
 
 export const PAYMENT_COUNT = 12;
@@ -50,9 +49,9 @@ export function byDay(payments: SamplePayment[]): [string, SamplePayment[]][] {
 
 /** Total kept per merchant, biggest first. */
 export function topMerchants() {
-  const totals = new Map<string, { emoji: string; cents: number; visits: number }>();
+  const totals = new Map<string, { cents: number; visits: number }>();
   for (const p of PAYMENTS) {
-    const row = totals.get(p.merchant) ?? { emoji: p.emoji, cents: 0, visits: 0 };
+    const row = totals.get(p.merchant) ?? { cents: 0, visits: 0 };
     row.cents += p.savedCents;
     row.visits += 1;
     totals.set(p.merchant, row);

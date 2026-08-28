@@ -37,12 +37,7 @@ const ROWS: {
 export default function Account() {
   return (
     <main className="stagger flex flex-col gap-6 pt-6 pb-4">
-      <header>
-        <h1 className="font-display text-2xl">Account</h1>
-        <p className="text-muted-foreground text-[0.8125rem]">
-          How this works, and what we do with your data.
-        </p>
-      </header>
+      <h1 className="font-display text-2xl">Account</h1>
 
       <ul className="border-border bg-card divide-border divide-y overflow-hidden rounded-2xl border shadow-md">
         {ROWS.map(({ Icon, title, status, body }) => (

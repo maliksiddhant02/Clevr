@@ -1,4 +1,3 @@
-import { PartyPopper } from "lucide-react";
 import { Card } from "@/components/Card";
 import { DonutChart } from "@/components/DonutChart";
 import { SavingsChart } from "@/components/SavingsChart";
@@ -18,12 +17,7 @@ export default function Insights() {
 
   return (
     <main className="stagger flex flex-col gap-6 pt-6 pb-4">
-      <header>
-        <h1 className="font-display text-2xl">Insights</h1>
-        <p className="text-muted-foreground text-[0.8125rem]">
-          Where your money went, and what stayed.
-        </p>
-      </header>
+      <h1 className="font-display text-2xl">Insights</h1>
 
       <SavingsChart />
 
@@ -72,21 +66,6 @@ export default function Insights() {
         </p>
       </Card>
 
-      <div className="border-border bg-muted/60 flex items-center gap-3 rounded-2xl border p-4">
-        <span
-          aria-hidden
-          className="bg-card border-border flex h-10 w-10 shrink-0 items-center justify-center rounded-full border"
-        >
-          <PartyPopper size={18} strokeWidth={1.8} className="text-accent" />
-        </span>
-        <p className="text-[0.8125rem] leading-snug">
-          <span className="font-semibold">Nice work.</span>{" "}
-          <span className="text-muted-foreground">
-            You&rsquo;ve kept {formatAud(SAVED_CENTS)} that would have gone to a
-            card network.
-          </span>
-        </p>
-      </div>
     </main>
   );
 }
