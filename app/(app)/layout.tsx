@@ -5,8 +5,8 @@ import { TabBar } from "@/components/TabBar";
 export default function AppLayout({ children }: LayoutProps<"/">) {
   return (
     <>
-      {/* pb-32 clears the fixed tab bar so the last row is never trapped. */}
-      <div className="flex-1 pb-32">{children}</div>
+      {/* pb-28 clears the fixed tab bar so the last row is never trapped. */}
+      <div className="flex-1 pb-28">{children}</div>
       <TabBar />
     </>
   );

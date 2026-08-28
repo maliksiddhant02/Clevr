@@ -5,6 +5,7 @@ import {
   discountCents,
   formatAud,
   shopperPays,
+  splitAud,
   yearlyRateCents,
 } from "./money.ts";
 
@@ -47,4 +48,9 @@ test("no annual projection from a single payment", () => {
   assert.equal(yearlyRateCents(235, 12, 14), Math.round((235 / 14) * 365));
   // Same day as the first payment must not divide by zero.
   assert.equal(yearlyRateCents(10, 2, 0), 3650);
+});
+
+test("splits money for display", () => {
+  assert.deepEqual(splitAud(876050), { whole: "$8,760", fraction: "50" });
+  assert.deepEqual(splitAud(5), { whole: "$0", fraction: "05" });
 });

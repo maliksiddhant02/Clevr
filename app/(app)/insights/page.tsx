@@ -1,79 +1,92 @@
+import { PartyPopper } from "lucide-react";
 import { Card } from "@/components/Card";
+import { DonutChart } from "@/components/DonutChart";
 import { SavingsChart } from "@/components/SavingsChart";
+import { SectionLabel } from "@/components/SectionLabel";
 import { cardFeeCents, formatAud } from "@/lib/money";
-import { PAYMENTS, SAVED_CENTS, SPENT_CENTS, topMerchants } from "@/lib/sample";
+import { PAYMENTS, SAVED_CENTS, topMerchants } from "@/lib/sample";
 
 export default function Insights() {
-  // What the shops would have lost to a card acquirer on the same baskets.
+  // What a card acquirer would have taken on the same baskets, less what we
+  // handed back to the shopper — the part that stayed with the business.
   const feesKept = PAYMENTS.reduce(
     (n, p) => n + cardFeeCents(p.paidCents) - p.savedCents,
     0,
   );
   const avgSaved = Math.round(SAVED_CENTS / PAYMENTS.length);
+  const merchants = topMerchants();
 
   return (
-    <main className="flex flex-col gap-7 py-6">
-      <h1 className="font-display text-4xl">Insights</h1>
+    <main className="stagger flex flex-col gap-6 pt-6 pb-4">
+      <header>
+        <h1 className="font-display text-2xl">Insights</h1>
+        <p className="text-muted-foreground text-[0.8125rem]">
+          Where your money went, and what stayed.
+        </p>
+      </header>
 
       <SavingsChart />
 
-      <div className="grid grid-cols-2 gap-4">
-        <Card radius={2} tilt="right" className="!p-4">
-          <p className="font-money text-3xl leading-none">
+      <div className="grid grid-cols-2 gap-3">
+        <Card className="!p-4">
+          <p className="font-mono text-xl font-medium">
             {formatAud(avgSaved)}
           </p>
-          <p className="mt-1 text-base opacity-70">kept per payment</p>
-        </Card>
-        <Card radius={3} className="!p-4">
-          <p className="font-money text-3xl leading-none">
-            {formatAud(SPENT_CENTS)}
+          <p className="text-muted-foreground mt-0.5 text-[0.75rem]">
+            kept per payment
           </p>
-          <p className="mt-1 text-base opacity-70">paid by bank</p>
+        </Card>
+        <Card className="!p-4">
+          <p className="font-mono text-xl font-medium">{PAYMENTS.length}</p>
+          <p className="text-muted-foreground mt-0.5 text-[0.75rem]">
+            payments by bank
+          </p>
         </Card>
       </div>
 
-      <Card tone="ink" radius={1} tilt="left">
-        <p className="text-lg opacity-80">Your shops kept</p>
-        <p className="font-money mt-1 text-5xl leading-none">
+      <section aria-labelledby="where-heading">
+        <h2 id="where-heading" className="mb-2 text-base font-semibold">
+          Where you shop
+        </h2>
+        <Card>
+          <DonutChart
+            segments={merchants.map((m) => ({ label: m.merchant, cents: m.cents }))}
+            totalCents={SAVED_CENTS}
+            caption={`Kept by shop. ${merchants
+              .map((m) => `${m.merchant} ${formatAud(m.cents)}`)
+              .join(", ")}.`}
+          />
+        </Card>
+      </section>
+
+      {/* Inverted spotlight — the merchant-side number, which is the part the
+          shopper never sees anywhere else. */}
+      <Card tone="inverted">
+        <SectionLabel>Your shops kept</SectionLabel>
+        <p className="mt-3 text-4xl leading-none font-semibold tracking-[-0.02em]">
           {formatAud(feesKept)}
         </p>
-        <p className="mt-3 text-lg opacity-80">
+        <p className="mt-3 text-[0.875rem] leading-relaxed text-white/70">
           in card fees they would have paid on these sales. That money stayed in
           the business instead of the card networks.
         </p>
       </Card>
 
-      <section aria-labelledby="merchants-heading">
-        <h2 id="merchants-heading" className="font-display mb-3 text-2xl">
-          Where you shop
-        </h2>
-        <ul className="flex flex-col gap-3">
-          {topMerchants().map((m) => (
-            <li
-              key={m.merchant}
-              className="border-ink rounded-wobble-sm shadow-paper flex items-center gap-3 border-2 bg-white p-3"
-            >
-              <span
-                aria-hidden
-                className="border-ink flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-2 text-xl"
-              >
-                {m.emoji}
-              </span>
-              <span className="min-w-0 flex-1">
-                <span className="block truncate text-lg leading-tight">
-                  {m.merchant}
-                </span>
-                <span className="block text-base opacity-60">
-                  {m.visits} {m.visits === 1 ? "visit" : "visits"}
-                </span>
-              </span>
-              <span className="font-exact shrink-0 text-lg">
-                {formatAud(m.cents)}
-              </span>
-            </li>
-          ))}
-        </ul>
-      </section>
+      <div className="border-border bg-muted/60 flex items-center gap-3 rounded-2xl border p-4">
+        <span
+          aria-hidden
+          className="bg-card border-border flex h-10 w-10 shrink-0 items-center justify-center rounded-full border"
+        >
+          <PartyPopper size={18} strokeWidth={1.8} className="text-accent" />
+        </span>
+        <p className="text-[0.8125rem] leading-snug">
+          <span className="font-semibold">Nice work.</span>{" "}
+          <span className="text-muted-foreground">
+            You&rsquo;ve kept {formatAud(SAVED_CENTS)} that would have gone to a
+            card network.
+          </span>
+        </p>
+      </div>
     </main>
   );
 }

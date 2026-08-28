@@ -1,47 +1,50 @@
 "use client";
 
 import { useState } from "react";
+import { TrendingUp } from "lucide-react";
+import { AreaChart } from "@/components/AreaChart";
 import { formatAud } from "@/lib/money";
 
 // Sample data until payments are queried by shopper_cookie. TECHNICAL.md §14.
 const RANGES = {
-  week: [
-    { label: "Mon", cents: 5 },
-    { label: "Tue", cents: 12 },
-    { label: "Wed", cents: 0 },
-    { label: "Thu", cents: 21 },
-    { label: "Fri", cents: 9 },
-    { label: "Sat", cents: 34 },
-    { label: "Sun", cents: 15 },
-  ],
-  month: [
-    { label: "1–7", cents: 41 },
-    { label: "8–14", cents: 63 },
-    { label: "15–21", cents: 28 },
-    { label: "22–28", cents: 74 },
-    { label: "29+", cents: 29 },
-  ],
+  week: {
+    delta: "+4.2%",
+    bars: [
+      { label: "Mon", cents: 5 },
+      { label: "Tue", cents: 12 },
+      { label: "Wed", cents: 3 },
+      { label: "Thu", cents: 21 },
+      { label: "Fri", cents: 9 },
+      { label: "Sat", cents: 34 },
+      { label: "Sun", cents: 15 },
+    ],
+  },
+  month: {
+    delta: "+8.6%",
+    bars: [
+      { label: "1 Aug", cents: 41 },
+      { label: "8 Aug", cents: 63 },
+      { label: "15 Aug", cents: 28 },
+      { label: "22 Aug", cents: 74 },
+      { label: "29 Aug", cents: 52 },
+    ],
+  },
 } as const;
 
 type Range = keyof typeof RANGES;
 
 export function SavingsChart() {
-  const [range, setRange] = useState<Range>("week");
-  const bars = RANGES[range];
-  const peak = Math.max(...bars.map((b) => b.cents));
+  const [range, setRange] = useState<Range>("month");
+  const { bars, delta } = RANGES[range];
   const total = bars.reduce((sum, b) => sum + b.cents, 0);
 
   return (
-    <section aria-labelledby="chart-heading">
-      <div className="mb-3 flex items-baseline justify-between">
-        <h2 id="chart-heading" className="font-display text-2xl">
-          Kept by you
-        </h2>
-        {/* Segmented control — a real toggle, not a decorative one. */}
+    <div className="border-border bg-card rounded-2xl border p-5 shadow-md">
+      <div className="mb-3 flex items-center justify-between">
         <div
           role="group"
           aria-label="Time range"
-          className="border-ink rounded-wobble-sm flex gap-1 border-2 bg-white p-1"
+          className="bg-muted flex gap-0.5 rounded-full p-0.5"
         >
           {(["week", "month"] as const).map((r) => (
             <button
@@ -49,46 +52,30 @@ export function SavingsChart() {
               type="button"
               onClick={() => setRange(r)}
               aria-pressed={range === r}
-              className={`rounded-wobble-sm min-h-9 px-3 text-lg capitalize transition-all duration-100 ${
-                range === r ? "bg-ink text-paper" : "hover:bg-muted"
+              className={`min-h-8 rounded-full px-3 text-[0.8125rem] font-medium capitalize transition-all duration-200 ${
+                range === r
+                  ? "bg-card text-foreground shadow-sm"
+                  : "text-muted-foreground hover:text-foreground"
               }`}
             >
-              {r}
+              This {r}
             </button>
           ))}
         </div>
+        <span className="text-success inline-flex items-center gap-1 text-[0.8125rem] font-semibold">
+          <TrendingUp size={14} strokeWidth={2.4} aria-hidden />
+          {delta}
+        </span>
       </div>
 
-      <div className="font-money mb-4 text-4xl">{formatAud(total)}</div>
+      <p className="mb-1 text-3xl font-semibold tracking-[-0.02em]">
+        {formatAud(total)}
+      </p>
+      <p className="text-muted-foreground mb-4 text-[0.8125rem]">
+        kept by paying from your bank
+      </p>
 
-      <ul className="border-ink flex h-40 items-end justify-between gap-2 border-b-2 border-dashed pb-0">
-        {bars.map((bar, i) => (
-          <li
-            key={bar.label}
-            className="flex h-full flex-1 flex-col items-center justify-end gap-2"
-          >
-            <span className="font-exact text-xs">
-              {bar.cents > 0 ? formatAud(bar.cents) : ""}
-            </span>
-            <div
-              // Height is data, not styling — the only inline style in the app.
-              style={{ height: `${Math.max((bar.cents / peak) * 100, 4)}%` }}
-              className={`border-ink rounded-wobble-sm w-full border-2 ${
-                i === bars.length - 1 ? "bg-marker" : "bg-pen"
-              }`}
-              role="img"
-              aria-label={`${bar.label}: ${formatAud(bar.cents)} kept`}
-            />
-          </li>
-        ))}
-      </ul>
-      <div className="mt-2 flex justify-between">
-        {bars.map((bar) => (
-          <span key={bar.label} className="flex-1 text-center text-base">
-            {bar.label}
-          </span>
-        ))}
-      </div>
-    </section>
+      <AreaChart data={bars} id={`savings-${range}`} />
+    </div>
   );
 }

@@ -48,3 +48,13 @@ export function yearlyRateCents(
   if (paymentCount < 2) return null;
   return Math.round((totalSaved / Math.max(daysActive, 1)) * 365);
 }
+
+/**
+ * Split for display: large dollars, small cents. Purely presentational, but it
+ * lives here so every screen renders money the same way.
+ */
+export function splitAud(cents: Cents): { whole: string; fraction: string } {
+  const [w, f] = (Math.abs(cents) / 100).toFixed(2).split(".");
+  const sign = cents < 0 ? "-" : "";
+  return { whole: `${sign}$${Number(w).toLocaleString("en-AU")}`, fraction: f };
+}

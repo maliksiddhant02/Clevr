@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { ChevronRight } from "lucide-react";
 import { formatAud } from "@/lib/money";
 import type { SamplePayment } from "@/lib/sample";
 
@@ -8,31 +7,30 @@ export function PaymentRow({ payment }: { payment: SamplePayment }) {
     <li>
       <Link
         href={`/payment/${payment.ref}`}
-        className="border-ink rounded-wobble-sm shadow-paper flex items-center gap-3 border-2 bg-white p-3 transition-all duration-100 hover:shadow-hard-sm"
+        className="hover:bg-muted/60 -mx-2 flex items-center gap-3 rounded-xl px-2 py-2.5 transition-colors duration-200"
       >
         <span
           aria-hidden
-          className="border-ink flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-2 text-xl"
+          className="bg-muted border-border flex h-11 w-11 shrink-0 items-center justify-center rounded-full border text-lg"
         >
           {payment.emoji}
         </span>
         <span className="min-w-0 flex-1">
-          <span className="block truncate text-lg leading-tight">
+          <span className="block truncate text-[0.9375rem] font-semibold tracking-[-0.01em]">
             {payment.merchant}
           </span>
-          <span className="block text-base opacity-60">
+          <span className="text-muted-foreground block text-[0.8125rem]">
             {payment.day} · {payment.time}
           </span>
         </span>
         <span className="shrink-0 text-right">
-          <span className="font-exact block text-lg">
+          <span className="block text-[0.9375rem] font-semibold">
             {formatAud(payment.paidCents)}
           </span>
-          <span className="bg-pen text-paper rounded-wobble-sm mt-1 inline-block px-2 text-sm">
+          <span className="text-success block text-[0.8125rem] font-medium">
             +{formatAud(payment.savedCents)}
           </span>
         </span>
-        <ChevronRight size={18} strokeWidth={2.5} aria-hidden className="shrink-0 opacity-40" />
       </Link>
     </li>
   );

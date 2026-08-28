@@ -1,33 +1,32 @@
 @import "tailwindcss";
 
-/* CLEVR design tokens — see DESIGN.md §3.
-   Everything visual centralizes here. No inline styles anywhere in the app. */
+/* CLEVR design tokens — Minimalist Modern. See DESIGN.md.
+   Everything visual centralizes here. No inline styles except data-driven
+   geometry (chart heights, arc lengths). */
 @theme inline {
-  /* Palette — single light mode, no dark variant. The palette is paper. */
-  --color-paper: #fdfbf7; /* warm paper, page background     */
-  --color-ink: #2d2d2d; /* soft pencil black, never #000   */
-  --color-muted: #e5e0d8; /* erased pencil, dividers, fills  */
-  --color-marker: #ff4d4d; /* red correction marker, accent   */
-  --color-pen: #2d5da1; /* blue ballpoint, focus + success */
-  --color-postit: #fff9c4; /* post-it yellow, highlight cards */
+  /* Warm near-monochrome canvas, amplified by one electric accent. */
+  --color-background: #fafafa; /* warmer off-white, less eye strain */
+  --color-foreground: #0f172a; /* deep slate, never pure black      */
+  --color-muted: #f1f5f9; /* secondary surfaces, subtle fills  */
+  --color-muted-foreground: #64748b; /* 4.7:1 on canvas — real body text  */
+  --color-border: #e2e8f0;
+  --color-card: #ffffff;
+  --color-accent: #0052ff;
+  --color-accent-secondary: #4d7cff;
+  --color-success: #10b981; /* only for "money you kept" deltas  */
 
-  /* Type — four faces, one strict job each. DESIGN.md §2 */
-  --font-display: var(--font-kalam), ui-rounded, cursive; /* headings       */
-  --font-body: var(--font-hand), ui-rounded, cursive; /* body, UI       */
-  --font-money: var(--font-anton), ui-sans-serif, sans-serif; /* big numbers    */
-  --font-exact: var(--font-space-mono), ui-monospace, monospace; /* transcribable  */
+  /* Dual-font system: character, clarity, exactness. */
+  --font-display: var(--font-calistoga), Georgia, serif;
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, monospace;
 
-  /* Wobble — three variants so repeated cards aren't identically irregular */
-  --radius-wobble-1: 255px 15px 225px 15px / 15px 225px 15px 255px;
-  --radius-wobble-2: 15px 225px 15px 255px / 225px 15px 255px 15px;
-  --radius-wobble-3: 180px 20px 200px 25px / 20px 190px 20px 210px;
-  --radius-wobble-sm: 30px 6px 26px 8px / 6px 28px 6px 30px;
-
-  /* Hard offset shadows — no blur, ever */
-  --shadow-hard-sm: 2px 2px 0 0 #2d2d2d;
-  --shadow-hard: 4px 4px 0 0 #2d2d2d;
-  --shadow-hard-lg: 8px 8px 0 0 #2d2d2d;
-  --shadow-paper: 3px 3px 0 0 rgb(45 45 45 / 0.1);
+  /* Layered, diffuse — depth without heaviness. */
+  --shadow-sm: 0 1px 3px rgb(0 0 0 / 0.06);
+  --shadow-md: 0 4px 6px rgb(0 0 0 / 0.07);
+  --shadow-lg: 0 10px 15px rgb(0 0 0 / 0.08);
+  --shadow-xl: 0 20px 25px rgb(0 0 0 / 0.1);
+  --shadow-accent: 0 4px 14px rgb(0 82 255 / 0.25);
+  --shadow-accent-lg: 0 8px 24px rgb(0 82 255 / 0.35);
 }
 
 :root {
@@ -35,24 +34,77 @@
 }
 
 body {
-  background-color: var(--color-paper);
-  background-image: radial-gradient(var(--color-muted) 1px, transparent 1px);
-  background-size: 24px 24px;
-  color: var(--color-ink);
-  font-family: var(--font-body);
-  /* Patrick Hand never below 18px — DESIGN.md §7.1 */
-  font-size: 1.125rem;
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
   line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* Focus is visible and stays on-brand. Never outline-none without a
-   replacement — the keypad and copy fields are the whole interface. §7.4 */
+/* Focus rings match the accent, always visible, never removed without a
+   replacement — the tab bar and list rows are the whole interface. */
 :focus-visible {
-  outline: 3px solid var(--color-pen);
-  outline-offset: 3px;
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: 4px;
 }
 
-/* Success must never depend on motion to be perceived. §7.5 */
+/* Entrance stagger on mount. Short app screens don't need a scroll observer,
+   so this is CSS instead of an animation library. */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.stagger > * {
+  animation: fade-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+}
+.stagger > *:nth-child(1) { animation-delay: 0.02s; }
+.stagger > *:nth-child(2) { animation-delay: 0.08s; }
+.stagger > *:nth-child(3) { animation-delay: 0.14s; }
+.stagger > *:nth-child(4) { animation-delay: 0.20s; }
+.stagger > *:nth-child(5) { animation-delay: 0.26s; }
+.stagger > *:nth-child(6) { animation-delay: 0.32s; }
+.stagger > *:nth-child(n + 7) { animation-delay: 0.38s; }
+
+@keyframes pulse-dot {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.3);
+    opacity: 0.7;
+  }
+}
+
+.pulse-dot {
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+/* Chart strokes draw themselves in, once. */
+@keyframes draw-line {
+  from {
+    stroke-dashoffset: var(--draw-length, 1000);
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.draw-line {
+  stroke-dasharray: var(--draw-length, 1000);
+  animation: draw-line 1.1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Nothing here may be required to understand the interface. */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

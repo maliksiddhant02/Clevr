@@ -2,19 +2,18 @@ import Link from "next/link";
 import type { ComponentProps, ReactNode } from "react";
 
 const VARIANT = {
-  // text-xl minimum: white-on-marker is only AA-legible at large sizes.
-  primary: "bg-white hover:bg-marker hover:text-white",
-  secondary: "bg-muted hover:bg-pen hover:text-white",
+  primary:
+    "from-accent to-accent-secondary text-white bg-gradient-to-r shadow-sm hover:shadow-accent-lg hover:brightness-110",
+  outline:
+    "border-border text-foreground hover:border-accent/30 border bg-transparent hover:bg-muted hover:shadow-sm",
+  ghost: "text-muted-foreground hover:text-foreground bg-transparent",
 } as const;
 
+// h-12 = 48px, comfortably past the 44px touch minimum.
 const BASE =
-  "border-ink rounded-wobble-sm shadow-hard inline-flex min-h-12 items-center justify-center gap-2 border-[3px] px-5 text-xl transition-all duration-100 hover:shadow-hard-sm hover:translate-x-[2px] hover:translate-y-[2px] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none";
+  "inline-flex h-12 items-center justify-center gap-2 rounded-xl px-5 text-[0.9375rem] font-medium transition-all duration-200 ease-out hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98]";
 
-type Props = {
-  children: ReactNode;
-  variant?: keyof typeof VARIANT;
-  className?: string;
-};
+type Props = { variant?: keyof typeof VARIANT; className?: string; children: ReactNode };
 
 export function Button({
   children,
@@ -23,10 +22,7 @@ export function Button({
   ...rest
 }: Props & ComponentProps<"button">) {
   return (
-    <button
-      className={`${BASE} ${VARIANT[variant]} ${className}`}
-      {...rest}
-    >
+    <button className={`${BASE} ${VARIANT[variant]} ${className}`} {...rest}>
       {children}
     </button>
   );

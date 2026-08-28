@@ -1,5 +1,6 @@
 import { ChevronRight, Landmark, Lock, RotateCcw, Zap } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
+import { SectionLabel } from "@/components/SectionLabel";
 
 // Native <details> rather than four more routes: these are disclosures, not
 // destinations, and a chevron that opens a stub screen is worse than one that
@@ -35,34 +36,41 @@ const ROWS: {
 
 export default function Account() {
   return (
-    <main className="flex flex-col gap-6 py-6">
-      <h1 className="font-display text-4xl">Account</h1>
+    <main className="stagger flex flex-col gap-6 pt-6 pb-4">
+      <header>
+        <h1 className="font-display text-2xl">Account</h1>
+        <p className="text-muted-foreground text-[0.8125rem]">
+          How this works, and what we do with your data.
+        </p>
+      </header>
 
-      <ul className="flex flex-col gap-3">
+      <ul className="border-border bg-card divide-border divide-y overflow-hidden rounded-2xl border shadow-md">
         {ROWS.map(({ Icon, title, status, body }) => (
           <li key={title}>
-            <details className="group border-ink rounded-wobble-sm shadow-paper border-2 bg-white">
-              <summary className="flex min-h-14 cursor-pointer list-none items-center gap-3 p-3 [&::-webkit-details-marker]:hidden">
+            <details className="group">
+              <summary className="hover:bg-muted/60 flex min-h-14 cursor-pointer list-none items-center gap-3 p-4 transition-colors duration-200 [&::-webkit-details-marker]:hidden">
                 <span
                   aria-hidden
-                  className="border-ink bg-muted flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-2"
+                  className="bg-muted text-accent flex h-9 w-9 shrink-0 items-center justify-center rounded-full"
                 >
-                  <Icon size={20} strokeWidth={2.5} />
+                  <Icon size={17} strokeWidth={2} />
                 </span>
-                <span className="flex-1 text-lg leading-tight">{title}</span>
+                <span className="flex-1 text-[0.9375rem] font-medium">
+                  {title}
+                </span>
                 {status && (
-                  <span className="border-ink rounded-wobble-sm shrink-0 border-2 border-dashed px-2 text-sm opacity-70">
+                  <span className="text-muted-foreground bg-muted shrink-0 rounded-full px-2 py-0.5 font-mono text-[0.6875rem]">
                     {status}
                   </span>
                 )}
                 <ChevronRight
-                  size={18}
-                  strokeWidth={2.5}
+                  size={17}
+                  strokeWidth={2}
                   aria-hidden
-                  className="shrink-0 opacity-40 transition-transform duration-100 group-open:rotate-90"
+                  className="text-muted-foreground shrink-0 transition-transform duration-200 group-open:rotate-90"
                 />
               </summary>
-              <p className="border-ink mx-3 mb-3 border-t-2 border-dashed pt-3 text-base leading-relaxed opacity-80">
+              <p className="text-muted-foreground px-4 pb-4 text-[0.8125rem] leading-relaxed">
                 {body}
               </p>
             </details>
@@ -70,18 +78,16 @@ export default function Account() {
         ))}
       </ul>
 
-      {/* The reference's info block, doing real work: this is the sentence the
-          whole business rests on. */}
-      <div className="flex gap-3 px-1">
-        <span aria-hidden className="text-2xl">
-          ↗
-        </span>
-        <p className="text-base leading-relaxed opacity-70">
-          <span className="font-display text-lg opacity-100">
+      <div className="border-accent/20 bg-accent/5 rounded-2xl border p-5">
+        <SectionLabel>Where your money sits</SectionLabel>
+        <p className="mt-3 text-[0.9375rem] leading-relaxed">
+          <span className="font-semibold">
             CLEVR never touches your money.
           </span>{" "}
-          Payments go straight from your bank account to the shop&rsquo;s. We
-          are not a bank, and we never hold your funds.
+          <span className="text-muted-foreground">
+            Payments go straight from your bank account to the shop&rsquo;s. We
+            are not a bank, and we never hold your funds.
+          </span>
         </p>
       </div>
     </main>
