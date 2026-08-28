@@ -168,13 +168,29 @@ with these judges.
 
 Cheapest fix that is also genuinely good product: a **savings counter** on the
 shopper page. A cookie holds an anonymous id, `payments.shopper_cookie` records
-it, the page shows "you've earned $2.35 back paying by bank."
+it, the page shows what they've earned back.
+
+Show a total *and* the rate it implies — the rate is what makes this an "Achieve"
+tool rather than a receipt (BRIEF.md):
+
+```
+"$2.35 back · about $60/year at this pace"
+
+rate = sum(discount_cents) / days_active * 365
+```
+
+Guard it: only render the projection when `count >= 2` and `days_active >= 1`.
+Extrapolating an annual figure from one $1 payment produces a number that is both
+absurd and instantly discreditable on stage. Clamp `days_active` to a minimum of 1
+so the first day doesn't divide by zero.
 
 ~30 lines. It turns the demo from "merchants save money" into "you get paid to
 spend your own money, from your own account, with no card in between" — which is
 the theme, in the theme's own words.
 
 Build this. Highest ratio of pitch value to code in the repo.
+
+`ponytail: projection is naive linear extrapolation over days since first payment. Fine for a demo counter, not a forecast. Real version needs a rolling window once there's more than a weekend of data.`
 
 ---
 

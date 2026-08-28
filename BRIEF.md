@@ -90,9 +90,63 @@ Concretely, this is why TECHNICAL.md §5 exists — the shopper savings counter 
 ~30 lines and it's the difference between a merchant-fee pitch and a **Engage**
 pillar pitch. Build it.
 
-Honest read on the pillars: we hit **Engage** hard and **Achieve** partially. We do
-not address **Discover** at all, and we shouldn't pretend to — a fake goals screen
-bolted on for theme points is worse than owning one pillar properly.
+### The three pillars
+
+Each claim below points at something actually on screen during the demo. Nothing
+here is a feature invented to satisfy a rubric — two of the three are reframes of
+UI we were already building, and the third costs about five lines.
+
+**Discover — "you can't see what you've got."**
+
+Every card tap costs the merchant ~1.4%, invisible to the shopper and baked into
+the shelf price. You have paid that toll on every purchase of your life and have
+never once seen the number.
+
+The strikethrough on the shopper page *is* the discovery moment. `$̶1̶0̶.̶0̶0̶ → $9.95`
+is the first time a consumer sees the cost of the rail they're standing on.
+
+Zero build — it's the signature gesture in DESIGN.md §2, already the centrepiece
+of the screen. We just have to say out loud what it means.
+
+**Precision matters here.** Ours is *cost* visibility, not *asset* visibility. We
+do not aggregate super, investments or crypto, and we should never imply we do. If
+a judge means portfolio aggregation, the answer is "no, that's not us" — said
+plainly, in one sentence, and then move on.
+
+**Achieve — "practical tools to reach personal goals."**
+
+Not a goal screen. A **rate**.
+
+The savings counter shows a total *and* the pace it implies:
+*"$2.35 back · about $60/year at this pace."*
+
+That projection runs on the shopper's own real payment history, so it is honest
+arithmetic rather than a progress bar filling from a number we made up. It turns
+an invisible per-transaction gain into a legible annual one, which is the actual
+job of an "Achieve" tool.
+
+~5 lines on top of the counter. Only show the projection once there's more than
+one payment to project from — extrapolating an annual figure from a single $1
+transaction is a number a CTO will laugh at, correctly.
+
+**Engage — "simple, accessible, genuinely fun."**
+
+Our strongest pillar and it needs no new work. No app, no signup, no account: a
+stranger points their normal camera at a QR and gets paid for spending their own
+money. The hand-drawn design system is doing real work here too — it makes a
+payments product feel human rather than institutional, which is the pillar's word
+"fun" taken seriously.
+
+### What we still don't claim
+
+No goal-setting, no budgeting, no net-worth view, no asset aggregation. If asked,
+the honest answer is that CLEVR is the transaction layer those products need and
+don't have — and that the genuine "see your financial position" story in this
+business is **merchant-side**: a market-stall owner watching their revenue land
+live, which is real data and is exactly what the Treasury and Capital phases are
+built on.
+
+That is a far better Q&A answer than a fake chip screen would have been.
 
 ### Per-judge angle
 

@@ -250,7 +250,13 @@ The one screen a stranger sees. Order matters:
 4. Three `<CopyField>`s: **Pay to** (PayID) · **Amount** · **Reference**
 5. Small dashed-border note: *"open your banking app → pay someone → paste these"*
 6. Savings counter (TECHNICAL.md §5), only on repeat visits: post-it yellow card,
-   `tilt={1}`, *"you've earned $2.35 back paying by bank"*
+   `tilt={1}`. Total in Kalam, large; the rate beneath it in body font, smaller:
+   *"$2.35 back"* / *"about $60/year at this pace"*
+
+The strikethrough at (2) and the counter at (6) are the two theme moments on this
+screen — the hidden cost made visible, and the gain made forecastable (BRIEF.md).
+They bookend the page deliberately: the first thing the shopper sees is what they
+were losing, the last thing is what they're now keeping.
 
 Trust details that earn their pixels: the merchant's real business name at the top,
 and a plain line stating CLEVR never touches the money. Both in the handwritten
