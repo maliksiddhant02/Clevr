@@ -1,7 +1,8 @@
 import type { Metadata, Viewport } from "next";
-import { Kalam, Patrick_Hand } from "next/font/google";
+import { Anton, Kalam, Patrick_Hand, Space_Mono } from "next/font/google";
 import "./globals.css";
 
+// Four faces, one strict job each — see DESIGN.md §2.
 const kalam = Kalam({
   variable: "--font-kalam",
   subsets: ["latin"],
@@ -12,6 +13,18 @@ const patrickHand = Patrick_Hand({
   variable: "--font-hand",
   subsets: ["latin"],
   weight: "400",
+});
+
+const anton = Anton({
+  variable: "--font-anton",
+  subsets: ["latin"],
+  weight: "400",
+});
+
+const spaceMono = Space_Mono({
+  variable: "--font-space-mono",
+  subsets: ["latin"],
+  weight: ["400", "700"],
 });
 
 export const metadata: Metadata = {
@@ -28,7 +41,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${kalam.variable} ${patrickHand.variable} h-full antialiased`}
+      className={`${kalam.variable} ${patrickHand.variable} ${anton.variable} ${spaceMono.variable} h-full antialiased`}
     >
       <body className="min-h-full">
         {/* Mobile-only. Both real surfaces are phones: a stall owner's handset

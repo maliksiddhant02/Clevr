@@ -11,10 +11,11 @@
   --color-pen: #2d5da1; /* blue ballpoint, focus + success */
   --color-postit: #fff9c4; /* post-it yellow, highlight cards */
 
-  /* Type */
-  --font-display: var(--font-kalam), ui-rounded, cursive;
-  --font-body: var(--font-hand), ui-rounded, cursive;
-  --font-exact: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, monospace;
+  /* Type — four faces, one strict job each. DESIGN.md §2 */
+  --font-display: var(--font-kalam), ui-rounded, cursive; /* headings       */
+  --font-body: var(--font-hand), ui-rounded, cursive; /* body, UI       */
+  --font-money: var(--font-anton), ui-sans-serif, sans-serif; /* big numbers    */
+  --font-exact: var(--font-space-mono), ui-monospace, monospace; /* transcribable  */
 
   /* Wobble — three variants so repeated cards aren't identically irregular */
   --radius-wobble-1: 255px 15px 225px 15px / 15px 225px 15px 255px;
