@@ -1,3 +1,6 @@
+"use client";
+
+import { motion } from "motion/react";
 import { formatAud } from "@/lib/money";
 
 const W = 320;
@@ -55,20 +58,27 @@ export function AreaChart({
         />
 
         {/* Flat wash, no gradient: the system has no gradients anywhere. */}
-        <path d={area} fill="var(--color-muted)" />
-        <path
+        <motion.path
+          d={area}
+          fill="var(--color-muted)"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+        />
+        <motion.path
           d={line}
           fill="none"
           stroke="var(--color-foreground)"
           strokeWidth="2.5"
           strokeLinecap="round"
           strokeLinejoin="round"
-          className="draw-line"
-          style={{ ["--draw-length" as string]: "900" }}
+          initial={{ pathLength: 0 }}
+          animate={{ pathLength: 1 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
         />
 
-        {/* Drop line and marker at the peak. */}
-        <line
+        {/* Drop line and marker at the peak with nice entrance delay. */}
+        <motion.line
           x1={marker.x}
           y1={marker.y}
           x2={marker.x}
@@ -76,15 +86,20 @@ export function AreaChart({
           stroke="var(--color-foreground)"
           strokeWidth="1"
           strokeDasharray="3 3"
-          opacity="0.35"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.35 }}
+          transition={{ duration: 0.3, delay: 0.7 }}
         />
-        <circle
+        <motion.circle
           cx={marker.x}
           cy={marker.y}
           r="4"
           fill="var(--color-foreground)"
           stroke="var(--color-card)"
           strokeWidth="2.5"
+          initial={{ scale: 0, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ type: "spring", stiffness: 200, damping: 12, delay: 0.75 }}
         />
       </svg>
 

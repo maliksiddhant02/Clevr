@@ -44,11 +44,11 @@ export function SavingsChart() {
 
   return (
     <div className="bg-card rounded-2xl p-5">
-      <div className="mb-4 flex items-center justify-between">
+      <div className="mb-4 flex items-center justify-between gap-2">
         <div
           role="group"
           aria-label="Time range"
-          className="bg-background flex gap-0.5 rounded-full p-0.5"
+          className="bg-background flex gap-0.5 rounded-full p-0.5 shrink-0"
         >
           {(["week", "month"] as const).map((r) => (
             <button
@@ -56,7 +56,7 @@ export function SavingsChart() {
               type="button"
               onClick={() => setRange(r)}
               aria-pressed={range === r}
-              className={`min-h-11 rounded-full px-5 text-[1rem] font-semibold capitalize transition-colors duration-200 ${
+              className={`h-9 rounded-full px-3.5 text-[0.875rem] font-bold capitalize transition-colors duration-200 cursor-pointer ${
                 range === r ? "bg-foreground text-paper" : "text-foreground"
               }`}
             >
@@ -64,7 +64,7 @@ export function SavingsChart() {
             </button>
           ))}
         </div>
-        <span className="text-success inline-flex items-center gap-1.5 text-[0.9375rem] font-semibold">
+        <span className="text-success inline-flex items-center gap-1 text-[0.8125rem] sm:text-[0.9375rem] font-bold shrink-0">
           <HugeiconsIcon icon={ChartUpIcon} size={16} strokeWidth={2.4} aria-hidden />
           {delta}
         </span>
