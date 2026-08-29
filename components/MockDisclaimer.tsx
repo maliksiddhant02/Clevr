@@ -13,7 +13,11 @@ export function MockDisclaimer() {
   const ref = useRef<HTMLDialogElement>(null);
 
   useEffect(() => {
-    ref.current?.showModal();
+    const hasShown = sessionStorage.getItem("mvp_disclaimer_shown");
+    if (!hasShown) {
+      ref.current?.showModal();
+      sessionStorage.setItem("mvp_disclaimer_shown", "true");
+    }
   }, []);
 
   return (
