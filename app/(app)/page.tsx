@@ -19,14 +19,20 @@ export default function Home() {
   return (
     <main className="pt-5 pb-28">
       <header className="flex items-center justify-between">
-        <Image
-          src="/logo.png"
-          alt="CLEVR"
-          width={1774}
-          height={887}
-          priority
-          className="h-11 w-auto"
-        />
+        {/* The mark is the way back out to the landing page, which is the
+            convention everywhere else and the only exit the app otherwise
+            does not offer. `-my-2 py-2` gives it a 44px target without
+            changing how the header sits. */}
+        <Link href="/landing" aria-label="CLEVR home" className="-my-2 py-2">
+          <Image
+            src="/logo.png"
+            alt=""
+            width={1774}
+            height={887}
+            priority
+            className="h-11 w-auto"
+          />
+        </Link>
         <Link
           href="/account"
           aria-label="Account"
