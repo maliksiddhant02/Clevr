@@ -40,3 +40,8 @@ export function openMvp() {
 export function MvpButton(props: ComponentProps<"button">) {
   return <button type="button" onClick={openMvp} {...props} />;
 }
+
+/** The same, wearing the pill. */
+export function MvpPill(props: ComponentProps<typeof Button>) {
+  return <Button onClick={openMvp} {...props} />;
+}

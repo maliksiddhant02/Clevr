@@ -3,7 +3,7 @@ import Image from "next/image";
 import { AppleMark, GooglePlayMark } from "@/components/StoreMarks";
 import { ButtonLink } from "@/components/Button";
 import { CardRail } from "@/components/CardRail";
-import { MvpButton, MvpDialog } from "@/components/Mvp";
+import { MvpButton, MvpDialog, MvpPill } from "@/components/Mvp";
 import { NavSheet } from "@/components/NavSheet";
 import { WaitlistForm } from "@/components/WaitlistForm";
 
@@ -157,16 +157,10 @@ export default function Landing() {
 
         <div className="mt-8 flex flex-col items-center gap-3">
           <WaitlistForm />
-          <ButtonLink
-            href="https://apps.apple.com/us/app/coverd-win-purchases-back/id6741347396"
-            variant="outline"
-            className="w-full max-w-64 font-outfit"
-            target="_blank"
-            rel="noopener"
-          >
+          <MvpPill variant="outline" className="w-full max-w-64 font-outfit">
             <AppleMark size={20} />
             Get the App
-          </ButtonLink>
+          </MvpPill>
         </div>
 
 
