@@ -6,15 +6,12 @@ const PAD_X = 6;
 const PAD_TOP = 14;
 const PAD_BOTTOM = 22;
 
-/** Smooth the polyline through midpoints. Cheaper than a spline, reads the same. */
-function smoothPath(pts: { x: number; y: number }[]): string {
+/** Render direct straight lines connecting coordinates like a normal stock graph */
+function straightPath(pts: { x: number; y: number }[]): string {
   if (pts.length < 2) return "";
   let d = `M ${pts[0].x} ${pts[0].y}`;
   for (let i = 1; i < pts.length; i++) {
-    const prev = pts[i - 1];
-    const cur = pts[i];
-    const midX = (prev.x + cur.x) / 2;
-    d += ` Q ${midX} ${prev.y} ${midX} ${(prev.y + cur.y) / 2} Q ${midX} ${cur.y} ${cur.x} ${cur.y}`;
+    d += ` L ${pts[i].x} ${pts[i].y}`;
   }
   return d;
 }
@@ -33,7 +30,7 @@ export function AreaChart({
     y: PAD_TOP + (1 - d.cents / peak) * innerH,
   }));
 
-  const line = smoothPath(pts);
+  const line = straightPath(pts);
   const area = `${line} L ${pts[pts.length - 1].x} ${PAD_TOP + innerH} L ${pts[0].x} ${PAD_TOP + innerH} Z`;
   const peakIndex = data.findIndex((d) => d.cents === peak);
   const marker = pts[peakIndex];

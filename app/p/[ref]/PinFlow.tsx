@@ -75,7 +75,7 @@ export function PinFlow({ payment }: { payment: SamplePayment }) {
           </div>
           <div className="flex justify-between items-baseline">
             <span className="text-muted-foreground text-[0.875rem]">Sending:</span>
-            <span className="text-foreground font-extrabold text-[1.125rem] tabular-nums">
+            <span className="text-foreground font-black text-[1.125rem] tabular-nums">
               {formatAud(payment.paidCents)}
             </span>
           </div>
@@ -112,7 +112,7 @@ export function PinFlow({ payment }: { payment: SamplePayment }) {
           <HugeiconsIcon icon={HelpCircleIcon} size={20} className="text-sun shrink-0 mt-0.5" />
           <p className="text-[0.8125rem] font-semibold leading-relaxed text-on-ink">
             You are SENDING{" "}
-            <span className="text-sun font-extrabold tabular-nums">
+            <span className="text-sun font-black tabular-nums">
               {formatAud(payment.paidCents)}
             </span>{" "}
             from your account to{" "}
