@@ -7,7 +7,6 @@ import {
   Cancel01Icon,
   Share01Icon,
   ReceiptIcon,
-  ArrowRight01Icon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { findPayment, type SamplePayment } from "@/lib/sample";
@@ -41,7 +40,7 @@ export default function DonePage({
 
   if (!payment) {
     return (
-      <div className="flex h-dvh items-center justify-center bg-paper text-foreground -mx-5 px-5">
+      <div className="flex h-dvh items-center justify-center bg-background text-foreground -mx-5 px-5">
         <span className="text-[1.0625rem] font-semibold">Loading...</span>
       </div>
     );
@@ -58,10 +57,11 @@ export default function DonePage({
   };
 
   return (
-    // Make full-bleed to cover screen and avoid yellow borders
-    <main className="flex min-h-dvh flex-col bg-paper text-foreground justify-between -mx-5 px-5 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-4">
-      {/* ── Top Bar with "X" Close Button ── */}
-      <div className="flex items-center justify-between w-full">
+    // Replaced bg-paper with bg-background (Sun yellow) and removed horizontal container padding.
+    // Kept -mx-5 to make the container run 100% full column width.
+    <main className="flex min-h-dvh flex-col bg-background text-foreground justify-between -mx-5 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-4">
+      {/* ── Top Bar with "X" Close Button (with px-5 horizontal padding) ── */}
+      <div className="flex items-center justify-between w-full px-5">
         <Link
           href="/"
           aria-label="Close and go home"
@@ -75,10 +75,10 @@ export default function DonePage({
         <span className="h-11 w-11" /> {/* Spacer to align title */}
       </div>
 
-      {/* ── Core Success details taking less space ── */}
-      <div className="flex-1 flex flex-col items-center justify-center py-6 gap-6">
-        {/* Simple success tick */}
-        <div className="flex h-14 w-14 items-center justify-center rounded-full bg-success text-paper shadow-sm">
+      {/* ── Core Success details (with px-5 horizontal padding) ── */}
+      <div className="flex-1 flex flex-col items-center justify-center py-6 px-5 gap-6">
+        {/* Themed Success tick: solid black ground, yellow checkmark */}
+        <div className="flex h-14 w-14 items-center justify-center rounded-full bg-foreground text-sun shadow-sm">
           <svg
             width={24}
             height={24}
@@ -122,11 +122,11 @@ export default function DonePage({
           Debited from <span className="font-semibold text-foreground">Up Bank · XXXX 8891</span>
         </div>
 
-        {/* Dynamic Details and Share buttons inside content area */}
+        {/* Inverted Buttons: Solid black View Details, outlined Share Receipt */}
         <div className="flex flex-col gap-3 w-full max-w-[20rem] mt-4">
           <Link
             href={`/payment/${ref}`}
-            className="bg-foreground text-paper hover:opacity-90 flex h-14 w-full items-center justify-center rounded-2xl text-[1rem] font-bold transition-opacity cursor-pointer gap-2"
+            className="bg-foreground text-sun hover:opacity-90 flex h-14 w-full items-center justify-center rounded-2xl text-[1rem] font-bold transition-opacity cursor-pointer gap-2"
           >
             <HugeiconsIcon icon={ReceiptIcon} size={18} strokeWidth={2} />
             View details
@@ -134,7 +134,7 @@ export default function DonePage({
           
           <button
             onClick={handleShare}
-            className="border-border text-foreground hover:bg-foreground/5 flex h-14 w-full items-center justify-center rounded-2xl border text-[1rem] font-bold transition-colors cursor-pointer gap-2"
+            className="border-foreground text-foreground hover:bg-foreground/5 flex h-14 w-full items-center justify-center rounded-2xl border text-[1rem] font-bold transition-colors cursor-pointer gap-2"
           >
             <HugeiconsIcon icon={Share01Icon} size={18} strokeWidth={2} />
             Share receipt
@@ -142,8 +142,8 @@ export default function DonePage({
         </div>
       </div>
 
-      {/* ── Bottom Done button ── */}
-      <div className="w-full">
+      {/* ── Bottom Done button (with px-5 horizontal padding) ── */}
+      <div className="w-full px-5">
         <Link
           href="/"
           className="border-foreground text-foreground hover:bg-foreground/5 flex h-14 w-full items-center justify-center rounded-2xl border text-[1rem] font-bold transition-colors cursor-pointer"

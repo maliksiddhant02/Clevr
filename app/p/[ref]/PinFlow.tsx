@@ -36,11 +36,11 @@ export function PinFlow({ payment }: { payment: SamplePayment }) {
   };
 
   return (
-    // Replaced bg-paper with bg-background (Sun yellow) to match Clevr core canvas theme.
-    // Kept -mx-5 px-5 so borders and keypad grids stretch to full column width.
-    <main className="flex min-h-dvh flex-col bg-background text-foreground justify-between -mx-5 px-5">
-      {/* ── Header block matching UPI layout ── */}
-      <div className="pt-4 pb-4 border-b border-border bg-foreground/3">
+    // Removed px-5 from the top level main container so keypad grid lines touch screen edges.
+    // -mx-5 cancels parent padding to make container run 100% full column width.
+    <main className="flex min-h-dvh flex-col bg-background text-foreground justify-between -mx-5">
+      {/* ── Header block matching UPI layout (with px-5 horizontal padding) ── */}
+      <div className="pt-4 pb-4 border-b border-border bg-foreground/3 px-5">
         <div className="flex items-start justify-between">
           <div>
             <Link
@@ -50,7 +50,6 @@ export function PinFlow({ payment }: { payment: SamplePayment }) {
               CANCEL
             </Link>
             <div className="mt-3">
-              {/* Relocated CommBank logo badge to the left-hand details block */}
               <span className="text-[0.9375rem] font-black tracking-[-0.03em] text-[#FFCC00] bg-black px-2 py-0.5 rounded-md inline-block">
                 CommBank
               </span>
@@ -83,7 +82,7 @@ export function PinFlow({ payment }: { payment: SamplePayment }) {
         </div>
       </div>
 
-      {/* ── Center Content PIN Indicators ── */}
+      {/* ── Center Content PIN Indicators (with px-5 horizontal padding) ── */}
       <div className="flex flex-col items-center justify-center flex-1 py-6 px-5 gap-6">
         <div className="text-center">
           <h2 className="text-muted-foreground text-[0.875rem] font-bold uppercase tracking-widest">
@@ -122,7 +121,7 @@ export function PinFlow({ payment }: { payment: SamplePayment }) {
         </div>
       </div>
 
-      {/* ── Custom Numeric Keypad flat on Sun ground ── */}
+      {/* ── Custom Numeric Keypad flat on Sun ground (NO horizontal padding so it touches screen edges) ── */}
       <div className="shrink-0">
         <div className="grid grid-cols-3 border-t border-foreground/16">
           {["1", "2", "3", "4", "5", "6", "7", "8", "9"].map((num) => (

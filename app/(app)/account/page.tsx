@@ -118,14 +118,16 @@ export default function Account() {
   }
 
   return (
-    <main className="pt-4 pb-28">
-      {/* ── Switch to Business View Header Row ── */}
-      <div className="flex items-center justify-between pt-4 pb-6">
-        <h1 className="display text-foreground text-[2.5rem]">Account</h1>
+    <main className="pt-6 pb-28">
+      {/* Title */}
+      <h1 className="display text-foreground text-[3.5rem]">Account</h1>
+
+      {/* Switch to Business View Button below the title */}
+      <div className="mt-3 mb-6">
         <form action={switchRole}>
           <button
             type="submit"
-            className="bg-foreground text-paper hover:opacity-90 flex h-10 px-4 items-center justify-center rounded-full text-[0.8125rem] font-bold transition-all cursor-pointer shrink-0"
+            className="bg-foreground text-paper hover:opacity-90 flex h-10 px-5 items-center justify-center rounded-full text-[0.8125rem] font-bold transition-all cursor-pointer"
           >
             Switch to business view
           </button>
@@ -178,18 +180,6 @@ export default function Account() {
       ) : (
         // ── SIGNED OUT: Sign Up Form View ──
         <div className="flex flex-col">
-          {/* Logo */}
-          <div className="mb-6">
-            <Image
-              src="/logo.png"
-              alt="clevr"
-              width={1774}
-              height={887}
-              priority
-              className="h-7 w-auto"
-            />
-          </div>
-
           {/* Heading block */}
           <h2 className="display text-foreground text-[2.75rem] leading-[1.05] font-black">
             Pay by bank.
