@@ -36,7 +36,7 @@ export default function Pay() {
       <ScannerFrame />
 
       {/* Reverted back to using invert class on logo for black background */}
-      <Link href="/landing" className="mx-auto mt-10 block">
+      <Link href="/" className="mx-auto mt-10 block">
         <Image
           src="/logo.png"
           alt="CLEVR"

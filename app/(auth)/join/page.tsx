@@ -39,7 +39,7 @@ export default async function JoinPage({
     <main className="flex flex-1 flex-col px-0 pb-safe">
       {/* Mark */}
       <div className="px-5 pt-6">
-        <Link href="/landing">
+        <Link href="/">
           <Image
             src="/logo.png"
             alt="CLEVR"
