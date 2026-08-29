@@ -91,7 +91,7 @@ export function AreaChart({
         />
       </svg>
 
-      <div className="text-muted-foreground mt-1 flex justify-between text-[0.6875rem]">
+      <div className="text-muted-foreground mt-1 flex justify-between text-[0.8125rem]">
         {data.map((d, i) => (
           <span
             key={d.label}

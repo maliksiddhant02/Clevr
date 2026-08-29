@@ -11,7 +11,7 @@ export default function Activity() {
       <h1 className="display text-foreground text-[3.5rem]">Activity</h1>
 
       <section className="pt-8">
-        <h2 className="text-muted-foreground text-[0.75rem] font-semibold tracking-[0.12em] uppercase">
+        <h2 className="text-muted-foreground text-[0.8125rem] font-semibold tracking-[0.12em] uppercase">
           Paid by bank
         </h2>
         <p className="display text-foreground mt-3 text-[3.25rem] tabular-nums">
@@ -23,7 +23,7 @@ export default function Activity() {
             <p className="display text-foreground text-[1.5rem] tabular-nums">
               {PAYMENTS.length}
             </p>
-            <p className="text-muted-foreground mt-1.5 text-[0.8125rem]">
+            <p className="text-muted-foreground mt-1.5 text-[0.9375rem]">
               payments
             </p>
           </div>
@@ -31,7 +31,7 @@ export default function Activity() {
             <p className="display text-success text-[1.5rem] tabular-nums">
               {formatAud(SAVED_CENTS)}
             </p>
-            <p className="text-muted-foreground mt-1.5 text-[0.8125rem]">
+            <p className="text-muted-foreground mt-1.5 text-[0.9375rem]">
               kept by you
             </p>
           </div>
@@ -43,7 +43,7 @@ export default function Activity() {
           <section key={day} aria-labelledby={`day-${day.replace(/\s/g, "-")}`}>
             <h2
               id={`day-${day.replace(/\s/g, "-")}`}
-              className="text-muted-foreground mb-2 text-[0.75rem] font-semibold tracking-[0.12em] uppercase"
+              className="text-muted-foreground mb-2 text-[0.8125rem] font-semibold tracking-[0.12em] uppercase"
             >
               {day}
             </h2>

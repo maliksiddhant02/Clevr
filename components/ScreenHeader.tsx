@@ -12,7 +12,7 @@ export function ScreenHeader({ title, back }: { title: string; back: string }) {
       >
         <HugeiconsIcon icon={ArrowLeft01Icon} size={20} strokeWidth={2} aria-hidden />
       </Link>
-      <h1 className="text-foreground flex-1 text-center text-base font-semibold">
+      <h1 className="text-foreground flex-1 text-center text-[1.0625rem] font-semibold">
         {title}
       </h1>
       {/* Optical spacer so the title centres against the back button. */}

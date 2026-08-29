@@ -56,11 +56,11 @@ export default function Account() {
                 >
                   <HugeiconsIcon icon={icon} size={17} strokeWidth={2} />
                 </span>
-                <span className="text-foreground flex-1 text-[0.9375rem] font-semibold">
+                <span className="text-foreground flex-1 text-[1.0625rem] font-semibold">
                   {title}
                 </span>
                 {status && (
-                  <span className="text-foreground bg-card shrink-0 rounded-full px-2.5 py-1 text-[0.6875rem] font-medium">
+                  <span className="text-foreground bg-card shrink-0 rounded-full px-2.5 py-1 text-[0.8125rem] font-medium">
                     {status}
                   </span>
                 )}
@@ -72,7 +72,7 @@ export default function Account() {
                   className="text-muted-foreground shrink-0 transition-transform duration-200 group-open:rotate-90"
                 />
               </summary>
-              <p className="text-muted-foreground pb-5 text-[0.875rem] leading-relaxed">
+              <p className="text-muted-foreground pb-5 text-[0.9375rem] leading-relaxed">
                 {body}
               </p>
             </details>
@@ -91,7 +91,7 @@ export default function Account() {
         >
           CLEVR never touches your money.
         </h2>
-        <p className="mt-5 text-[0.9375rem] leading-relaxed">
+        <p className="mt-5 text-[1.0625rem] leading-relaxed">
           Payments go straight from your bank account to the shop&rsquo;s. We
           are not a bank, and we never hold your funds.
         </p>

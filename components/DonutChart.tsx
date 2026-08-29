@@ -79,7 +79,7 @@ export function DonutChart({
 
       <ul className="min-w-0 flex-1 space-y-2">
         {slices.map((s) => (
-          <li key={s.label} className="flex items-center gap-2 text-[0.8125rem]">
+          <li key={s.label} className="flex items-center gap-2 text-[0.9375rem]">
             <span
               aria-hidden
               className="h-2.5 w-2.5 shrink-0 rounded-full"

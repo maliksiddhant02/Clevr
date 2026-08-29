@@ -167,6 +167,24 @@ still measure as Cera Round. Buying the licensed family means deleting the
   at a fixed size: at 375px it measures 298px of glyph, which is the width the
   reference's own wordmark occupies there.
 
+**The role scale.** Four sizes carry everything that is not display type:
+
+| Size | Role |
+|---|---|
+| 13px (`0.8125rem`) | Caption. Fine print, timestamps, axis labels. |
+| 15px (`0.9375rem`) | Meta. Secondary lines under a title, chart captions. |
+| **17px (`1.0625rem`)** | **Body. The default, and what most of the interface is.** |
+| 22px (`1.375rem`) | The one nav destination. |
+
+This replaced nine sizes crowded between 11px and 20px. Nine steps across a 9px
+span cannot carry nine different jobs, and the practical result was that no size
+said *body*: the two most-used values were 13px and 15px, both below the 16px
+web floor, so every screen read as caption text. Body now has an actual size and
+the steps between roles are large enough to see.
+
+Paragraph caps are set for 17px, not 15px. `max-w-[19rem]` at the old body size
+squeezed the measure to roughly 40 characters; the caps moved out with the type.
+
 **Money display:** `splitAud()` in [`lib/money.ts`](../lib/money.ts) renders
 dollars large and cents small (`$2` + `.35`). Every screen uses it, so money
 looks like money everywhere.

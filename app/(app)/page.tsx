@@ -44,7 +44,7 @@ export default function Home() {
       {/* The number is the screen. No card around it: white space is the frame,
           and a box here would make it one more tile in a stack of tiles. */}
       <section className="pt-12 pb-8">
-        <h1 className="text-muted-foreground text-[0.75rem] font-semibold tracking-[0.12em] uppercase">
+        <h1 className="text-muted-foreground text-[0.8125rem] font-semibold tracking-[0.12em] uppercase">
           Total kept
         </h1>
         <p className="display text-foreground mt-3 text-[4.5rem] tabular-nums">
@@ -52,7 +52,7 @@ export default function Home() {
           <span className="text-muted-foreground text-[2rem]">.{fraction}</span>
         </p>
         {rate && (
-          <p className="text-muted-foreground mt-4 text-[0.9375rem]">
+          <p className="text-muted-foreground mt-4 text-[1.0625rem]">
             About{" "}
             <span className="text-foreground font-semibold tabular-nums">
               {formatAud(rate)}
@@ -74,7 +74,7 @@ export default function Home() {
           Every card tap costs the shop about{" "}
           <span className="text-sun">1.4%</span>.
         </p>
-        <p className="text-on-ink mt-5 text-[0.9375rem] leading-relaxed">
+        <p className="text-on-ink mt-5 text-[1.0625rem] leading-relaxed">
           Paying from your bank avoids that fee. The shop hands part of the
           saving back to you at the till and keeps the rest.
         </p>
@@ -90,7 +90,7 @@ export default function Home() {
           </h2>
           <Link
             href="/activity"
-            className="text-foreground -my-3.5 py-3.5 text-[0.8125rem] font-medium underline underline-offset-4"
+            className="text-foreground -my-3.5 py-3.5 text-[0.9375rem] font-medium underline underline-offset-4"
           >
             See all
           </Link>

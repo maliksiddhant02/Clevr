@@ -12,18 +12,18 @@ export function PaymentRow({ payment }: { payment: SamplePayment }) {
       >
         <Avatar name={payment.merchant} />
         <span className="min-w-0 flex-1">
-          <span className="text-foreground block truncate text-[0.9375rem] font-semibold tracking-[-0.01em]">
+          <span className="text-foreground block truncate text-[1.0625rem] font-semibold tracking-[-0.01em]">
             {payment.merchant}
           </span>
-          <span className="text-muted-foreground block text-[0.8125rem]">
+          <span className="text-muted-foreground block text-[0.9375rem]">
             {payment.day} · {payment.time}
           </span>
         </span>
         <span className="shrink-0 text-right tabular-nums">
-          <span className="text-foreground block text-[0.9375rem] font-semibold">
+          <span className="text-foreground block text-[1.0625rem] font-semibold">
             {formatAud(payment.paidCents)}
           </span>
-          <span className="text-success block text-[0.8125rem] font-medium">
+          <span className="text-success block text-[0.9375rem] font-medium">
             +{formatAud(payment.savedCents)}
           </span>
         </span>

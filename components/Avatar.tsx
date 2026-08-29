@@ -31,7 +31,7 @@ export function Avatar({
   name: string;
   size?: "md" | "lg";
 }) {
-  const box = size === "lg" ? "h-14 w-14 text-base" : "h-11 w-11 text-[0.8125rem]";
+  const box = size === "lg" ? "h-14 w-14 text-[1.0625rem]" : "h-11 w-11 text-[0.9375rem]";
   return (
     <span
       aria-hidden

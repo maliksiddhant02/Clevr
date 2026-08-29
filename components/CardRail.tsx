@@ -34,7 +34,7 @@ export function CardRail({
             {/* 84% and 25.5rem: the reference's rail cards measure 314x407 in
                 a 375px viewport, at a 40px radius. */}
             <div className="bg-foreground flex h-[25.5rem] flex-col justify-end rounded-3xl p-6">
-              <p className="text-on-ink text-[0.8125rem]">{s.note}</p>
+              <p className="text-on-ink text-[0.9375rem]">{s.note}</p>
               <p className="display text-paper mt-2 text-[1.75rem]">{s.title}</p>
             </div>
           </li>

@@ -28,7 +28,7 @@ export default function Insights() {
           <p className="display text-foreground text-[1.75rem] tabular-nums">
             {formatAud(avgSaved)}
           </p>
-          <p className="text-muted-foreground mt-1.5 text-[0.8125rem]">
+          <p className="text-muted-foreground mt-1.5 text-[0.9375rem]">
             kept per payment
           </p>
         </div>
@@ -36,7 +36,7 @@ export default function Insights() {
           <p className="display text-foreground text-[1.75rem] tabular-nums">
             {PAYMENTS.length}
           </p>
-          <p className="text-muted-foreground mt-1.5 text-[0.8125rem]">
+          <p className="text-muted-foreground mt-1.5 text-[0.9375rem]">
             payments by bank
           </p>
         </div>
@@ -66,7 +66,7 @@ export default function Insights() {
         <p className="display text-sun text-[4rem] tabular-nums">
           {formatAud(feesKept)}
         </p>
-        <p className="text-on-ink mt-5 text-[0.9375rem] leading-relaxed">
+        <p className="text-on-ink mt-5 text-[1.0625rem] leading-relaxed">
           in card fees your shops avoided on these sales. That money stayed with
           the businesses you bought from rather than the card networks.
         </p>

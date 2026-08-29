@@ -59,7 +59,7 @@ export default function Landing() {
             <br />
             keep the fee
           </h1>
-          <p className="text-on-ink mt-4 text-[0.9375rem] font-medium">
+          <p className="text-on-ink mt-4 text-[1.0625rem] font-medium">
             Nothing hidden. Your rules.
           </p>
         </div>
@@ -73,7 +73,7 @@ export default function Landing() {
 
       {/* The claim. Badge, headline, the card, then the two actions. */}
       <section id="waitlist" className="pt-20 text-center">
-        <span className="border-foreground text-foreground inline-flex h-7 items-center rounded-full border px-4 text-[0.6875rem] font-semibold tracking-[0.14em] uppercase">
+        <span className="border-foreground text-foreground inline-flex h-7 items-center rounded-full border px-4 text-[0.8125rem] font-semibold tracking-[0.14em] uppercase">
           New
         </span>
         <h2 className="section-title text-foreground mt-6 text-[2.625rem]">
@@ -125,7 +125,7 @@ export default function Landing() {
           </svg>
         </div>
 
-        <p className="text-foreground mx-auto mt-14 max-w-[19rem] text-[0.9375rem] font-bold">
+        <p className="text-foreground mx-auto mt-14 max-w-[21rem] text-[1.0625rem] font-bold">
           No annual fee, no interest, no credit check. Pay from the account you
           already have and keep a share of what the shop saves.
         </p>
@@ -147,7 +147,7 @@ export default function Landing() {
 
 
         {/* The claims about money, written the way a bank would write them. */}
-        <p className="text-muted-foreground mt-10 text-left text-[0.6875rem] leading-relaxed">
+        <p className="text-muted-foreground mt-10 text-left text-[0.8125rem] leading-relaxed">
           * Joining the waitlist is not an application.
           CLEVR is not a bank and does not hold deposits.
         </p>
@@ -166,7 +166,7 @@ export default function Landing() {
         <div className="mt-10">
           <CardRail label="Inside the CLEVR app" slides={SLIDES} />
         </div>
-        <p className="text-foreground mx-auto mt-8 max-w-[17rem] text-[0.9375rem] font-bold">
+        <p className="text-foreground mx-auto mt-8 max-w-[19rem] text-[1.0625rem] font-bold">
           See how much you keep on every purchase.
         </p>
       </section>
@@ -243,7 +243,7 @@ export default function Landing() {
             className="h-[clamp(3.5rem,35vw,8.5rem)] w-auto"
           />
         </div>
-        <p className="text-muted-foreground mt-6 text-center text-[0.875rem] font-medium">
+        <p className="text-muted-foreground mt-6 text-center text-[0.9375rem] font-medium">
           © 2026 CLEVR
         </p>
       </footer>

@@ -1,16 +1,11 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Cancel01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { AppleMark, GooglePlayMark } from "@/components/StoreMarks";
-
-const LINKS = [
-  { label: "CLEVR card", href: "/landing", current: true },
-  { label: "Support", href: "/account", current: false },
-] as const;
 
 const STORES = [
   { name: "App Store", Mark: AppleMark },
@@ -47,12 +42,26 @@ export function NavSheet() {
   const [sheetHeight, setSheetHeight] = useState(0);
   const navRef = useRef<HTMLElement>(null);
 
+  // Escape closes. The sheet covers the page, and a reader who opened it by
+  // accident should not have to hunt for the one control that undoes it.
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [open]);
+
   return (
     <header className="relative z-40 -mx-5 h-[84px]">
-      {/* Dims but does not dismiss, and fades on its own clock: the reference
-          drops the scrim before the sheet has finished collapsing. */}
-      <span
+      {/* Tapping the scrim closes. It covers the page and swallows the scroll,
+          so it has to be the way out: leaving it inert traps the reader on a
+          screen they cannot move. It still fades ahead of the sheet, which is
+          what the reference does. */}
+      <button
+        type="button"
+        tabIndex={-1}
         aria-hidden
+        onClick={() => setOpen(false)}
         className={`bg-foreground/45 fixed inset-0 z-0 transition-opacity duration-200 ease-out ${
           open ? "opacity-100" : "pointer-events-none opacity-0"
         }`}
@@ -126,23 +135,16 @@ export function NavSheet() {
             inert={!open}
             className="bg-card absolute inset-x-0 bottom-0 rounded-b-2xl px-5 pt-2 pb-8 text-center"
           >
-            <ul>
-              {LINKS.map(({ label, href, current }) => (
-                <li key={href}>
-                  <Link
-                    href={href}
-                    aria-current={current ? "page" : undefined}
-                    className={`flex min-h-14 items-center justify-center text-[1.1875rem] ${
-                      current
-                        ? "text-foreground font-bold"
-                        : "text-muted-foreground font-medium"
-                    }`}
-                  >
-                    {label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            {/* One destination. A marketing menu that lists the page you are
+                already on is furniture; the only thing a reader wants from
+                here is the product. */}
+            <Link
+              href="/"
+              onClick={() => setOpen(false)}
+              className="text-foreground flex min-h-16 items-center justify-center text-[1.375rem] font-bold"
+            >
+              Go to the app
+            </Link>
 
             <div className="border-border mt-4 flex justify-center gap-3 border-t pt-7">
               {STORES.map(({ name, Mark }) => (

@@ -32,7 +32,7 @@ export default async function PaymentDetail({
           <p className="text-foreground text-[1.0625rem] font-semibold">
             {payment.merchant}
           </p>
-          <p className="text-muted-foreground text-[0.8125rem]">
+          <p className="text-muted-foreground text-[0.9375rem]">
             {payment.day} · {payment.time}
           </p>
         </div>
@@ -42,7 +42,7 @@ export default async function PaymentDetail({
         {whole}
         <span className="text-muted-foreground text-[1.75rem]">.{fraction}</span>
       </p>
-      <p className="text-success mt-3 text-[0.9375rem] font-semibold tabular-nums">
+      <p className="text-success mt-3 text-[1.0625rem] font-semibold tabular-nums">
         you kept {formatAud(payment.savedCents)}
       </p>
 
@@ -52,14 +52,14 @@ export default async function PaymentDetail({
             key={row.label}
             className="flex items-center justify-between py-4"
           >
-            <dt className="text-muted-foreground text-[0.875rem]">
+            <dt className="text-muted-foreground text-[0.9375rem]">
               {row.label}
             </dt>
             {/* The reference is the one value a human reads back aloud, so it
                 is the one value set in mono. A misread reference means the
                 merchant's tick never fires. */}
             <dd
-              className={`text-[0.875rem] ${
+              className={`text-[0.9375rem] ${
                 row.mono ? "font-mono tracking-[0.04em]" : "tabular-nums"
               } ${
                 row.strike
@@ -75,7 +75,7 @@ export default async function PaymentDetail({
         ))}
       </dl>
 
-      <p className="text-muted-foreground mt-8 text-[0.875rem] leading-relaxed">
+      <p className="text-muted-foreground mt-8 text-[0.9375rem] leading-relaxed">
         Paid straight from your account to {payment.merchant} and settled in
         seconds on Australia&rsquo;s instant rail. The{" "}
         <span className="text-foreground font-semibold tabular-nums">

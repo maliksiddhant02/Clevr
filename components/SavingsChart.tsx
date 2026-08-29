@@ -53,7 +53,7 @@ export function SavingsChart() {
               type="button"
               onClick={() => setRange(r)}
               aria-pressed={range === r}
-              className={`min-h-11 rounded-full px-4 text-[0.8125rem] font-medium capitalize transition-colors duration-200 ${
+              className={`min-h-11 rounded-full px-4 text-[0.9375rem] font-medium capitalize transition-colors duration-200 ${
                 range === r ? "bg-foreground text-paper" : "text-foreground"
               }`}
             >
@@ -61,7 +61,7 @@ export function SavingsChart() {
             </button>
           ))}
         </div>
-        <span className="text-success inline-flex items-center gap-1 text-[0.8125rem] font-semibold tabular-nums">
+        <span className="text-success inline-flex items-center gap-1 text-[0.9375rem] font-semibold tabular-nums">
           <HugeiconsIcon icon={ChartUpIcon} size={14} strokeWidth={2.4} aria-hidden />
           {delta}
         </span>
@@ -70,7 +70,7 @@ export function SavingsChart() {
       <p className="display text-foreground mb-1.5 text-[3rem] tabular-nums">
         {formatAud(total)}
       </p>
-      <p className="text-muted-foreground mb-4 text-[0.8125rem]">
+      <p className="text-muted-foreground mb-4 text-[0.9375rem]">
         kept by paying from your bank
       </p>
 

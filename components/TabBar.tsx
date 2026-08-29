@@ -48,7 +48,7 @@ export function TabBar() {
                   <HugeiconsIcon icon={icon} size={20} strokeWidth={active ? 2.2 : 1.8} />
                 </span>
                 <span
-                  className={`text-[0.6875rem] leading-none ${active ? "font-semibold" : "font-medium"}`}
+                  className={`text-[0.8125rem] leading-none ${active ? "font-semibold" : "font-medium"}`}
                 >
                   {label}
                 </span>

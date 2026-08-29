@@ -14,7 +14,7 @@ const VARIANT = {
 // are centred pills sized by their label, not full-bleed bars. Pass `w-full`
 // where a button really should span the column.
 const BASE =
-  "inline-flex h-16 items-center justify-center gap-2 rounded-full px-8 text-base font-semibold transition-colors duration-200 ease-out active:scale-[0.98]";
+  "inline-flex h-16 items-center justify-center gap-2 rounded-full px-8 text-[1.0625rem] font-semibold transition-colors duration-200 ease-out active:scale-[0.98]";
 
 type Props = { variant?: keyof typeof VARIANT; className?: string; children: ReactNode };
 
