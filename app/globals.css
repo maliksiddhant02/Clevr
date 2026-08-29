@@ -44,6 +44,10 @@
   caret-color: var(--color-foreground);
 }
 
+.font-outfit {
+  font-family: var(--font-outfit), sans-serif;
+}
+
 /* Reserve the scrollbar gutter on every route. Without this, a short screen
    (/pay, /account) has no scrollbar and a long one does, so the centred
    phone column jumps sideways every time you change tabs. */

@@ -9,7 +9,6 @@ import { AppleMark, GooglePlayMark } from "@/components/StoreMarks";
 
 const LINKS = [
   { label: "CLEVR card", href: "/landing", current: true },
-  { label: "Rewards", href: "/insights", current: false },
   { label: "Support", href: "/account", current: false },
 ] as const;
 
