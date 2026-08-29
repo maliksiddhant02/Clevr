@@ -1,91 +1,103 @@
-import type { Metadata } from "next";
+"use client";
+
+import { useState, useEffect } from "react";
 import { BIZ_MERCHANT } from "@/lib/biz-sample";
-import { switchRole, signOut } from "@/lib/session";
-import { getSession } from "@/lib/session";
+import { getSession, switchRole, signOut, type Session } from "@/lib/session";
 
-export const metadata: Metadata = {
-  title: "CLEVR: Merchant account",
-};
+export default function MerchantAccountPage() {
+  const [session, setSession] = useState<Session | null>(null);
+  const [loading, setLoading] = useState(true);
 
-export default async function MerchantAccountPage() {
-  const session = await getSession();
+  useEffect(() => {
+    getSession().then((s) => {
+      setSession(s);
+      setLoading(false);
+    });
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex h-dvh items-center justify-center bg-background text-foreground">
+        <span className="text-[1.0625rem] font-semibold">Loading...</span>
+      </div>
+    );
+  }
 
   return (
-    <main className="pb-28 pt-10">
-      <h1 className="display text-foreground text-[2rem] leading-none">
-        Account
-      </h1>
+    <main className="pt-6 pb-28 text-foreground bg-background">
+      {/* Title with Business Mode badge */}
+      <div className="flex items-center gap-3">
+        <h1 className="display text-foreground text-[3.5rem]">Account</h1>
+        <span className="bg-foreground text-paper text-[0.6875rem] font-black uppercase tracking-widest px-2.5 py-1 rounded-full mt-2 shrink-0">
+          Business Mode
+        </span>
+      </div>
 
-      {/* Shop details */}
-      <section className="mt-8">
-        <p className="text-muted-foreground mb-2 text-[0.8125rem] font-medium uppercase tracking-wide">
-          Shop
-        </p>
-        <div className="border-border divide-border divide-y rounded-2xl border">
-          <Row label="Name" value={BIZ_MERCHANT.name} />
-          <Row label="PayID" value={BIZ_MERCHANT.payid} mono />
-          <Row label="Discount offered" value="0.50%" />
+      {/* Switch to customer view Button below the title */}
+      <div className="mt-3 mb-6">
+        <form action={switchRole}>
+          <button
+            type="submit"
+            className="bg-foreground text-paper hover:opacity-90 flex h-10 px-5 items-center justify-center rounded-full text-[0.8125rem] font-bold transition-all cursor-pointer"
+          >
+            Switch to customer view
+          </button>
+        </form>
+      </div>
+
+      {/* Shop details in a unified Clevr theme container */}
+      <section className="mt-6">
+        <h2 className="text-muted-foreground mb-2 text-[0.8125rem] font-semibold uppercase tracking-widest">
+          Shop Details
+        </h2>
+        <div className="rounded-2xl bg-foreground/6 px-4 py-4 flex flex-col gap-2">
+          <p className="text-foreground text-[0.9375rem] font-semibold">
+            <span className="text-muted-foreground font-normal">Name:</span> {BIZ_MERCHANT.name}
+          </p>
+          <p className="text-foreground text-[0.9375rem] font-semibold">
+            <span className="text-muted-foreground font-normal">PayID:</span> {BIZ_MERCHANT.payid}
+          </p>
+          <p className="text-foreground text-[0.9375rem] font-semibold">
+            <span className="text-muted-foreground font-normal">Discount offered:</span> 0.50%
+          </p>
         </div>
       </section>
 
-      {/* Session */}
+      {/* Signed-in Session details */}
       {session && (
-        <section className="mt-8">
-          <p className="text-muted-foreground mb-2 text-[0.8125rem] font-medium uppercase tracking-wide">
+        <section className="mt-6">
+          <h2 className="text-muted-foreground mb-2 text-[0.8125rem] font-semibold uppercase tracking-widest">
             Signed in as
-          </p>
-          <div className="border-border divide-border divide-y rounded-2xl border">
-            <Row label="Name" value={session.name} />
-            <Row label="Email" value={session.email} />
+          </h2>
+          <div className="rounded-2xl bg-foreground/6 px-4 py-4 flex flex-col gap-2">
+            <p className="text-foreground text-[0.9375rem] font-semibold">
+              <span className="text-muted-foreground font-normal">Name:</span> {session.name}
+            </p>
+            <p className="text-foreground text-[0.9375rem] font-semibold">
+              <span className="text-muted-foreground font-normal">Email:</span> {session.email}
+            </p>
           </div>
         </section>
       )}
 
-      {/* Actions */}
+      {/* Logout Action Button */}
       <section className="mt-8 flex flex-col gap-3">
-        <form action={switchRole}>
+        <form
+          action={signOut}
+          onSubmit={(e) => {
+            if (!confirm("Are you sure you want to sign out?")) {
+              e.preventDefault();
+            }
+          }}
+        >
           <button
             type="submit"
-            className="bg-foreground/8 text-foreground flex h-14 w-full items-center justify-center rounded-2xl text-[1rem] font-medium"
-          >
-            Switch to shopper view
-          </button>
-        </form>
-        <form action={signOut}>
-          <button
-            type="submit"
-            className="border-border text-foreground flex h-14 w-full items-center justify-center rounded-2xl border text-[1rem] font-medium"
+            className="border-foreground/18 text-foreground hover:bg-foreground/5 flex h-14 w-full items-center justify-center rounded-2xl border text-[1rem] font-medium transition-colors cursor-pointer"
           >
             Sign out
           </button>
         </form>
       </section>
-
-      <p className="text-muted-foreground mt-8 text-[0.75rem] leading-relaxed">
-        ponytail: one seeded merchant row. Add Supabase magic-link when a second
-        merchant exists.
-      </p>
     </main>
-  );
-}
-
-function Row({
-  label,
-  value,
-  mono = false,
-}: {
-  label: string;
-  value: string;
-  mono?: boolean;
-}) {
-  return (
-    <div className="flex items-center justify-between px-4 py-3">
-      <p className="text-muted-foreground text-[0.875rem]">{label}</p>
-      <p
-        className={`text-foreground text-[0.9375rem] font-medium ${mono ? "font-mono text-[0.8125rem]" : ""}`}
-      >
-        {value}
-      </p>
-    </div>
   );
 }

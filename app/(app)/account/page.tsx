@@ -101,7 +101,6 @@ function Disclosure({ icon, title, status, body }: Row) {
 export default function Account() {
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
-  // Track signup view mode client-side: shopper (default) or business
   const [view, setView] = useState<"shopper" | "business">("shopper");
 
   useEffect(() => {
@@ -121,10 +120,15 @@ export default function Account() {
 
   return (
     <main className="pt-6 pb-28">
-      {/* Title */}
-      <h1 className="display text-foreground text-[3.5rem]">Account</h1>
+      {/* Title with Customer Mode badge */}
+      <div className="flex items-center gap-3">
+        <h1 className="display text-foreground text-[3.5rem]">Account</h1>
+        <span className="bg-foreground/10 text-foreground text-[0.6875rem] font-black uppercase tracking-widest px-2.5 py-1 rounded-full mt-2 shrink-0">
+          Customer Mode
+        </span>
+      </div>
 
-      {/* Switch button below the title */}
+      {/* Switch to Business View Button below the title */}
       <div className="mt-3 mb-6">
         {session ? (
           <form action={switchRole}>
@@ -132,7 +136,7 @@ export default function Account() {
               type="submit"
               className="bg-foreground text-paper hover:opacity-90 flex h-10 px-5 items-center justify-center rounded-full text-[0.8125rem] font-bold transition-all cursor-pointer"
             >
-              Switch to customer view
+              Switch to business view
             </button>
           </form>
         ) : (
