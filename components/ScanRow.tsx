@@ -1,4 +1,4 @@
-import type { BizPayment, BizPayment as BP } from "@/lib/biz-sample";
+import type { BizPayment } from "@/lib/biz-sample";
 import { formatAud } from "@/lib/money";
 import Link from "next/link";
 
@@ -34,7 +34,7 @@ export function ScanRow({ payment }: { payment: BizPayment }) {
     return (
       <div className="flex items-center gap-4 py-4">
         <div className="flex-1 overflow-hidden">
-          <p className="text-muted-foreground truncate text-[0.9375rem] line-through">
+          <p className="text-muted-foreground truncate text-[0.9375rem] line-through tabular-nums">
             {formatAud(payment.amountCents)}
           </p>
           <p className="text-muted-foreground mt-0.5 font-mono text-[0.75rem]">
@@ -58,7 +58,7 @@ export function ScanRow({ payment }: { payment: BizPayment }) {
       className="flex items-center gap-4 py-4"
     >
       <div className="flex-1 overflow-hidden">
-        <p className="text-foreground truncate text-[0.9375rem] font-semibold">
+        <p className="text-foreground truncate text-[0.9375rem] font-semibold tabular-nums">
           {formatAud(payment.amountCents - payment.discountCents)}
         </p>
         <p className="text-muted-foreground mt-0.5 text-[0.875rem]">
@@ -69,7 +69,8 @@ export function ScanRow({ payment }: { payment: BizPayment }) {
         <p className="text-muted-foreground text-[0.8125rem]">
           {dateLabel(payment.settledAt!)} {timeLabel(payment.settledAt!)}
         </p>
-        <p className="text-[#16a34a] mt-0.5 text-[0.8125rem] font-medium">
+        {/* Changed text-[#16a34a] to text-success, and added tabular-nums & font-semibold */}
+        <p className="text-success mt-0.5 text-[0.8125rem] font-semibold tabular-nums">
           −{formatAud(payment.discountCents)} given back
         </p>
       </div>

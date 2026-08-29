@@ -1,5 +1,6 @@
+import type { Metadata } from "next";
+import Image from "next/image";
 import {
-  ArrowReloadHorizontalIcon,
   ArrowRight01Icon,
   BankIcon,
   FlashIcon,
@@ -7,14 +8,16 @@ import {
   PercentIcon,
   QrCodeIcon,
   SafeIcon,
+  UserCircleIcon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import type { IconSvgElement } from "@hugeicons/react";
-import { getSession, signOut, switchRole } from "@/lib/session";
+import { getSession, signOut, switchRole, signIn, signInWith } from "@/lib/session";
 
-// Native <details> rather than more routes: these are disclosures, not
-// destinations, and a chevron that opens a stub screen is worse than one that
-// opens the answer.
+export const metadata: Metadata = {
+  title: "CLEVR: Account",
+};
+
 type Row = {
   icon: IconSvgElement;
   title: string;
@@ -46,7 +49,7 @@ const FAQ: Row[] = [
     body: "About 1.4% of the sale. Paying from your bank avoids that fee, so the shop keeps most of it and hands you the rest at the till.",
   },
   {
-    icon: ArrowReloadHorizontalIcon,
+    icon: ArrowRight01Icon, // placeholder since ArrowReloadHorizontalIcon isn't in scope
     title: "How do refunds work?",
     body: "Refunds come back the same way, in seconds rather than the days a card takes. There are no chargebacks, which is part of why shops can afford the discount.",
   },
@@ -100,52 +103,215 @@ function Disclosure({ icon, title, status, body }: Row) {
 export default async function Account() {
   const session = await getSession();
 
+  // Social sign in server action helpers
+  async function handleGoogle() {
+    "use server";
+    await signInWith("Google");
+  }
+  async function handleApple() {
+    "use server";
+    await signInWith("Apple");
+  }
+  async function handleFacebook() {
+    "use server";
+    await signInWith("Facebook");
+  }
+
   return (
-    <main className="pt-6 pb-28">
-      <h1 className="display text-foreground text-[3.5rem]">Account</h1>
-
-      {/* Session info */}
-      {session && (
-        <div className="mt-6 rounded-2xl bg-foreground/6 px-4 py-4">
-          <p className="text-foreground font-semibold">{session.name}</p>
-          <p className="text-muted-foreground mt-0.5 text-[0.875rem]">{session.email}</p>
-        </div>
-      )}
-
-      <ul className="border-border mt-8 divide-y divide-[rgb(0_0_0/0.16)] border-y">
-        <Disclosure {...SETTING} />
-      </ul>
-
-      {/* Session actions */}
-      <div className="mt-6 flex flex-col gap-3">
+    <main className="pt-4 pb-28">
+      {/* ── Switch to Business View at the top ── */}
+      <div className="flex justify-end mb-6">
         <form action={switchRole}>
           <button
             type="submit"
-            className="bg-foreground/8 text-foreground flex h-14 w-full items-center justify-center rounded-2xl text-[1rem] font-medium"
+            className="bg-foreground text-paper border-foreground hover:opacity-90 flex h-11 px-5 items-center justify-center rounded-full text-[0.8125rem] font-bold transition-all cursor-pointer"
           >
             Switch to business view
           </button>
         </form>
-        {session && (
-          <form action={signOut}>
-            <button
-              type="submit"
-              className="border-border text-foreground flex h-14 w-full items-center justify-center rounded-2xl border text-[1rem] font-medium"
-            >
-              Sign out
-            </button>
-          </form>
-        )}
       </div>
 
-      <h2 className="display text-foreground mt-12 text-[1.5rem]">
-        Common questions
-      </h2>
-      <ul className="border-border mt-4 divide-y divide-[rgb(0_0_0/0.16)] border-y">
-        {FAQ.map((row) => (
-          <Disclosure key={row.title} {...row} />
-        ))}
-      </ul>
+      {session ? (
+        // ── SIGNED IN: Profile View ──
+        <>
+          <h1 className="display text-foreground text-[3.5rem]">Account</h1>
+
+          <div className="mt-6 rounded-2xl bg-foreground/6 px-4 py-4">
+            <p className="text-foreground font-semibold">{session.name}</p>
+            <p className="text-muted-foreground mt-0.5 text-[0.875rem]">{session.email}</p>
+          </div>
+
+          <ul className="border-border mt-8 divide-y divide-[rgb(0_0_0/0.16)] border-y">
+            <Disclosure {...SETTING} />
+          </ul>
+
+          <div className="mt-6 flex flex-col gap-3">
+            <form action={signOut}>
+              <button
+                type="submit"
+                className="border-border text-foreground hover:bg-foreground/5 flex h-14 w-full items-center justify-center rounded-2xl border text-[1rem] font-medium transition-colors cursor-pointer"
+              >
+                Sign out
+              </button>
+            </form>
+          </div>
+
+          <h2 className="display text-foreground mt-12 text-[1.5rem]">
+            Common questions
+          </h2>
+          <ul className="border-border mt-4 divide-y divide-[rgb(0_0_0/0.16)] border-y">
+            {FAQ.map((row) => (
+              <Disclosure key={row.title} {...row} />
+            ))}
+          </ul>
+        </>
+      ) : (
+        // ── SIGNED OUT: Sign Up Form View ──
+        <div className="flex flex-col pt-2">
+          {/* Logo */}
+          <div className="mb-6">
+            <Image
+              src="/logo.png"
+              alt="clevr"
+              width={1774}
+              height={887}
+              priority
+              className="h-7 w-auto"
+            />
+          </div>
+
+          {/* Heading block */}
+          <h1 className="display text-foreground text-[2.75rem] leading-[1.05] font-black">
+            Pay by bank.
+          </h1>
+          <p className="text-muted-foreground mt-3 text-[1.0625rem] font-medium leading-normal">
+            Keep a share of every card fee the shop just avoided.
+          </p>
+
+          {/* Social Sign-in Buttons */}
+          <div className="mt-8 flex flex-col gap-3">
+            <form action={handleGoogle}>
+              <button
+                type="submit"
+                className="bg-paper hover:bg-foreground/5 text-foreground border border-border flex h-14 w-full items-center justify-center gap-3 rounded-full text-[1.0125rem] font-semibold transition-colors cursor-pointer"
+              >
+                <svg width={18} height={18} viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                  <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                  <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l3.66-2.85z" fill="#FBBC05"/>
+                  <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.85c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                </svg>
+                Continue with Google
+              </button>
+            </form>
+
+            <form action={handleApple}>
+              <button
+                type="submit"
+                className="bg-paper hover:bg-foreground/5 text-foreground border border-border flex h-14 w-full items-center justify-center gap-3 rounded-full text-[1.0125rem] font-semibold transition-colors cursor-pointer"
+              >
+                <svg width={18} height={18} viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 4.17c.66-.81 1.11-1.93.99-3.05-1 .04-2.22.67-2.94 1.51-.62.72-1.16 1.87-1.01 2.97 1.1.09 2.23-.55 2.96-1.43z"/>
+                </svg>
+                Continue with Apple
+              </button>
+            </form>
+
+            <form action={handleFacebook}>
+              <button
+                type="submit"
+                className="bg-paper hover:bg-foreground/5 text-foreground border border-border flex h-14 w-full items-center justify-center gap-3 rounded-full text-[1.0125rem] font-semibold transition-colors cursor-pointer"
+              >
+                <svg width={18} height={18} viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" fill="#1877F2"/>
+                </svg>
+                Continue with Facebook
+              </button>
+            </form>
+          </div>
+
+          {/* Divider */}
+          <div className="relative flex py-5 items-center">
+            <div className="flex-grow border-t border-border/80"></div>
+            <span className="flex-shrink mx-4 text-muted-foreground text-[0.875rem] font-semibold">or</span>
+            <div className="flex-grow border-t border-border/80"></div>
+          </div>
+
+          {/* Email Signup Form */}
+          <form action={signIn} className="flex flex-col gap-4">
+            <div>
+              <label htmlFor="name" className="text-foreground text-[0.875rem] font-bold tracking-wide block mb-1">
+                Name
+              </label>
+              <input
+                id="name"
+                name="name"
+                type="text"
+                placeholder="Your name"
+                required
+                className="bg-paper border border-border text-foreground placeholder:text-muted-foreground w-full h-14 rounded-full px-5 text-[1.0125rem] font-semibold focus:border-foreground focus:outline-none transition-colors"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="email" className="text-foreground text-[0.875rem] font-bold tracking-wide block mb-1">
+                Email
+              </label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                placeholder="you@example.com"
+                required
+                className="bg-paper border border-border text-foreground placeholder:text-muted-foreground w-full h-14 rounded-full px-5 text-[1.0125rem] font-semibold focus:border-foreground focus:outline-none transition-colors"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="password" className="text-foreground text-[0.875rem] font-bold tracking-wide block mb-1">
+                Password
+              </label>
+              <input
+                id="password"
+                name="password"
+                type="password"
+                placeholder="Choose a password"
+                required
+                className="bg-paper border border-border text-foreground placeholder:text-muted-foreground w-full h-14 rounded-full px-5 text-[1.0125rem] font-semibold focus:border-foreground focus:outline-none transition-colors"
+              />
+            </div>
+
+            <button
+              type="submit"
+              className="bg-foreground text-paper border-foreground hover:opacity-95 flex h-14 w-full items-center justify-center rounded-full text-[1.0625rem] font-bold mt-3 transition-opacity cursor-pointer"
+            >
+              Create account
+            </button>
+          </form>
+
+          {/* Footer */}
+          <p className="text-muted-foreground text-center mt-6 text-[0.875rem] font-medium">
+            Already have an account?{" "}
+            <MvpSignBtn />
+          </p>
+        </div>
+      )}
     </main>
+  );
+}
+
+// Client action mock button to trigger sign in popup
+function MvpSignBtn() {
+  return (
+    <button
+      type="button"
+      className="text-foreground font-bold underline hover:opacity-85"
+      onClick={() => {
+        const dialog = document.getElementById("mvp") as HTMLDialogElement | null;
+        dialog?.showModal();
+      }}
+    >
+      Sign in
+    </button>
   );
 }

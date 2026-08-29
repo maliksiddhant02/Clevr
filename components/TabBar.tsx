@@ -83,6 +83,7 @@ export function TabBar({
           // The disc sits between the two halves rather than at a fixed index,
           // so it stays centred if a tab is ever added or removed.
           if (scan && i === half - 1) {
+            const isMerchant = pathname?.startsWith("/m") || pathname === "/m";
             return (
               <Fragment key={href}>
                 {item}
@@ -91,9 +92,9 @@ export function TabBar({
                       own ground, which is what breaks the hairline behind the
                       disc so it reads as raised without a shadow. */}
                   <Link
-                    href="/pay"
-                    aria-label="Scan to pay"
-                    className="border-background bg-foreground text-sun -mt-9 flex h-16 w-16 items-center justify-center rounded-full border-4 [--focus-ring:var(--color-paper)] [--focus-ring-offset:-7px]"
+                    href={isMerchant ? "/m" : "/pay"}
+                    aria-label={isMerchant ? "Till" : "Scan to pay"}
+                    className="border-background bg-foreground text-sun -mt-5 flex h-16 w-16 items-center justify-center rounded-full border-4 [--focus-ring:var(--color-paper)] [--focus-ring-offset:-7px]"
                   >
                     <HugeiconsIcon icon={QrCodeIcon} size={28} strokeWidth={2} aria-hidden />
                   </Link>

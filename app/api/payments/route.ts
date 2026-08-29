@@ -46,7 +46,8 @@ export async function POST(request: Request) {
   const discountCents = Math.max(1, Math.round((amountCents * 50) / 10000));
   const shopperPaysCents = amountCents - discountCents;
 
-  const ref = makeRef();
+  const customRef = (body as Record<string, unknown>)?.ref;
+  const ref = typeof customRef === "string" && customRef.startsWith("CLVR") ? customRef : makeRef();
   const now = Date.now();
   const payment: MockPayment = {
     ref,

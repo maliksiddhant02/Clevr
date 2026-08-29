@@ -61,7 +61,7 @@ export default function PayoutsPage() {
                 <p className="text-foreground tabular-nums text-[0.9375rem] font-semibold">
                   {formatAud(r.grossCents)}
                 </p>
-                <p className="text-[#16a34a] mt-0.5 text-[0.8125rem] font-medium tabular-nums">
+                <p className="text-success mt-0.5 text-[0.8125rem] font-semibold tabular-nums">
                   +{formatAud(r.cardFeesAvoidedCents)} saved
                 </p>
               </div>

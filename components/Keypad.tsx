@@ -35,19 +35,27 @@ export function Keypad() {
   async function handleSubmit() {
     const cents = toCents(raw);
     if (!cents) return;
-    setLoading(true);
+
+    // Generate Crockford Base32 6-character random suffix
+    const CHARS = "0123456789ABCDEFGHJKMNPQRSTVWXYZ";
+    let suffix = "";
+    for (let i = 0; i < 6; i++) {
+      suffix += CHARS[Math.floor(Math.random() * CHARS.length)];
+    }
+    const dataRef = "CLVR" + suffix;
+
+    // Redirect instantly to avoid loading/network latency
+    router.push(`/m/${dataRef}`);
+
+    // Fire API request in background
     try {
-      const res = await fetch("/api/payments", {
+      await fetch("/api/payments", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ amountCents: cents }),
+        body: JSON.stringify({ amountCents: cents, ref: dataRef }),
       });
-      const data = await res.json();
-      if (res.ok) {
-        router.push(`/m/${data.ref}`);
-      }
-    } finally {
-      setLoading(false);
+    } catch (err) {
+      console.error("Failed to create payment reference in background:", err);
     }
   }
 
