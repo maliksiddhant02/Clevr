@@ -5,6 +5,7 @@ import { ButtonLink } from "@/components/Button";
 import { CardRail } from "@/components/CardRail";
 import { MvpButton, MvpDialog, MvpPill } from "@/components/Mvp";
 import { NavSheet } from "@/components/NavSheet";
+import { HeroCopy } from "@/components/HeroCopy";
 import { WaitlistForm } from "@/components/WaitlistForm";
 
 export const metadata: Metadata = {
@@ -76,17 +77,10 @@ export default function Landing() {
             lands its top at 36% of the block, where the reference has it. */}
         <div aria-hidden className="relative grow-[52]" />
         <div className="relative">
-          <h1 className="display text-paper text-[2.78rem]">
-            Pay by bank,
-            <br />
-            keep the fee
-          </h1>
           {/* Paper, not on-ink. The on-ink grey is measured against flat Ink,
               where it has 11.6:1 to spend; over a photograph that budget is
               gone and it drops to 3.5:1. */}
-          <p className="text-paper mt-4 text-[1.0625rem] font-medium">
-            Nothing hidden. Your rules.
-          </p>
+          <HeroCopy />
         </div>
         <div aria-hidden className="relative grow-[48]" />
         <ButtonLink href="#waitlist" variant="paper" className="relative self-center">

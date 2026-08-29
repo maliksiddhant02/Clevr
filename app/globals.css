@@ -174,7 +174,6 @@ body {
     qr-float-y 5.4s ease-in-out infinite,
     qr-float-x 7.1s ease-in-out infinite,
     qr-spin    9.3s ease-in-out infinite;
-  will-change: translate, rotate;
 }
 
 /* Nothing here may be required to understand the interface. */

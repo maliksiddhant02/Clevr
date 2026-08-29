@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { UserCircleIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
+import { Card } from "@/components/Card";
 import { PaymentRow } from "@/components/PaymentRow";
 import { formatAud, splitAud, yearlyRateCents } from "@/lib/money";
 import {
@@ -89,11 +90,13 @@ export default function Home() {
             See all
           </Link>
         </div>
-        <ul>
-          {PAYMENTS.slice(0, 4).map((p) => (
-            <PaymentRow key={p.ref} payment={p} />
-          ))}
-        </ul>
+        <Card>
+          <ul>
+            {PAYMENTS.slice(0, 4).map((p) => (
+              <PaymentRow key={p.ref} payment={p} />
+            ))}
+          </ul>
+        </Card>
       </section>
     </main>
   );
