@@ -1,16 +1,10 @@
 import { Card } from "@/components/Card";
 import { DonutChart } from "@/components/DonutChart";
 import { SavingsChart } from "@/components/SavingsChart";
-import { cardFeeCents, formatAud } from "@/lib/money";
+import { formatAud } from "@/lib/money";
 import { PAYMENTS, SAVED_CENTS, topMerchants } from "@/lib/sample";
 
 export default function Insights() {
-  // What a card acquirer would have taken on the same baskets, less what we
-  // handed back to the shopper. The remainder stayed with the business.
-  const feesKept = PAYMENTS.reduce(
-    (n, p) => n + cardFeeCents(p.paidCents) - p.savedCents,
-    0,
-  );
   const avgSaved = Math.round(SAVED_CENTS / PAYMENTS.length);
   const merchants = topMerchants();
 
@@ -58,18 +52,6 @@ export default function Insights() {
               .join(", ")}.`}
           />
         </Card>
-      </section>
-
-      {/* The merchant-side number, which the shopper sees nowhere else. Full
-          bleed to the bottom edge, with the tab-bar clearance inside it. */}
-      <section className="bg-foreground text-paper -mx-5 -mb-28 mt-12 px-5 pt-12 pb-32">
-        <p className="display text-sun text-[4rem] tabular-nums">
-          {formatAud(feesKept)}
-        </p>
-        <p className="text-on-ink mt-5 text-[1.0625rem] leading-relaxed">
-          in card fees your shops avoided. That money stayed with them, not the
-          card networks.
-        </p>
       </section>
     </main>
   );

@@ -45,6 +45,13 @@ instead: air, then a headline large enough to be the whole screen, then a solid
 Ink block that runs to both edges of the column. A card is for content that
 genuinely groups; it is not the default container.
 
+**A band has to earn its place with content the screen owes the reader.** Three
+Ink bands once closed Home, Insights and Account with facts about interchange
+and custody. They were composition looking for something to hold: nobody opening
+Insights has asked what a card tap costs a shop. Those facts are questions, and
+questions belong in the FAQ on Account, where someone goes to ask them. The
+band is a device for the screen's own subject, not a place to park the pitch.
+
 Full bleed is `-mx-5 px-5` against the shell's padding, written inline where it
 is used. A band that ends a tab screen adds `-mb-28 pb-32` so it runs to the
 bottom edge with the tab-bar clearance inside it, rather than leaving a strip of

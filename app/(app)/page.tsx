@@ -78,19 +78,7 @@ export default function Home() {
         Scan to pay
       </ButtonLink>
 
-      {/* Full bleed, so the page reads as bands rather than as a card stack. */}
-      <section className="bg-foreground text-paper -mx-5 mt-12 px-5 py-12">
-        <p className="display text-[2.375rem] leading-[0.88]">
-          Every card tap costs the shop about{" "}
-          <span className="text-sun">1.4%</span>.
-        </p>
-        <p className="text-on-ink mt-5 text-[1.0625rem] leading-relaxed">
-          Paying from your bank avoids that fee. The shop hands part of the
-          saving back to you at the till and keeps the rest.
-        </p>
-      </section>
-
-      <section aria-labelledby="recent-heading" className="pt-10">
+      <section aria-labelledby="recent-heading" className="pt-12">
         <div className="mb-3 flex items-baseline justify-between">
           <h2
             id="recent-heading"
