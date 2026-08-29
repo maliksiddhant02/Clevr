@@ -27,7 +27,7 @@ function Action({
     >
       <span
         aria-hidden
-        className="border-paper/25 flex h-14 w-14 items-center justify-center rounded-full border hover:bg-white/5 transition-colors"
+        className="border-paper/25 flex h-14 w-14 items-center justify-center rounded-full border hover:bg-white/10 backdrop-blur-sm transition-colors"
       >
         <HugeiconsIcon icon={icon} size={22} strokeWidth={1.8} />
       </span>
@@ -86,38 +86,41 @@ export function ScannerFrame() {
 
   return (
     <>
-      {/* The viewfinder takes the free space rather than a fixed height, so it
-          sits optically centred on a tall phone and a short one alike. */}
-      <div className="flex flex-1 items-center justify-center py-10">
-        <div className="relative h-[17rem] w-[17rem] max-w-full">
+      {/* Full screen video background covering the whole phone */}
+      <video
+        ref={videoRef}
+        playsInline
+        muted
+        autoPlay
+        className={`fixed inset-0 z-0 h-full w-full object-cover transition-opacity duration-300 ${
+          cameraStatus === "active" ? "opacity-100" : "opacity-0 pointer-events-none"
+        }`}
+      />
+
+      {/* Center viewfinder area - holds z-10 stack to stay on top of video */}
+      <div className="relative z-10 flex flex-1 items-center justify-center py-10">
+        
+        {/* Viewfinder box with giant box-shadow mask to dim the rest of the screen */}
+        <div className="relative h-[17rem] w-[17rem] max-w-full rounded-[1.75rem] shadow-[0_0_0_100vmax_rgba(16,16,12,0.62)]">
           
-          {/* Camera feed viewport wrapper */}
-          <div className="absolute inset-[3px] overflow-hidden rounded-[1.5rem] bg-black/40 flex items-center justify-center">
-            {/* The video element must be always mounted in the DOM to avoid the race condition
-                where videoRef.current is null when the getUserMedia stream resolves. */}
-            <video
-              ref={videoRef}
-              playsInline
-              muted
-              autoPlay
-              className={`h-full w-full object-cover transition-opacity duration-200 ${
-                cameraStatus === "active" ? "opacity-100" : "absolute opacity-0 pointer-events-none"
-              }`}
-            />
-            {cameraStatus === "loading" && (
-              <span className="text-on-ink/60 text-[0.8125rem]">Accessing camera...</span>
-            )}
-            {cameraStatus === "denied" && (
-              <span className="text-on-ink/60 text-center px-4 text-[0.8125rem]">
-                Camera permission denied.<br />Enter code manually.
-              </span>
-            )}
-            {cameraStatus === "unsupported" && (
-              <span className="text-on-ink/60 text-center px-4 text-[0.8125rem]">
-                Camera not supported.<br />Enter code manually.
-              </span>
-            )}
-          </div>
+          {/* Inner space messages for loading, denied, unsupported states */}
+          {cameraStatus !== "active" && (
+            <div className="absolute inset-0 bg-foreground/80 flex items-center justify-center text-center rounded-[1.75rem]">
+              {cameraStatus === "loading" && (
+                <span className="text-on-ink/60 text-[0.8125rem]">Accessing camera...</span>
+              )}
+              {cameraStatus === "denied" && (
+                <span className="text-on-ink/60 px-4 text-[0.8125rem]">
+                  Camera permission denied.<br />Enter code manually.
+                </span>
+              )}
+              {cameraStatus === "unsupported" && (
+                <span className="text-on-ink/60 px-4 text-[0.8125rem]">
+                  Camera not supported.<br />Enter code manually.
+                </span>
+              )}
+            </div>
+          )}
 
           {/* Four brackets overlay (Aim) */}
           <div className="qr-pulse absolute inset-0 pointer-events-none">
@@ -140,23 +143,26 @@ export function ScannerFrame() {
         </div>
       </div>
 
-      <p className="text-on-ink text-center text-[0.9375rem]">
-        Scan a code, or enter one manually below.
-      </p>
+      {/* Control row and labels layered on top of video */}
+      <div className="relative z-10">
+        <p className="text-on-ink text-center text-[0.9375rem] drop-shadow-sm font-medium">
+          Scan a code, or enter one manually below.
+        </p>
 
-      <div className="mt-8 flex justify-center gap-6">
-        <Action icon={Image01Icon} label="Upload QR" onClick={openMvp} />
-        <Action
-          icon={KeyboardIcon}
-          label="Enter code"
-          onClick={() => entry.current?.showModal()}
-        />
+        <div className="mt-8 flex justify-center gap-6">
+          <Action icon={Image01Icon} label="Upload QR" onClick={openMvp} />
+          <Action
+            icon={KeyboardIcon}
+            label="Enter code"
+            onClick={() => entry.current?.showModal()}
+          />
+        </div>
       </div>
 
       <dialog
         ref={entry}
         aria-labelledby="entry-title"
-        className="bg-card text-foreground m-auto w-[min(21.25rem,calc(100vw-2.5rem))] rounded-3xl p-6 text-center backdrop:bg-foreground/60"
+        className="bg-card text-foreground m-auto w-[min(21.25rem,calc(100vw-2.5rem))] rounded-3xl p-6 text-center backdrop:bg-foreground/60 z-30"
       >
         <h2 id="entry-title" className="display text-[1.5rem]">
           Enter the code
