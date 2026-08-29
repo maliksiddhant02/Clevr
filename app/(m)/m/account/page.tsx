@@ -25,13 +25,8 @@ export default function MerchantAccountPage() {
 
   return (
     <main className="pt-6 pb-28 text-foreground bg-background">
-      {/* Title with Business Mode badge */}
-      <div className="flex items-center gap-3">
-        <h1 className="display text-foreground text-[3.5rem]">Account</h1>
-        <span className="bg-foreground text-paper text-[0.6875rem] font-black uppercase tracking-widest px-2.5 py-1 rounded-full mt-2 shrink-0">
-          Business Mode
-        </span>
-      </div>
+      {/* Title (Business Mode badge removed) */}
+      <h1 className="display text-foreground text-[3.5rem]">Account</h1>
 
       {/* Switch to customer view Button below the title */}
       <div className="mt-3 mb-6">
@@ -80,7 +75,7 @@ export default function MerchantAccountPage() {
         </section>
       )}
 
-      {/* Logout Action Button */}
+      {/* Logout Action Button at the bottom */}
       <section className="mt-8 flex flex-col gap-3">
         <form
           action={signOut}

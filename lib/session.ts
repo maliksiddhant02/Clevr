@@ -68,7 +68,7 @@ export async function signIn(formData: FormData): Promise<void> {
     email,
     role,
   });
-  const next = role === "business" ? "/m" : "/app";
+  const next = role === "business" ? "/m/account" : "/account";
   redirect(next);
 }
 
@@ -80,7 +80,7 @@ export async function signInWith(provider: string): Promise<void> {
     email: `demo+${provider.toLowerCase()}@clevr.app`,
     role: "shopper",
   });
-  redirect("/app");
+  redirect("/account");
 }
 
 export async function signInProvider(formData: FormData): Promise<void> {
@@ -93,7 +93,7 @@ export async function signInProvider(formData: FormData): Promise<void> {
     email: `demo+${provider.toLowerCase()}@clevr.app`,
     role,
   });
-  const next = role === "business" ? "/m" : "/app";
+  const next = role === "business" ? "/m/account" : "/account";
   redirect(next);
 }
 
@@ -108,5 +108,5 @@ export async function switchRole(): Promise<void> {
   if (!session) redirect("/join");
   const next: Role = session.role === "shopper" ? "business" : "shopper";
   await setSession({ ...session, role: next });
-  redirect(next === "business" ? "/m" : "/app");
+  redirect(next === "business" ? "/m/account" : "/account");
 }

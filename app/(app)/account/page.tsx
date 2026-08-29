@@ -120,13 +120,8 @@ export default function Account() {
 
   return (
     <main className="pt-6 pb-28">
-      {/* Title with Customer Mode badge */}
-      <div className="flex items-center gap-3">
-        <h1 className="display text-foreground text-[3.5rem]">Account</h1>
-        <span className="bg-foreground/10 text-foreground text-[0.6875rem] font-black uppercase tracking-widest px-2.5 py-1 rounded-full mt-2 shrink-0">
-          Customer Mode
-        </span>
-      </div>
+      {/* Title (Customer Mode badge removed) */}
+      <h1 className="display text-foreground text-[3.5rem]">Account</h1>
 
       {/* Switch to Business View Button below the title */}
       <div className="mt-3 mb-6">
@@ -166,7 +161,17 @@ export default function Account() {
             <Disclosure {...SETTING} />
           </ul>
 
-          <div className="mt-6 flex flex-col gap-3">
+          <h2 className="display text-foreground mt-12 text-[1.5rem]">
+            Common questions
+          </h2>
+          <ul className="border-border mt-4 divide-y divide-[rgb(0_0_0/0.16)] border-y">
+            {FAQ.map((row) => (
+              <Disclosure key={row.title} {...row} />
+            ))}
+          </ul>
+
+          {/* Sign Out Action Button at the very bottom below FAQs */}
+          <div className="mt-8 flex flex-col gap-3">
             <form
               action={signOut}
               onSubmit={(e) => {
@@ -183,15 +188,6 @@ export default function Account() {
               </button>
             </form>
           </div>
-
-          <h2 className="display text-foreground mt-12 text-[1.5rem]">
-            Common questions
-          </h2>
-          <ul className="border-border mt-4 divide-y divide-[rgb(0_0_0/0.16)] border-y">
-            {FAQ.map((row) => (
-              <Disclosure key={row.title} {...row} />
-            ))}
-          </ul>
         </>
       ) : (
         // ── SIGNED OUT: Sign Up Form View ──
