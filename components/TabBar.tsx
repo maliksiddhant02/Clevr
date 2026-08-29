@@ -8,16 +8,22 @@ import {
   ReceiptIcon,
   UserCircleIcon,
 } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
+import { HugeiconsIcon, type IconSvgElement } from "@hugeicons/react";
 
-const TABS = [
+export type TabDef = {
+  href: string;
+  label: string;
+  icon: IconSvgElement;
+};
+
+const SHOPPER_TABS: readonly TabDef[] = [
   { href: "/", label: "Home", icon: Home01Icon },
   { href: "/activity", label: "Activity", icon: ReceiptIcon },
   { href: "/insights", label: "Insights", icon: PieChartIcon },
   { href: "/account", label: "Account", icon: UserCircleIcon },
-] as const;
+];
 
-export function TabBar() {
+export function TabBar({ tabs = SHOPPER_TABS }: { tabs?: readonly TabDef[] }) {
   const pathname = usePathname();
 
   return (
@@ -26,7 +32,7 @@ export function TabBar() {
       className="border-border bg-background fixed inset-x-0 bottom-0 z-20 border-t"
     >
       <ul className="mx-auto flex w-full max-w-[430px] px-2 pt-2 pb-[max(0.5rem,env(safe-area-inset-bottom))]">
-        {TABS.map(({ href, label, icon }) => {
+        {tabs.map(({ href, label, icon }) => {
           const active = pathname === href;
           return (
             <li key={href} className="flex-1">

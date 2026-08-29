@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { railIndex } from "./rail.ts";
+import { railIndex } from "./carousel.ts";
 
 // The real geometry, measured at 375px: three slides at w-[76%] of a 335px
 // content box, 12px gaps, 20px rail padding.

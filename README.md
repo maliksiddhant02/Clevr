@@ -26,3 +26,12 @@ Next.js 16 (App Router) · React 19 · Tailwind v4 · Supabase · TypeScript
 Design tokens live in one place: [`app/globals.css`](app/globals.css). Tailwind
 only matches whole literal class names, so keep variants in `const` maps — a
 template like `` `rounded-${n}` `` renders unstyled and silently.
+
+## Configuration
+
+Create a `.env.local` file with the following variables:
+- `CLEVR_KEY`: The key used to bypass the proxy dev door (e.g. access `/m?key=yourkey`).
+- `RAIL`: Set to `up` to use the real bank API, or `mock` for local simulation (default: `mock`).
+- `UP_PAYID`: The merchant's PayID (e.g. `merchant@up.com.au`).
+- `UP_TOKEN`: The Up Bank API key (required only if `RAIL=up`).
+

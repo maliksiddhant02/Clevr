@@ -144,13 +144,14 @@ require is also the one test that's trivial to write.
 
 ### Dependencies
 
-Three, each justified:
+Four, each justified:
 
 | Package | Why not hand-rolled |
 |---|---|
 | `@supabase/supabase-js` | Postgres client |
 | `qrcode` | QR encoding is Reed–Solomon error correction. Hand-rolling it is not lazy, it's insane. Server-side, emits an SVG string, ships zero client JS. |
-| `lucide-react` | Icons, per DESIGN.md |
+| `@hugeicons/core-free-icons` | Solid, clean, unified free vector icons |
+| `@hugeicons/react` | React component wrapper for Hugeicons |
 
 No zod, no form library, no fetch wrapper, no date library. Validation is three
 lines (§8) and the only date math is `Date.now()`.
@@ -431,6 +432,7 @@ create table payments (
   settled_txn_id text unique,          -- null until settled; unique = no double-claim
   payer_name     text,
   shopper_cookie text,                 -- anonymous, for the savings counter (§12)
+  first_viewed_at timestamptz,         -- when shopper first opened the payment page
   created_at     timestamptz not null default now(),
   expires_at     timestamptz not null,
   settled_at     timestamptz
@@ -490,6 +492,7 @@ already staring at.
 ## 12. Configuration
 
 ```
+CLEVR_KEY=…                     server only, gates dev door access
 RAIL=up|mock                    default: mock
 UP_TOKEN=up:yeah:…              server only, never NEXT_PUBLIC_
 UP_PAYID=you@example.com        what the shopper pays

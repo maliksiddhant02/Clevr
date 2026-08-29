@@ -5,10 +5,12 @@ import {
   FlashIcon,
   LockIcon,
   PercentIcon,
+  QrCodeIcon,
   SafeIcon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import type { IconSvgElement } from "@hugeicons/react";
+import { getSession, signOut, switchRole } from "@/lib/session";
 
 // Native <details> rather than more routes: these are disclosures, not
 // destinations, and a chevron that opens a stub screen is worse than one that
@@ -20,7 +22,6 @@ type Row = {
   body: string;
 };
 
-// The one thing on this screen you can change.
 const SETTING: Row = {
   icon: FlashIcon,
   title: "One-tap payments",
@@ -28,9 +29,12 @@ const SETTING: Row = {
   body: "Authorise CLEVR once in your banking app and every payment after that is a single tap. Your bank holds the authorisation, not us. Coming after launch.",
 };
 
-// Questions, phrased as questions. Two of these used to be facts pinned to the
-// bottom of Home and Insights, where nobody had asked them.
 const FAQ: Row[] = [
+  {
+    icon: QrCodeIcon,
+    title: "How do I pay?",
+    body: "Find the QR code at the counter and scan it with your phone's camera — no app and no signup needed. Your banking app opens with the amount already filled in. Once you pay, the shop's screen confirms before you leave.",
+  },
   {
     icon: BankIcon,
     title: "How does it work?",
@@ -93,14 +97,46 @@ function Disclosure({ icon, title, status, body }: Row) {
   );
 }
 
-export default function Account() {
+export default async function Account() {
+  const session = await getSession();
+
   return (
     <main className="pt-6 pb-28">
       <h1 className="display text-foreground text-[3.5rem]">Account</h1>
 
+      {/* Session info */}
+      {session && (
+        <div className="mt-6 rounded-2xl bg-foreground/6 px-4 py-4">
+          <p className="text-foreground font-semibold">{session.name}</p>
+          <p className="text-muted-foreground mt-0.5 text-[0.875rem]">{session.email}</p>
+        </div>
+      )}
+
       <ul className="border-border mt-8 divide-y divide-[rgb(0_0_0/0.16)] border-y">
         <Disclosure {...SETTING} />
       </ul>
+
+      {/* Session actions */}
+      <div className="mt-6 flex flex-col gap-3">
+        <form action={switchRole}>
+          <button
+            type="submit"
+            className="bg-foreground/8 text-foreground flex h-14 w-full items-center justify-center rounded-2xl text-[1rem] font-medium"
+          >
+            Switch to business view
+          </button>
+        </form>
+        {session && (
+          <form action={signOut}>
+            <button
+              type="submit"
+              className="border-border text-foreground flex h-14 w-full items-center justify-center rounded-2xl border text-[1rem] font-medium"
+            >
+              Sign out
+            </button>
+          </form>
+        )}
+      </div>
 
       <h2 className="display text-foreground mt-12 text-[1.5rem]">
         Common questions

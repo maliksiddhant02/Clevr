@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 
-import { railIndex } from "@/lib/rail";
+import { railIndex } from "@/lib/carousel";
 
 /**
  * A horizontal rail of photographic media blocks. The scroll is the platform's own

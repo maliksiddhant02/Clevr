@@ -6,6 +6,9 @@
  * gets there), so a formula based on content width drifts on the final slide
  * and on any rail whose padding or gap changes. Progress across the track is
  * exact at both ends by construction.
+ *
+ * Renamed from lib/rail.ts to free the name for the payment Rail interface
+ * (TECHNICAL.md §4).
  */
 export function railIndex(
   scrollLeft: number,
