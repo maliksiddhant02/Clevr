@@ -48,7 +48,7 @@ export default function Landing() {
       <NavSheet />
 
       {/* Hero */}
-      <section className="bg-foreground relative -mx-[calc(1.25rem-11px)] flex h-[calc(100dvh-5rem-11px)] min-h-[34rem] flex-col overflow-hidden rounded-[52px] px-7 pb-10 text-center">
+      <section className="bg-foreground relative -mx-[calc(1.25rem-11px)] flex h-[calc(100svh-5rem-11px)] min-h-[34rem] flex-col overflow-hidden rounded-[52px] px-7 pb-10 text-center">
         <Image
           src="/photos/hero.jpg"
           alt=""
