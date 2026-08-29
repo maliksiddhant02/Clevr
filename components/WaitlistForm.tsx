@@ -1,6 +1,7 @@
 "use client";
 
-import { useActionState, useRef } from "react";
+import { useActionState, useEffect, useRef } from "react";
+import { useSearchParams } from "next/navigation";
 import { useFormStatus } from "react-dom";
 import { joinWaitlist, type WaitlistState } from "@/app/actions/waitlist";
 import { Button } from "@/components/Button";
@@ -30,6 +31,13 @@ function SubmitButton() {
 export function WaitlistForm() {
   const [state, action] = useActionState<WaitlistState, FormData>(joinWaitlist, null);
   const ref = useRef<HTMLDialogElement>(null);
+  const params = useSearchParams();
+
+  // Auto-open when scanned from the QR (?open=waitlist). Runs after mount so
+  // the dialog is already in the DOM by the time showModal fires.
+  useEffect(() => {
+    if (params.get("open") === "waitlist") ref.current?.showModal();
+  }, [params]);
 
   return (
     <>
