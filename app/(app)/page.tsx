@@ -12,12 +12,15 @@ import {
   SAVED_CENTS,
 } from "@/lib/sample";
 
+import { MockDisclaimer } from "@/components/MockDisclaimer";
+
 export default function Home() {
   const rate = yearlyRateCents(SAVED_CENTS, PAYMENT_COUNT, DAYS_ACTIVE);
   const { whole, fraction } = splitAud(SAVED_CENTS);
 
   return (
     <main className="pt-5 pb-28">
+      <MockDisclaimer />
       <header className="flex items-center justify-between">
         {/* The mark is the way back out to the landing page, which is the
             convention everywhere else and the only exit the app otherwise

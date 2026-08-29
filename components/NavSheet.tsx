@@ -135,14 +135,15 @@ export function NavSheet() {
             inert={!open}
             className="bg-card absolute inset-x-0 bottom-0 rounded-b-2xl px-5 pt-2 pb-8 text-center"
           >
-            {/* One destination. An admin link that bounces strangers is worse
-                than no link — it advertises a door and delivers a redirect. */}
+            {/* One destination. A marketing menu that lists the page you are
+                already on is furniture; the only thing a reader wants from
+                here is the product. */}
             <Link
-              href="#waitlist"
+              href="/"
               onClick={() => setOpen(false)}
               className="text-foreground flex min-h-16 items-center justify-center text-[1.375rem] font-bold"
             >
-              Join the waitlist
+              Go to the app
             </Link>
 
             <div className="border-border mt-4 flex justify-center gap-3 border-t pt-7">
