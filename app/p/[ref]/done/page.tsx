@@ -12,7 +12,7 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import { findPayment, type SamplePayment } from "@/lib/sample";
 import { formatAud } from "@/lib/money";
 import { Avatar } from "@/components/Avatar";
-import { SuccessBurst } from "@/components/SuccessBurst";
+import { MvpDialog, openMvp } from "@/components/Mvp";
 
 export default function DonePage({
   params,
@@ -61,7 +61,6 @@ export default function DonePage({
     // Replaced bg-paper with bg-background (Sun yellow) and removed horizontal container padding.
     // Kept -mx-5 to make the container run 100% full column width.
     <main className="flex min-h-dvh flex-col bg-background text-foreground justify-between -mx-5 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-4">
-      <SuccessBurst />
       {/* ── Top Bar with "X" Close Button (with px-5 horizontal padding) ── */}
       <div className="flex items-center justify-between w-full px-5">
         <Link
@@ -125,15 +124,15 @@ export default function DonePage({
           Debited from <span className="font-semibold text-foreground">CommBank · XXXX 8891</span>
         </div>
 
-        {/* Inverted Buttons: Solid black View Details, outlined Share Receipt */}
+        {/* Inverted Buttons: Solid black View Details (now triggers MVP popup), outlined Share Receipt */}
         <div className="flex flex-col gap-3 w-full max-w-[20rem] mt-4">
-          <Link
-            href={`/payment/${ref}`}
+          <button
+            onClick={openMvp}
             className="bg-foreground text-sun hover:opacity-90 flex h-14 w-full items-center justify-center rounded-2xl text-[1rem] font-bold transition-opacity cursor-pointer gap-2"
           >
             <HugeiconsIcon icon={ReceiptIcon} size={18} strokeWidth={2} />
             View details
-          </Link>
+          </button>
           
           <button
             onClick={handleShare}
@@ -154,6 +153,9 @@ export default function DonePage({
           Done
         </Link>
       </div>
+
+      {/* Render the MVP dialog so it is accessible in the DOM on this page */}
+      <MvpDialog />
     </main>
   );
 }
