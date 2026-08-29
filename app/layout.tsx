@@ -10,16 +10,27 @@ import "./globals.css";
 // `font-semibold` request upward to 700, which is the intended reading here:
 // the system's emphasis steps are 400, 500, 700 and 900.
 //
-// The cuts in app/fonts carry printable ASCII only, so anything outside that
-// set falls through to the next family in the stack. Outfit is there to catch
-// it: geometric, the same 100-900 range, close enough that a stray copyright
-// mark or curly quote does not read as a different typeface mid-sentence.
-// System sans was doing that job before and it showed.
-//
 // LICENCE: the local cuts are Fontspring DEMO files, trial-licensed for
-// evaluation only. Not licensed for production or for redistribution. Dropping
-// the purchased family in over the same four filenames also makes the Outfit
-// fallback dead weight, and it can go. See DESIGN.md 3.
+// evaluation only. Not licensed for production or for redistribution.
+//
+// The demo cuts are also sabotaged on purpose, which is the point of the
+// unicode-range below. They draw a "DEMO" pineapple instead of the real glyph
+// for every one of:
+//
+//     ! " # $ % & ' ( ) * + - / 4 < = > @ [ \ ] ^ _ ` { | } ~
+//
+// `$` and the digit `4` are in that list, and this is a payments app. So the
+// local family is restricted to the characters it actually draws: letters,
+// space, and the five punctuation marks that survived. Everything else falls
+// through to Outfit, which is geometric, spans the same 100-900, and is close
+// enough that the seam does not read as a second typeface.
+//
+// All ten digits go to Outfit, not just the broken `4`. Nine correct digits
+// beside one from a different face is worse in a column of money than ten
+// consistent ones.
+//
+// Buying the licensed family means deleting this unicode-range and the Outfit
+// fallback with it. See DESIGN.md 3.
 const outfit = Outfit({
   variable: "--font-outfit",
   subsets: ["latin"],
@@ -30,8 +41,16 @@ const ceraRound = localFont({
   display: "swap",
   // Off, deliberately. Next otherwise generates a metric-adjusted local face
   // and inserts it directly after this family, which would catch every glyph
-  // the cuts are missing before Outfit ever gets a chance at them.
+  // this range gives up before Outfit ever gets a chance at them.
   adjustFontFallback: false,
+  declarations: [
+    {
+      prop: "unicode-range",
+      // space , . : ; ? A-Z a-z. Nothing else in the demo cuts is trustworthy.
+      value:
+        "U+0020, U+002C, U+002E, U+003A-003B, U+003F, U+0041-005A, U+0061-007A",
+    },
+  ],
   src: [
     {
       path: "./fonts/CeraRoundPro-Regular.woff2",

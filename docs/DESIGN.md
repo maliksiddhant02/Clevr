@@ -107,22 +107,38 @@ than falling back. That is the intended reading: the emphasis steps here are
 > [TypeMates](https://www.typemates.com/fonts/cera-round-pro), dropped in over
 > the same four filenames. Nothing else changes.
 >
-> The demo cuts also carry **printable ASCII only** — 95 glyphs, no `©`, no
-> curly quotes, no dashes beyond the hyphen.
+> The demo cuts carry **printable ASCII only** — 95 glyphs, no `©`, no curly
+> quotes, no dashes beyond the hyphen. Worse, they are **sabotaged on purpose**:
+> for 28 of those 95 they draw a "DEMO" pineapple instead of the real glyph.
+>
+> ```
+> ! " # $ % & ' ( ) * + - / 4 < = > @ [ \ ] ^ _ ` { | } ~
+> ```
+>
+> `$` and the digit `4` are both in that list, in a payments app. This is not a
+> cosmetic limitation; an unrestricted demo cut renders money as pineapples.
 
 **Outfit** sits behind Cera Round in the stack to catch exactly those glyphs.
 It is geometric, spans the same 100–900, and is close enough that a stray
 copyright mark or curly quote does not read as a different typeface mid-word.
 System sans was doing that job before and it showed.
 
+The local family carries a **`unicode-range`** restricting it to the characters
+it actually draws — space, `,` `.` `:` `;` `?`, `A–Z`, `a–z` — so every
+sabotaged and every absent glyph falls through to Outfit by construction rather
+than by luck. All ten digits go to Outfit, not just the broken `4`: nine correct
+digits beside one from a different face is worse in a column of money than ten
+consistent ones. Prose is Cera Round; numbers and symbols are Outfit.
+
 `adjustFontFallback: false` on the local font is what makes this work. Without
 it Next generates a metric-adjusted local face and inserts it directly after
-Cera Round, which catches every missing glyph before Outfit is ever reached.
+Cera Round, which catches everything the range gives up before Outfit is ever
+reached.
 
-Verified per glyph in the browser rather than assumed: `©`, `·`, `’` and `—`
-each measure identically to Outfit and differently to `system-ui`, while ASCII
-still measures as Cera Round. Buy the licensed family and the fallback becomes
-dead weight; it can go.
+Verified per glyph in the browser rather than assumed: all 28 sabotaged
+characters and all ten digits measure identically to Outfit, while letters
+still measure as Cera Round. Buying the licensed family means deleting the
+`unicode-range` and the Outfit fallback with it.
 
 - **`.display`** (900, `-0.019em`, `line-height: 1`) for screen titles,
   the brand mark, hero numbers and section openers. Landing sections open at
