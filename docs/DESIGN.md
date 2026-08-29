@@ -35,8 +35,9 @@ Consequences that are not negotiable:
   elevation. The shadow tokens are set to `none` so a stray `shadow-md` cannot
   reintroduce Tailwind's default and quietly break the system.
 - **No blur, no glass, no texture overlays.**
-- **One animation.** The savings line draws itself once. Nothing else moves on
-  mount.
+- **No entrance animation.** Nothing moves on mount except the savings line,
+  which draws itself once. Continuous motion is allowed only where stillness
+  would misread the element: see section 5.
 
 The composition matters more than any of that. A screen built as a vertical
 stack of same-size rounded boxes reads as generated no matter how good the
@@ -278,14 +279,24 @@ rows in [`app/payment/[ref]/page.tsx`](../app/payment/[ref]/page.tsx).
 
 ## 5. Motion
 
-One keyframe in `globals.css`, no animation library:
+Three keyframes in `globals.css`, no animation library. Each one is a single
+element and each one is doing a job no static frame can do:
 
 - `.draw-line` draws the chart stroke in once via `stroke-dashoffset`.
+- `.qr-float` moves the landing page's QR mark. See the note in section 1.
+- `.qr-pulse` breathes the scanner's viewfinder, on `/pay` only. A viewfinder
+  that never moves reads as a screenshot, and this one has no camera feed
+  behind it to prove otherwise. It runs 2.4s, dips to 0.78 opacity and 1.028
+  scale, and **begins and ends at rest** so the reduced-motion block freezes it
+  visible rather than caught mid-scale.
 
 That is the whole motion system. Everything else is a 200ms colour transition on
 hover and focus, plus the rail's position dot widening as you scroll. An
 entrance animation on every child of every screen reads as a template, and it
 was removed for that reason.
+
+The test is not the count, it is whether the element would be worse standing
+still. Anything that fails that test does not get a keyframe.
 
 Everything is disabled under `prefers-reduced-motion`. **Nothing may be required
 to understand the interface.** Motion is confirmation, never information.

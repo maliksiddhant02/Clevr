@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { UserCircleIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { ButtonLink } from "@/components/Button";
 import { PaymentRow } from "@/components/PaymentRow";
 import { formatAud, splitAud, yearlyRateCents } from "@/lib/money";
 import {
@@ -74,12 +73,6 @@ export default function Home() {
           </p>
         )}
       </section>
-
-      {/* One action. Paying is the entire product; the old four-tile grid
-          duplicated three tabs that are already two centimetres below it. */}
-      <ButtonLink href="/pay" className="w-full">
-        Scan to pay
-      </ButtonLink>
 
       <section aria-labelledby="recent-heading" className="pt-12">
         <div className="mb-3 flex items-baseline justify-between">

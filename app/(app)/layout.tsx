@@ -10,7 +10,7 @@ export default function AppLayout({ children }: LayoutProps<"/">) {
   return (
     <>
       <div className="flex-1">{children}</div>
-      <TabBar />
+      <TabBar scan />
     </>
   );
 }
