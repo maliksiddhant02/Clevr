@@ -43,26 +43,23 @@ export function PinFlow({ payment }: { payment: SamplePayment }) {
       <div className="pt-4 pb-4 border-b border-border bg-foreground/3 px-5">
         <div className="flex items-start justify-between">
           <div>
+            {/* Cancelling enter PIN now goes back to /pay live camera scanner */}
             <Link
-              href="/"
+              href="/pay"
               className="text-foreground text-[0.875rem] font-bold tracking-wider hover:opacity-75"
             >
               CANCEL
             </Link>
-            <div className="mt-3">
-              <span className="text-[0.9375rem] font-black tracking-[-0.03em] text-[#FFCC00] bg-black px-2 py-0.5 rounded-md inline-block">
-                CommBank
-              </span>
-              <p className="text-muted-foreground text-[0.8125rem] tracking-wide mt-1">
-                XXXX 8891
-              </p>
-            </div>
           </div>
           
+          {/* Shifted Commbank logo and account details to the top-right corner */}
           <div className="flex flex-col items-end">
-            <span className="text-[0.625rem] font-semibold text-muted-foreground uppercase tracking-widest">
-              Instant Pay
+            <span className="text-[0.9375rem] font-black tracking-[-0.03em] text-[#FFCC00] bg-black px-2 py-0.5 rounded-md inline-block">
+              CommBank
             </span>
+            <p className="text-muted-foreground text-[0.8125rem] tracking-wide mt-1">
+              XXXX 8891
+            </p>
           </div>
         </div>
 

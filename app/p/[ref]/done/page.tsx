@@ -12,7 +12,6 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import { findPayment, type SamplePayment } from "@/lib/sample";
 import { formatAud } from "@/lib/money";
 import { Avatar } from "@/components/Avatar";
-import { SuccessBurst } from "@/components/SuccessBurst";
 
 export default function DonePage({
   params,
@@ -61,7 +60,6 @@ export default function DonePage({
     // Replaced bg-paper with bg-background (Sun yellow) and removed horizontal container padding.
     // Kept -mx-5 to make the container run 100% full column width.
     <main className="flex min-h-dvh flex-col bg-background text-foreground justify-between -mx-5 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-4">
-      <SuccessBurst />
       {/* ── Top Bar with "X" Close Button (with px-5 horizontal padding) ── */}
       <div className="flex items-center justify-between w-full px-5">
         <Link
@@ -97,7 +95,8 @@ export default function DonePage({
         </div>
 
         <div className="text-center">
-          <h1 className="text-[1.5rem] font-black tracking-tight text-foreground">
+          {/* Changed header styling to display font voice for Cera Round Pro 900 mapping */}
+          <h1 className="display text-[1.625rem] text-foreground leading-tight tracking-tight">
             Payment Successful
           </h1>
           <p className="text-muted-foreground text-[0.875rem] mt-1">
@@ -119,9 +118,9 @@ export default function DonePage({
           </p>
         </div>
 
-        {/* Debited Bank details */}
+        {/* Changed Up Bank to CommBank */}
         <div className="text-center text-[0.875rem] text-muted-foreground mt-2">
-          Debited from <span className="font-semibold text-foreground">Up Bank · XXXX 8891</span>
+          Debited from <span className="font-semibold text-foreground">CommBank · XXXX 8891</span>
         </div>
 
         {/* Inverted Buttons: Solid black View Details, outlined Share Receipt */}
