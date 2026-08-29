@@ -1,6 +1,4 @@
 import type { Metadata } from "next";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 import { findPayment } from "@/lib/sample";
 import { formatAud } from "@/lib/money";
 import { PayFlow } from "./PayFlow";
@@ -9,27 +7,14 @@ export const metadata: Metadata = {
   title: "CLEVR — Pay",
 };
 
-// Slow-lane rule (TECHNICAL.md §11):
-//   - Stranger with no clevr_dev cookie → render the pay page normally. No
-//     app, no signup — that is the whole point of the slow lane.
-//   - In-app user (clevr_dev present) who is not signed in → join?next=here.
-//   - Signed in → render the pay page.
-//
-// Change the first branch to a redirect if you want a hard wall for everyone.
+// Slow-lane rule (TECHNICAL.md §11): everyone renders the pay page. No app,
+// no signup — that is the whole point of the slow lane.
 export default async function ShopperPage({
   params,
 }: {
   params: Promise<{ ref: string }>;
 }) {
   const { ref } = await params;
-
-  const store = await cookies();
-  const hasDevCookie = store.has("clevr_dev");
-  const hasSession = store.has("clevr_session");
-
-  if (hasDevCookie && !hasSession) {
-    redirect(`/join?next=${encodeURIComponent(`/p/${ref}`)}`);
-  }
 
   // Fall back to a stub when ref is unknown — any ref works on sample data.
   const payment = findPayment(ref) ?? {

@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
 import { AppleMark, GooglePlayMark } from "@/components/StoreMarks";
 import { ButtonLink } from "@/components/Button";
 import { CardRail } from "@/components/CardRail";
+import { MvpButton, MvpDialog } from "@/components/Mvp";
 import { NavSheet } from "@/components/NavSheet";
 import { WaitlistForm } from "@/components/WaitlistForm";
 
@@ -49,6 +49,7 @@ const STORES = [
 export default function Landing() {
   return (
     <main>
+      <MvpDialog />
       <NavSheet />
 
       {/* Hero, at the reference's measurements: an 11px gutter rather than the
@@ -217,12 +218,11 @@ export default function Landing() {
           <ul>
             {FOOTER[0].map((item) => (
               <li key={item}>
-                <Link
-                  href="#waitlist"
+                <MvpButton
                   className="text-foreground flex min-h-11 items-center text-[1.0625rem] font-semibold"
                 >
                   {item}
-                </Link>
+                </MvpButton>
               </li>
             ))}
           </ul>
@@ -233,25 +233,23 @@ export default function Landing() {
             <ul>
               {FOOTER[1].map((item) => (
                 <li key={item}>
-                  <Link
-                    href="#waitlist"
+                  <MvpButton
                     className="text-foreground flex min-h-11 items-center text-[1.0625rem] font-semibold"
                   >
                     {item}
-                  </Link>
+                  </MvpButton>
                 </li>
               ))}
             </ul>
             <div className="mt-auto flex justify-end gap-2 pt-8">
               {STORES.map(([name, Mark]) => (
-                <Link
+                <MvpButton
                   key={name}
-                  href="#waitlist"
                   aria-label={name}
                   className="text-foreground flex h-11 w-11 items-center justify-center"
                 >
                   <Mark size={24} />
-                </Link>
+                </MvpButton>
               ))}
             </div>
           </div>

@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Cancel01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
+import { MvpButton, openMvp } from "@/components/Mvp";
 import { AppleMark, GooglePlayMark } from "@/components/StoreMarks";
 
 const STORES = [
@@ -148,14 +149,18 @@ export function NavSheet() {
 
             <div className="border-border mt-4 flex justify-center gap-3 border-t pt-7">
               {STORES.map(({ name, Mark }) => (
-                <Link
+                <MvpButton
                   key={name}
-                  href="#waitlist"
                   aria-label={name}
+                  onClick={() => {
+                    // The sheet is what got tapped through; it goes with it.
+                    setOpen(false);
+                    openMvp();
+                  }}
                   className="border-border text-foreground flex h-12 w-16 items-center justify-center rounded-full border"
                 >
                   <Mark size={20} />
-                </Link>
+                </MvpButton>
               ))}
             </div>
           </nav>

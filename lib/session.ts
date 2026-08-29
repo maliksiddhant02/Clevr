@@ -3,21 +3,16 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-// Mock session. Two cookies, never merged:
-//   clevr_dev     — the door  (proxy.ts sets and checks this)
-//   clevr_session — who you are (this file sets and checks this)
-//
-// Merging them means signing out of the mock kicks you out of the demo,
-// which is the thing you would do twenty times an hour.
+// Mock session. One cookie, clevr_session: who you are.
 //
 // id becomes shopper_cookie in payments.shopper_cookie when the DB lands.
 // Signing up does not create a new identity — it names the one the browser
 // already had, so history survives signup rather than resetting at it.
 //
 // ponytail: session cookie is an unsigned, forgeable JSON blob. Fine — it
-// guards sample data behind a dev door. Swap for Supabase magic-link when a
-// second merchant exists, per TECHNICAL.md §10; getSession() is the only
-// call site.
+// names a visitor over sample data, it does not guard anything. Swap for
+// Supabase magic-link when a second merchant exists, per TECHNICAL.md §10;
+// getSession() is the only call site.
 
 export type Role = "shopper" | "business";
 
