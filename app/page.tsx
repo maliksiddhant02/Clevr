@@ -73,15 +73,46 @@ export default function Landing() {
         <span className="border-foreground text-foreground inline-flex h-7 items-center rounded-full border px-4 text-[0.8125rem] font-semibold tracking-[0.14em] uppercase">
           New
         </span>
-        {/* Real QR to waitlist */}
+        {/* Floating QR code — Ink on Sun, slightly rotated. */}
         <div className="mt-12 flex justify-center">
-          <Image
-            src="/qr.png"
-            alt="Scan to join the waitlist"
-            width={1024}
-            height={1024}
-            className="qr-float h-48 w-48"
-          />
+          <svg
+            viewBox="0 0 120 120"
+            className="qr-float h-48 w-48 text-foreground"
+            fill="currentColor"
+            aria-hidden
+          >
+            {/* Top-left finder */}
+            <rect x="8" y="8" width="32" height="32" rx="4" fill="none" stroke="currentColor" strokeWidth="5" />
+            <rect x="16" y="16" width="16" height="16" rx="2" />
+            {/* Top-right finder */}
+            <rect x="80" y="8" width="32" height="32" rx="4" fill="none" stroke="currentColor" strokeWidth="5" />
+            <rect x="88" y="16" width="16" height="16" rx="2" />
+            {/* Bottom-left finder */}
+            <rect x="8" y="80" width="32" height="32" rx="4" fill="none" stroke="currentColor" strokeWidth="5" />
+            <rect x="16" y="88" width="16" height="16" rx="2" />
+            {/* Data modules */}
+            <rect x="48" y="10" width="7" height="7" rx="1" />
+            <rect x="58" y="10" width="10" height="7" rx="1" />
+            <rect x="48" y="20" width="14" height="7" rx="1" />
+            <rect x="65" y="20" width="5" height="10" rx="1" />
+            <rect x="48" y="31" width="10" height="5" rx="1" />
+            <rect x="10" y="48" width="7" height="10" rx="1" />
+            <rect x="21" y="48" width="14" height="7" rx="1" />
+            <rect x="48" y="48" width="10" height="7" rx="1" />
+            <rect x="61" y="48" width="7" height="7" rx="1" />
+            <rect x="71" y="48" width="10" height="14" rx="1" />
+            <rect x="85" y="48" width="7" height="10" rx="1" />
+            <rect x="95" y="48" width="10" height="7" rx="1" />
+            <rect x="48" y="61" width="20" height="7" rx="1" />
+            <rect x="48" y="71" width="7" height="14" rx="1" />
+            <rect x="58" y="71" width="14" height="7" rx="1" />
+            <rect x="85" y="61" width="7" height="7" rx="1" />
+            <rect x="95" y="61" width="10" height="10" rx="1" />
+            <rect x="85" y="75" width="14" height="7" rx="1" />
+            <rect x="85" y="85" width="7" height="10" rx="1" />
+            <rect x="95" y="85" width="10" height="7" rx="1" />
+            <rect x="71" y="61" width="7" height="28" rx="1" />
+          </svg>
         </div>
 
         <p className="text-foreground mx-auto mt-14 max-w-[21rem] text-[1.0625rem] font-bold">
