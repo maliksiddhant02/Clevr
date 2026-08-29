@@ -27,7 +27,6 @@ export function PinFlow({ payment }: { payment: SamplePayment }) {
     if (pin.length !== 4 || loading) return;
     setLoading(true);
     try {
-      // POST to confirm payment on mock rail
       await fetch(`/api/payments/${payment.ref}/confirm`, { method: "POST" });
       router.push(`/p/${payment.ref}/done`);
     } catch (err) {
@@ -37,8 +36,9 @@ export function PinFlow({ payment }: { payment: SamplePayment }) {
   };
 
   return (
-    // Added -mx-5 px-5 to make the payment page full-bleed, eliminating yellow side borders.
-    <main className="flex min-h-dvh flex-col bg-paper text-foreground justify-between -mx-5 px-5">
+    // Replaced bg-paper with bg-background (Sun yellow) to match Clevr core canvas theme.
+    // Kept -mx-5 px-5 so borders and keypad grids stretch to full column width.
+    <main className="flex min-h-dvh flex-col bg-background text-foreground justify-between -mx-5 px-5">
       {/* ── Header block matching UPI layout ── */}
       <div className="pt-4 pb-4 border-b border-border bg-foreground/3">
         <div className="flex items-start justify-between">
@@ -50,21 +50,18 @@ export function PinFlow({ payment }: { payment: SamplePayment }) {
               CANCEL
             </Link>
             <div className="mt-3">
-              <p className="text-[1rem] font-bold text-foreground leading-tight">
-                Up Bank
-              </p>
-              <p className="text-muted-foreground text-[0.8125rem] tracking-wide">
+              {/* Relocated CommBank logo badge to the left-hand details block */}
+              <span className="text-[0.9375rem] font-black tracking-[-0.03em] text-[#FFCC00] bg-black px-2 py-0.5 rounded-md inline-block">
+                CommBank
+              </span>
+              <p className="text-muted-foreground text-[0.8125rem] tracking-wide mt-1">
                 XXXX 8891
               </p>
             </div>
           </div>
           
           <div className="flex flex-col items-end">
-            {/* Replaced clevr logo top right with Commbank branding */}
-            <span className="text-[1rem] font-black tracking-[-0.03em] text-[#FFCC00] bg-black px-2 py-0.5 rounded-md">
-              CommBank
-            </span>
-            <span className="text-[0.625rem] font-semibold text-muted-foreground uppercase tracking-widest mt-1">
+            <span className="text-[0.625rem] font-semibold text-muted-foreground uppercase tracking-widest">
               Instant Pay
             </span>
           </div>
@@ -111,29 +108,29 @@ export function PinFlow({ payment }: { payment: SamplePayment }) {
           </div>
         </div>
 
-        {/* Warning notification banner in Clevr theme */}
-        <div className="w-full max-w-[21rem] bg-muted/65 border border-border/80 rounded-2xl p-4 flex gap-3 items-start">
-          <HugeiconsIcon icon={HelpCircleIcon} size={20} className="text-foreground shrink-0 mt-0.5" />
-          <p className="text-[0.8125rem] font-semibold text-muted-foreground leading-relaxed">
+        {/* Warning notification banner using Inversion: solid Ink block with Paper type & Sun accent */}
+        <div className="w-full max-w-[21rem] bg-foreground text-paper rounded-2xl p-4 flex gap-3 items-start">
+          <HugeiconsIcon icon={HelpCircleIcon} size={20} className="text-sun shrink-0 mt-0.5" />
+          <p className="text-[0.8125rem] font-semibold leading-relaxed text-on-ink">
             You are SENDING{" "}
-            <span className="text-foreground font-extrabold tabular-nums">
+            <span className="text-sun font-extrabold tabular-nums">
               {formatAud(payment.paidCents)}
             </span>{" "}
             from your account to{" "}
-            <span className="text-foreground font-bold">{payment.merchant}</span>.
+            <span className="text-paper font-bold">{payment.merchant}</span>.
           </p>
         </div>
       </div>
 
-      {/* ── Custom Numeric Keypad at the bottom ── */}
-      <div className="shrink-0 bg-paper">
-        <div className="grid grid-cols-3 border-t border-border">
+      {/* ── Custom Numeric Keypad flat on Sun ground ── */}
+      <div className="shrink-0">
+        <div className="grid grid-cols-3 border-t border-foreground/16">
           {["1", "2", "3", "4", "5", "6", "7", "8", "9"].map((num) => (
             <button
               key={num}
               type="button"
               onClick={() => handleKey(num)}
-              className="flex h-16 items-center justify-center border-r border-b border-border text-[1.375rem] font-bold text-foreground active:bg-foreground/5 hover:bg-foreground/2 transition-colors duration-100 cursor-pointer"
+              className="flex h-16 items-center justify-center border-r border-b border-foreground/16 text-[1.375rem] font-bold text-foreground active:bg-foreground/5 hover:bg-foreground/2 transition-colors duration-100 cursor-pointer"
             >
               {num}
             </button>
@@ -143,7 +140,7 @@ export function PinFlow({ payment }: { payment: SamplePayment }) {
           <button
             type="button"
             onClick={() => handleKey("⌫")}
-            className="flex h-16 items-center justify-center border-r border-b border-border text-[1.125rem] font-bold text-muted-foreground active:bg-foreground/5 hover:bg-foreground/2 transition-colors duration-100 cursor-pointer"
+            className="flex h-16 items-center justify-center border-r border-b border-foreground/16 text-[1.125rem] font-bold text-muted-foreground active:bg-foreground/5 hover:bg-foreground/2 transition-colors duration-100 cursor-pointer"
             aria-label="Backspace"
           >
             ⌫
@@ -153,17 +150,17 @@ export function PinFlow({ payment }: { payment: SamplePayment }) {
           <button
             type="button"
             onClick={() => handleKey("0")}
-            className="flex h-16 items-center justify-center border-r border-b border-border text-[1.375rem] font-bold text-foreground active:bg-foreground/5 hover:bg-foreground/2 transition-colors duration-100 cursor-pointer"
+            className="flex h-16 items-center justify-center border-r border-b border-foreground/16 text-[1.375rem] font-bold text-foreground active:bg-foreground/5 hover:bg-foreground/2 transition-colors duration-100 cursor-pointer"
           >
             0
           </button>
           
-          {/* Submit Action Button - Requires manual click as auto-submit useEffect has been removed */}
+          {/* Submit Action Button - Solid Ink (black) background with white text */}
           <button
             type="button"
             onClick={handleSubmit}
             disabled={pin.length !== 4 || loading}
-            className="flex h-16 items-center justify-center border-b border-border text-[0.875rem] font-black uppercase tracking-wider bg-background text-foreground hover:bg-muted active:bg-muted/80 disabled:opacity-40 transition-colors duration-100 cursor-pointer"
+            className="flex h-16 items-center justify-center border-b border-foreground/16 text-[0.875rem] font-black uppercase tracking-wider bg-foreground text-paper hover:bg-foreground/90 disabled:opacity-40 transition-colors duration-100 cursor-pointer"
           >
             {loading ? "Verifying..." : "Submit"}
           </button>
