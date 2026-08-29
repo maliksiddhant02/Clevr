@@ -13,8 +13,8 @@ import {
   UserCircleIcon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { findPayment } from "@/lib/sample";
-import { formatAud, splitAud, cardFeeCents } from "@/lib/money";
+import { findPayment, type SamplePayment } from "@/lib/sample";
+import { formatAud, splitAud } from "@/lib/money";
 import { Avatar } from "@/components/Avatar";
 import "./done-animations.css";
 
@@ -25,7 +25,7 @@ export default function DonePage({
 }) {
   const router = useRouter();
   const [ref, setRef] = useState<string>("");
-  const [payment, setPayment] = useState<any>(null);
+  const [payment, setPayment] = useState<SamplePayment | null>(null);
   const [timestamp, setTimestamp] = useState<string>("");
   const [copySuccess, setCopySuccess] = useState(false);
 
@@ -61,8 +61,34 @@ export default function DonePage({
 
   if (!payment) {
     return (
-      <div className="flex h-dvh items-center justify-center bg-[#054d28] text-white">
-        <span className="text-[1.0625rem] font-semibold">Loading...</span>
+      <div className="animate-container flex h-dvh flex-col items-center justify-center">
+        {/* Render the initial static loader state with green background to prevent flash */}
+        <div className="relative flex h-20 w-20 items-center justify-center">
+          <svg
+            width={80}
+            height={80}
+            viewBox="0 0 80 80"
+            className="absolute inset-0 -rotate-90"
+          >
+            <circle
+              cx={40}
+              cy={40}
+              r={30}
+              fill="none"
+              stroke="rgba(255, 255, 255, 0.2)"
+              strokeWidth={4}
+            />
+            <circle
+              cx={40}
+              cy={40}
+              r={30}
+              fill="none"
+              stroke="white"
+              strokeWidth={4}
+              strokeLinecap="round"
+            />
+          </svg>
+        </div>
       </div>
     );
   }
@@ -148,7 +174,7 @@ export default function DonePage({
       </div>
 
       {/* ── Slide Up Receipt Card ── */}
-      <div className="success-receipt-card bg-paper absolute bottom-0 left-0 right-0 z-20 flex h-[66vh] flex-col rounded-t-[28px] border-t border-border px-5 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-6 shadow-sm">
+      <div className="success-receipt-card bg-paper absolute bottom-0 left-0 right-0 z-20 flex h-[66vh] flex-col rounded-t-[28px] border-t border-border px-5 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-6">
         {/* Drag handle decoration */}
         <div className="bg-foreground/10 mx-auto mb-5 h-1.5 w-12 rounded-full shrink-0" />
 
@@ -189,10 +215,16 @@ export default function DonePage({
                   <span className="font-mono tracking-[0.04em]">{ref}</span>
                   <button
                     onClick={handleCopy}
-                    className="text-muted-foreground hover:text-foreground flex h-6 w-6 items-center justify-center rounded-md hover:bg-foreground/5"
+                    className={`${copySuccess ? "text-success" : "text-muted-foreground hover:text-foreground"} flex h-6 w-6 items-center justify-center rounded-md hover:bg-foreground/5 transition-colors`}
                     title="Copy Transaction ID"
                   >
-                    <HugeiconsIcon icon={CopyIcon} size={15} strokeWidth={1.8} />
+                    {copySuccess ? (
+                      <svg width={14} height={14} viewBox="0 0 40 40" fill="none" stroke="currentColor" strokeWidth={5} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                        <polyline points="10,21 17,28 30,13" />
+                      </svg>
+                    ) : (
+                      <HugeiconsIcon icon={CopyIcon} size={15} strokeWidth={1.8} />
+                    )}
                   </button>
                 </dd>
               </div>
