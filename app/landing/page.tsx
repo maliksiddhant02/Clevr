@@ -1,6 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Landmark, Lock, Zap } from "lucide-react";
+import {
+  AppleIcon,
+  BankIcon,
+  Cancel01Icon,
+  FlashIcon,
+  LockIcon,
+  PlayStoreIcon,
+} from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import { Button, ButtonLink } from "@/components/Button";
 import { CardRail } from "@/components/CardRail";
 
@@ -36,41 +44,89 @@ const FOOTER = [
 export default function Landing() {
   return (
     <main>
-      {/* Native disclosure, no menu state to manage. The wordmark is optically
+      {/* Native disclosure, no menu state to manage and no scroll lock. The bar
+          itself is the <summary>, so opening swaps the ground from Sun to Paper
+          and the hamburger to a close mark without moving anything: the sheet
+          drops out of the same bar it was closed in. The wordmark is optically
           centred by giving both flanks the same 44px target. */}
-      <header className="flex items-center justify-between pt-4 pb-6">
-        <details className="relative">
-          <summary className="border-foreground text-foreground flex h-11 w-11 list-none items-center justify-center rounded-full border">
-            <span className="sr-only">Menu</span>
-            <span aria-hidden className="flex flex-col gap-[3px]">
-              <span className="bg-foreground block h-[2px] w-4 rounded-full" />
-              <span className="bg-foreground block h-[2px] w-4 rounded-full" />
-              <span className="bg-foreground block h-[2px] w-4 rounded-full" />
+      <header className="relative z-40 -mx-5">
+        <details className="group relative [&_summary::-webkit-details-marker]:hidden">
+          <summary className="group-open:bg-card relative z-20 flex list-none items-center justify-between px-5 pt-4 pb-6">
+            <span className="text-foreground flex h-11 w-11 items-center justify-center">
+              {/* Closed: two bars, the top one longer. Open: the close mark. */}
+              <span
+                aria-hidden
+                className="flex flex-col items-start gap-[5px] group-open:hidden"
+              >
+                <span className="bg-foreground block h-[2.5px] w-[22px] rounded-full" />
+                <span className="bg-foreground block h-[2.5px] w-[15px] rounded-full" />
+              </span>
+              <HugeiconsIcon
+                icon={Cancel01Icon}
+                size={24}
+                strokeWidth={2.2}
+                aria-hidden
+                className="hidden group-open:block"
+              />
+              <span className="sr-only">Menu</span>
             </span>
+
+            <span className="display text-foreground text-[1.75rem]">clevr</span>
+            <span aria-hidden className="h-11 w-11" />
           </summary>
+
+          {/* The scrim dims the page but does not dismiss: the close mark is
+              the only way out, and it is a 44px target in the bar you opened. */}
+          <span aria-hidden className="bg-foreground/45 fixed inset-0 z-0 block" />
+
+          {/* Absolute, so opening the sheet drops it over the hero instead of
+              pushing the page down. */}
           <nav
             aria-label="Site"
-            className="bg-card absolute top-13 left-0 z-30 w-56 rounded-2xl p-2"
+            className="bg-card absolute inset-x-0 top-full z-10 rounded-b-2xl px-5 pt-2 pb-8 text-center"
           >
-            {[
-              ["Open the app", "/"],
-              ["Scan to pay", "/pay"],
-              ["Rewards", "/insights"],
-              ["Account", "/account"],
-            ].map(([label, href]) => (
-              <Link
-                key={href}
-                href={href}
-                className="text-foreground flex min-h-11 items-center rounded-xl px-4 text-[0.9375rem] font-medium"
-              >
-                {label}
-              </Link>
-            ))}
+            <ul>
+              {[
+                ["CLEVR card", "/", true],
+                ["Rewards", "/insights", false],
+                ["Support", "/account", false],
+              ].map(([label, href, current]) => (
+                <li key={href as string}>
+                  <Link
+                    href={href as string}
+                    aria-current={current ? "page" : undefined}
+                    className={`flex min-h-14 items-center justify-center text-[1.1875rem] ${
+                      current ? "text-foreground font-bold" : "text-muted-foreground font-medium"
+                    }`}
+                  >
+                    {label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+
+            <div className="border-border mt-4 flex justify-center gap-3 border-t pt-7">
+              {[
+                ["App Store", AppleIcon],
+                ["Google Play", PlayStoreIcon],
+              ].map(([name, icon]) => (
+                <Link
+                  key={name as string}
+                  href="#waitlist"
+                  aria-label={name as string}
+                  className="border-border text-foreground flex h-12 w-16 items-center justify-center rounded-full border"
+                >
+                  <HugeiconsIcon
+                    icon={icon as typeof AppleIcon}
+                    size={20}
+                    strokeWidth={1.8}
+                    aria-hidden
+                  />
+                </Link>
+              ))}
+            </div>
           </nav>
         </details>
-
-        <span className="display text-foreground text-[1.75rem]">clevr</span>
-        <span aria-hidden className="h-11 w-11" />
       </header>
 
       {/* Hero. An Ink block on Sun, tall enough to be the whole first screen. */}
@@ -104,7 +160,7 @@ export default function Landing() {
           <div className="bg-foreground flex h-[13.5rem] w-[21rem] max-w-full -rotate-6 flex-col justify-between rounded-2xl p-6 text-left">
             <div className="flex items-start justify-between">
               <span aria-hidden className="bg-sun block h-8 w-11 rounded-lg" />
-              <Landmark className="text-on-ink" size={22} strokeWidth={1.6} aria-hidden />
+              <HugeiconsIcon icon={BankIcon} className="text-on-ink" size={22} strokeWidth={1.6} aria-hidden />
             </div>
             <div className="flex items-end justify-between">
               <span className="display text-paper text-[1.5rem]">clevr</span>
@@ -123,13 +179,13 @@ export default function Landing() {
         <div className="mt-8 flex flex-col items-center gap-3">
           <Button className="w-full px-10">Join the waitlist</Button>
           <ButtonLink href="/" variant="outline" className="w-full px-10">
-            <Zap size={16} strokeWidth={2} aria-hidden />
+            <HugeiconsIcon icon={FlashIcon} size={16} strokeWidth={2} aria-hidden />
             Open the app
           </ButtonLink>
         </div>
 
         <p className="text-foreground mt-6 inline-flex items-center gap-2 text-[0.8125rem] font-medium">
-          <Lock size={14} strokeWidth={2} aria-hidden />
+          <HugeiconsIcon icon={LockIcon} size={14} strokeWidth={2} aria-hidden />
           Bank-grade, read-only access
         </p>
 

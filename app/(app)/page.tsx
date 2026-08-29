@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { UserRound } from "lucide-react";
+import { UserCircleIcon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import { ButtonLink } from "@/components/Button";
 import { PaymentRow } from "@/components/PaymentRow";
 import { formatAud, splitAud, yearlyRateCents } from "@/lib/money";
@@ -18,7 +19,7 @@ export default function Home() {
           aria-label="Account"
           className="border-foreground text-foreground hover:bg-muted flex h-11 w-11 items-center justify-center rounded-full border transition-colors duration-200"
         >
-          <UserRound size={19} strokeWidth={1.8} aria-hidden />
+          <HugeiconsIcon icon={UserCircleIcon} size={19} strokeWidth={1.8} aria-hidden />
         </Link>
       </header>
 

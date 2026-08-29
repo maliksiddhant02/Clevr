@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { TrendingUp } from "lucide-react";
+import { ChartUpIcon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import { AreaChart } from "@/components/AreaChart";
 import { formatAud } from "@/lib/money";
 
@@ -61,7 +62,7 @@ export function SavingsChart() {
           ))}
         </div>
         <span className="text-success inline-flex items-center gap-1 text-[0.8125rem] font-semibold tabular-nums">
-          <TrendingUp size={14} strokeWidth={2.4} aria-hidden />
+          <HugeiconsIcon icon={ChartUpIcon} size={14} strokeWidth={2.4} aria-hidden />
           {delta}
         </span>
       </div>

@@ -113,6 +113,7 @@ variants each do not justify two dependencies, and the map is greppable.
 | `Card` | A Paper surface on Sun, no border, no shadow, no variants. |
 | `Button` / `ButtonLink` | Four pills: Ink, Paper, outlined, ghost. `h-12` = 48px. |
 | `CardRail` | Snap-scrolling Ink media blocks plus position dots. |
+| landing nav | A `<details>` sheet: the bar is the summary. See below. |
 | `TabBar` | Fixed, solid Sun, hairline top. Active tab is an Ink pill behind the icon. |
 | `ScreenHeader` | Outlined back pill plus an optically centred title. |
 | `PaymentRow` | Avatar, merchant, timestamp, amount, kept-delta. |
@@ -122,6 +123,28 @@ variants each do not justify two dependencies, and the map is greppable.
 `primary` is the Ink pill with Paper type. `paper` is its inverse and exists for
 one situation: a pill sitting **on** an Ink block, where `outline` would draw an
 Ink border against Ink and disappear. Use `paper` only there.
+
+**Icons** are [Hugeicons](https://hugeicons.com) free, via `@hugeicons/react`
+and `@hugeicons/core-free-icons`. Icons are data, not components:
+`<HugeiconsIcon icon={BankIcon} size={20} strokeWidth={2} />`. They inherit
+`currentColor`, so an icon never carries its own colour class; it takes the
+colour of whatever ground it sits on, which is what keeps the inversion working.
+`strokeWidth` is the emphasis dial, not size: the active tab goes 1.8 to 2.2 and
+stays 20px.
+
+Two marks are drawn rather than imported. The landing page's hamburger is two
+rounded bars, the top one longer, because the ratio is the design and no icon in
+a 6,000-icon set matches it exactly. The card chip is a Sun rectangle. Reaching
+for an icon there would be dressing up a shape that is already correct.
+
+**The landing nav** is one `<details>` and no JavaScript. The bar *is* the
+`<summary>`, so opening swaps its ground from Sun to Paper and the hamburger to
+a close mark without anything moving: the sheet drops out of the same bar it was
+closed in. The sheet is `absolute top-full`, so it covers the hero rather than
+pushing the page down, and the scrim is a `fixed inset-0` sibling at a lower
+`z-index` than both. The scrim dims but does not dismiss. That is a deliberate
+call, not an oversight: dismiss-on-scrim needs a click handler, and the close
+mark is already a 44px target sitting in the bar the reader just tapped.
 
 > **Tailwind gotcha:** class names are only detected as whole literal strings.
 > A template-literal class name silently renders unstyled. Keep variants in

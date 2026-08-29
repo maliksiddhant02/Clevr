@@ -1,33 +1,40 @@
-import { ChevronRight, Landmark, Lock, RotateCcw, Zap } from "lucide-react";
-import type { LucideIcon } from "lucide-react";
+import {
+  ArrowReloadHorizontalIcon,
+  ArrowRight01Icon,
+  BankIcon,
+  FlashIcon,
+  LockIcon,
+} from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
+import type { IconSvgElement } from "@hugeicons/react";
 
 // Native <details> rather than four more routes: these are disclosures, not
 // destinations, and a chevron that opens a stub screen is worse than one that
 // opens the answer.
 const ROWS: {
-  Icon: LucideIcon;
+  icon: IconSvgElement;
   title: string;
   status?: string;
   body: string;
 }[] = [
   {
-    Icon: Zap,
+    icon: FlashIcon,
     title: "One-tap payments",
     status: "Not set up",
     body: "Authorise CLEVR once inside your own banking app and every future payment becomes a single tap, at card speed, still with the discount. The authorisation is held by your bank, not by CLEVR. Rolling out after launch.",
   },
   {
-    Icon: Landmark,
+    icon: BankIcon,
     title: "How CLEVR works",
     body: "Scan the shop's QR, pay from your own bank account over Australia's instant payment rail, and keep a slice of the card fee the shop just avoided. The money goes straight from you to the shop. It never passes through CLEVR.",
   },
   {
-    Icon: RotateCcw,
+    icon: ArrowReloadHorizontalIcon,
     title: "Refunds",
     body: "A shop pushes a refund back over the same rail, so it lands in seconds rather than the days a card refund takes. There are no chargebacks on this rail, which is part of why shops can afford the discount.",
   },
   {
-    Icon: Lock,
+    icon: LockIcon,
     title: "Your data",
     body: "CLEVR does not sell shopper data, to merchants or to anyone else. Shops only ever see their own sales. Your payment history stays on this device unless you set up an account.",
   },
@@ -39,7 +46,7 @@ export default function Account() {
       <h1 className="display text-foreground text-[3.5rem]">Account</h1>
 
       <ul className="border-border mt-8 divide-y divide-[rgb(14_15_12/0.12)] border-y">
-        {ROWS.map(({ Icon, title, status, body }) => (
+        {ROWS.map(({ icon, title, status, body }) => (
           <li key={title}>
             <details className="group">
               <summary className="flex min-h-16 cursor-pointer list-none items-center gap-3 py-4 [&::-webkit-details-marker]:hidden">
@@ -47,7 +54,7 @@ export default function Account() {
                   aria-hidden
                   className="bg-muted text-foreground flex h-9 w-9 shrink-0 items-center justify-center rounded-full"
                 >
-                  <Icon size={17} strokeWidth={2} />
+                  <HugeiconsIcon icon={icon} size={17} strokeWidth={2} />
                 </span>
                 <span className="text-foreground flex-1 text-[0.9375rem] font-semibold">
                   {title}
@@ -57,7 +64,8 @@ export default function Account() {
                     {status}
                   </span>
                 )}
-                <ChevronRight
+                <HugeiconsIcon
+                  icon={ArrowRight01Icon}
                   size={17}
                   strokeWidth={2}
                   aria-hidden

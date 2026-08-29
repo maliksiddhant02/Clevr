@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { ChevronLeft } from "lucide-react";
+import { ArrowLeft01Icon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 
 export function ScreenHeader({ title, back }: { title: string; back: string }) {
   return (
@@ -9,7 +10,7 @@ export function ScreenHeader({ title, back }: { title: string; back: string }) {
         aria-label="Go back"
         className="border-foreground text-foreground hover:bg-muted flex h-11 w-11 shrink-0 items-center justify-center rounded-full border transition-colors duration-200"
       >
-        <ChevronLeft size={20} strokeWidth={2} aria-hidden />
+        <HugeiconsIcon icon={ArrowLeft01Icon} size={20} strokeWidth={2} aria-hidden />
       </Link>
       <h1 className="text-foreground flex-1 text-center text-base font-semibold">
         {title}
