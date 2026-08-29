@@ -47,7 +47,8 @@ export function proxy(request: NextRequest) {
 
 export const config = {
   matcher: [
-    // Run on everything except static assets and metadata files.
-    "/((?!_next/static|_next/image|.*\\.png$|.*\\.ico$|.*\\.txt$|.*\\.xml$).*)",
+    // Run on everything except static assets and metadata files. Anything
+    // with a file extension is an asset; the routes here have none.
+    "/((?!_next/static|_next/image|.*\\.[a-z0-9]+$).*)",
   ],
 };
