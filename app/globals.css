@@ -21,11 +21,13 @@
   --font-sans: var(--font-cera-round), system-ui, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
 
-  /* Pills by default, 10px on controls, 28px on cards and media. */
+  /* Pills by default, 10px on controls, 28px on cards, 40px on media.
+     Measured off the reference: its rail cards are 40px and its hero is 52px,
+     which is why the radius grows with the block rather than staying flat. */
   --radius-lg: 10px;
   --radius-xl: 10px;
   --radius-2xl: 28px;
-  --radius-3xl: 28px;
+  --radius-3xl: 40px;
 
   /* Flat by design: a hairline border is the only elevation. Neutralised
      rather than deleted, so a stray `shadow-md` cannot reintroduce
@@ -72,6 +74,15 @@ body {
   font-weight: 900;
   letter-spacing: -0.019em;
   line-height: 1;
+}
+
+/* Section openers are Bold at 1.2, not Black at 1. The reference reserves its
+   heaviest cut for the one h1 on the page and sets every h2 a step down, which
+   is what stops a page of 40px headings from reading as a stack of shouts. */
+.section-title {
+  font-weight: 700;
+  letter-spacing: -0.019em;
+  line-height: 1.2;
 }
 
 /* Focus rings are never removed without a replacement: the tab bar and the

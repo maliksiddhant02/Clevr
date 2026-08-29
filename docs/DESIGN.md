@@ -81,7 +81,10 @@ copies. Rule 1 in §7 outranks fidelity.
 
 **Radii.** Pills (`rounded-full`) on buttons, tabs, chips and avatars. 10px
 (`rounded-xl`, `rounded-lg`) on controls and tiles. 28px (`rounded-2xl`) on
-cards, media blocks and the Ink bands. Sharp corners appear nowhere.
+cards, 40px (`rounded-3xl`) on media blocks and rail cards, and 52px on the
+landing hero. The radius grows with the block rather than staying flat, which is
+how the reference does it: its rail cards measure 40px and its hero 52px. Sharp
+corners appear nowhere.
 
 ## 3. Type
 
@@ -145,18 +148,26 @@ variants each do not justify two dependencies, and the map is greppable.
 | Component | Notes |
 |---|---|
 | `Card` | A Paper surface on Sun, no border, no shadow, no variants. |
-| `Button` / `ButtonLink` | Four pills: Ink, Paper, outlined, ghost. `h-12` = 48px. |
+| `Button` / `ButtonLink` | Four pills: Ink, Paper, outlined, ghost. `h-16` = 64px. |
 | `CardRail` | Snap-scrolling Ink media blocks plus position dots. |
-| landing nav | A `<details>` sheet: the bar is the summary. See below. |
+| `NavSheet` | The landing bar and its sheet. The one client component. |
 | `TabBar` | Fixed, solid Sun, hairline top. Active tab is an Ink pill behind the icon. |
 | `ScreenHeader` | Outlined back pill plus an optically centred title. |
 | `PaymentRow` | Avatar, merchant, timestamp, amount, kept-delta. |
 | `Avatar` | Monogram on a tinted disc, tint hashed from the name. |
+| `StoreMarks` | The Apple and Google Play marks, drawn rather than borrowed. |
 | `AreaChart` / `DonutChart` | Hand-rolled SVG. See §6. |
 
 `primary` is the Ink pill with Paper type. `paper` is its inverse and exists for
 one situation: a pill sitting **on** an Ink block, where `outline` would draw an
 Ink border against Ink and disappear. Use `paper` only there.
+
+The **Apple and Google Play marks** are drawn in
+[`components/StoreMarks.tsx`](../components/StoreMarks.tsx) rather than taken
+from the icon set. An icon set's "apple" and "play" are that set's
+interpretation of a trademark; a store link is supposed to show the mark itself.
+The Play mark is the one thing in this system carrying colour it did not choose,
+because a monochrome Play mark reads as a generic triangle.
 
 **Icons** are [Hugeicons](https://hugeicons.com) free, via `@hugeicons/react`
 and `@hugeicons/core-free-icons`. Icons are data, not components:
@@ -171,14 +182,32 @@ rounded bars, the top one longer, because the ratio is the design and no icon in
 a 6,000-icon set matches it exactly. The card chip is a Sun rectangle. Reaching
 for an icon there would be dressing up a shape that is already correct.
 
-**The landing nav** is one `<details>` and no JavaScript. The bar *is* the
-`<summary>`, so opening swaps its ground from Sun to Paper and the hamburger to
-a close mark without anything moving: the sheet drops out of the same bar it was
-closed in. The sheet is `absolute top-full`, so it covers the hero rather than
-pushing the page down, and the scrim is a `fixed inset-0` sibling at a lower
-`z-index` than both. The scrim dims but does not dismiss. That is a deliberate
-call, not an oversight: dismiss-on-scrim needs a click handler, and the close
-mark is already a 44px target sitting in the bar the reader just tapped.
+**The landing nav** is `NavSheet`, and it is the only client component in the
+app. It began as a `<details>` with no JavaScript, which is the right shape for
+a disclosure, and it could not carry the animation: `::details-content` will not
+resolve its own height once it is a grid or flex box, `height: auto` does not
+interpolate on it even with `interpolate-size` set, and a pseudo-element cannot
+take a descendant selector to work around either. What the state buys back is a
+real `aria-expanded` button and an `inert` sheet, which is clearer than a
+`<summary>` doing the same job implicitly.
+
+The bar *is* the sheet's top edge, so opening swaps its ground from Sun to Paper
+and the hamburger to a close mark without anything moving. The header reserves
+the bar's 84px, so the sheet expands over the hero rather than pushing the page
+down. The nav is pinned to the bottom of the box that clips it, so a collapsing
+sheet loses its top link first and the store marks are the last thing to go;
+anchoring to the top would eat the sheet from the wrong end.
+
+The timing is traced off a screen recording of the reference rather than
+guessed. Its sheet edge travels from 341px to 36px over 8 frames at 30fps, which
+is **270ms**, and progress at the halfway point is 0.34 — `ease-in`, not
+anything sharper. Opening is the same duration decelerating. The height is read
+off the nav at the moment of the tap, so it cannot go stale across a resize or a
+font swap.
+
+The scrim dims but does not dismiss. That is deliberate: dismiss-on-scrim needs
+a second handler, and the close mark is a 44px target in the bar the reader just
+tapped.
 
 > **Tailwind gotcha:** class names are only detected as whole literal strings.
 > A template-literal class name silently renders unstyled. Keep variants in

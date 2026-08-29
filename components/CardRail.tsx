@@ -30,8 +30,10 @@ export function CardRail({
         className="rail -mx-5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-5"
       >
         {slides.map((s) => (
-          <li key={s.title} className="w-[76%] shrink-0 snap-center">
-            <div className="bg-foreground flex h-[19rem] flex-col justify-end rounded-2xl p-6">
+          <li key={s.title} className="w-[94%] shrink-0 snap-center">
+            {/* 84% and 25.5rem: the reference's rail cards measure 314x407 in
+                a 375px viewport, at a 40px radius. */}
+            <div className="bg-foreground flex h-[25.5rem] flex-col justify-end rounded-3xl p-6">
               <p className="text-on-ink text-[0.8125rem]">{s.note}</p>
               <p className="display text-paper mt-2 text-[1.75rem]">{s.title}</p>
             </div>

@@ -10,9 +10,11 @@ const VARIANT = {
   ghost: "text-muted-foreground hover:text-foreground bg-transparent",
 } as const;
 
-// h-12 = 48px, comfortably past the 44px touch minimum.
+// h-16 = 64px, matching the reference's 63px pill. Width is intrinsic: these
+// are centred pills sized by their label, not full-bleed bars. Pass `w-full`
+// where a button really should span the column.
 const BASE =
-  "inline-flex h-12 items-center justify-center gap-2 rounded-full px-6 text-[0.9375rem] font-medium transition-colors duration-200 ease-out active:scale-[0.98]";
+  "inline-flex h-16 items-center justify-center gap-2 rounded-full px-8 text-base font-semibold transition-colors duration-200 ease-out active:scale-[0.98]";
 
 type Props = { variant?: keyof typeof VARIANT; className?: string; children: ReactNode };
 

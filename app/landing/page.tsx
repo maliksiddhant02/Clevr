@@ -2,16 +2,16 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import {
-  AppleIcon,
+  ArrowRight01Icon,
   BankIcon,
-  Cancel01Icon,
   FlashIcon,
   LockIcon,
-  PlayStoreIcon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Button, ButtonLink } from "@/components/Button";
 import { CardRail } from "@/components/CardRail";
+import { NavSheet } from "@/components/NavSheet";
+import { AppleMark, GooglePlayMark } from "@/components/StoreMarks";
 
 export const metadata: Metadata = {
   title: "CLEVR — Pay by bank, pay less",
@@ -52,124 +52,71 @@ const FOOTER = [
 ] as const;
 
 const STORES = [
-  ["App Store", AppleIcon],
-  ["Google Play", PlayStoreIcon],
+  ["App Store", AppleMark],
+  ["Google Play", GooglePlayMark],
 ] as const;
 
 export default function Landing() {
   return (
     <main>
-      {/* Native disclosure, no menu state to manage and no scroll lock. The bar
-          itself is the <summary>, so opening swaps the ground from Sun to Paper
-          and the hamburger to a close mark without moving anything: the sheet
-          drops out of the same bar it was closed in. The wordmark is optically
-          centred by giving both flanks the same 44px target. */}
-      <header className="relative z-40 -mx-5">
-        <details className="group relative [&_summary::-webkit-details-marker]:hidden">
-          <summary className="group-open:bg-card relative z-20 flex list-none items-center justify-between px-5 pt-4 pb-6">
-            <span className="text-foreground flex h-11 w-11 items-center justify-center">
-              {/* Closed: two bars, the top one longer. Open: the close mark. */}
-              <span
-                aria-hidden
-                className="flex flex-col items-start gap-[5px] group-open:hidden"
-              >
-                <span className="bg-foreground block h-[2.5px] w-[22px] rounded-full" />
-                <span className="bg-foreground block h-[2.5px] w-[15px] rounded-full" />
-              </span>
-              <HugeiconsIcon
-                icon={Cancel01Icon}
-                size={24}
-                strokeWidth={2.2}
-                aria-hidden
-                className="hidden group-open:block"
-              />
-              <span className="sr-only">Menu</span>
-            </span>
+      <NavSheet />
 
-            <Image
-              src="/logo.png"
-              alt="CLEVR"
-              width={1774}
-              height={887}
-              priority
-              className="h-7 w-auto"
-            />
-            <span aria-hidden className="h-11 w-11" />
-          </summary>
-
-          {/* The scrim dims the page but does not dismiss: the close mark is
-              the only way out, and it is a 44px target in the bar you opened. */}
-          <span aria-hidden className="bg-foreground/45 fixed inset-0 z-0 block" />
-
-          {/* Absolute, so opening the sheet drops it over the hero instead of
-              pushing the page down. */}
-          <nav
-            aria-label="Site"
-            className="bg-card absolute inset-x-0 top-full z-10 rounded-b-2xl px-5 pt-2 pb-8 text-center"
-          >
-            <ul>
-              {[
-                ["CLEVR card", "/", true],
-                ["Rewards", "/insights", false],
-                ["Support", "/account", false],
-              ].map(([label, href, current]) => (
-                <li key={href as string}>
-                  <Link
-                    href={href as string}
-                    aria-current={current ? "page" : undefined}
-                    className={`flex min-h-14 items-center justify-center text-[1.1875rem] ${
-                      current ? "text-foreground font-bold" : "text-muted-foreground font-medium"
-                    }`}
-                  >
-                    {label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-
-            <div className="border-border mt-4 flex justify-center gap-3 border-t pt-7">
-              {[
-                ["App Store", AppleIcon],
-                ["Google Play", PlayStoreIcon],
-              ].map(([name, icon]) => (
-                <Link
-                  key={name as string}
-                  href="#waitlist"
-                  aria-label={name as string}
-                  className="border-border text-foreground flex h-12 w-16 items-center justify-center rounded-full border"
-                >
-                  <HugeiconsIcon
-                    icon={icon as typeof AppleIcon}
-                    size={20}
-                    strokeWidth={1.8}
-                    aria-hidden
-                  />
-                </Link>
-              ))}
-            </div>
-          </nav>
-        </details>
-      </header>
-
-      {/* Hero. An Ink block on Sun, tall enough to be the whole first screen. */}
-      <section className="bg-foreground flex min-h-[30rem] flex-col justify-end rounded-2xl p-7 pb-9 text-center">
-        <h1 className="display text-paper text-[2.875rem]">
-          Pay by bank,
-          <br />
-          keep the fee
-        </h1>
-        <p className="text-on-ink mt-4 text-[0.9375rem]">Nothing hidden. Your rules.</p>
-        <ButtonLink href="#waitlist" variant="paper" className="mt-7 self-center px-10">
+      {/* Hero, at the reference's measurements: an 11px gutter rather than the
+          shell's 20px, a 52px radius, and a height that runs to just short of
+          the fold. The headline sits at 36% rather than at the bottom, so the
+          block reads as a picture with type on it even while it is still a
+          flat Ink ground. Drop a photo in behind the type and nothing else
+          about this section has to change. */}
+      <section className="bg-foreground -mx-[calc(1.25rem-11px)] flex h-[calc(100dvh-5rem-11px)] min-h-[34rem] flex-col rounded-[52px] px-7 pb-10 text-center">
+        {/* The free space is split 52:48 above and below the type rather than
+            padded by a percentage: percentage padding resolves against width,
+            which puts the headline in a different place on every screen. This
+            lands its top at 36% of the block, where the reference has it. */}
+        <div aria-hidden className="grow-[52]" />
+        <div>
+          <h1 className="display text-paper text-[2.78rem]">
+            Pay by bank,
+            <br />
+            keep the fee
+          </h1>
+          <p className="text-on-ink mt-4 text-[0.9375rem] font-medium">
+            Nothing hidden. Your rules.
+          </p>
+        </div>
+        <div aria-hidden className="grow-[48]" />
+        <ButtonLink href="#waitlist" variant="paper" className="self-center">
           Join the waitlist
         </ButtonLink>
       </section>
+
+      {/* The way into the product. The landing page sells the card; this row is
+          the one place that admits there is a working app behind it. */}
+      <Link
+        href="/"
+        className="border-border text-foreground -mx-5 mt-8 flex min-h-[4.5rem] items-center justify-between gap-4 border-y px-5"
+      >
+        <span>
+          <span className="block text-[1.0625rem] font-bold">
+            Open the CLEVR app
+          </span>
+          <span className="text-muted-foreground block text-[0.875rem]">
+            Scan, pay and see what you kept
+          </span>
+        </span>
+        <HugeiconsIcon
+          icon={ArrowRight01Icon}
+          size={22}
+          strokeWidth={2.2}
+          aria-hidden
+        />
+      </Link>
 
       {/* The claim. Badge, headline, the card, then the two actions. */}
       <section id="waitlist" className="pt-20 text-center">
         <span className="border-foreground text-foreground inline-flex h-7 items-center rounded-full border px-4 text-[0.6875rem] font-semibold tracking-[0.14em] uppercase">
           New
         </span>
-        <h2 className="display text-foreground mt-6 text-[2.5rem]">
+        <h2 className="section-title text-foreground mt-6 text-[2.625rem]">
           Keep up to 40%
           <br />
           of every fee
@@ -179,10 +126,16 @@ export default function Landing() {
         {/* The product, drawn rather than photographed: a card is a rectangle
             with a wordmark on it, and a stock photo would say less. */}
         <div className="mt-12 flex justify-center">
-          <div className="bg-foreground flex h-[13.5rem] w-[21rem] max-w-full -rotate-6 flex-col justify-between rounded-2xl p-6 text-left">
+          <div className="bg-foreground flex h-[13.5rem] w-[21rem] max-w-full -rotate-6 flex-col justify-between rounded-3xl p-6 text-left">
             <div className="flex items-start justify-between">
               <span aria-hidden className="bg-sun block h-8 w-11 rounded-lg" />
-              <HugeiconsIcon icon={BankIcon} className="text-on-ink" size={22} strokeWidth={1.6} aria-hidden />
+              <HugeiconsIcon
+                icon={BankIcon}
+                className="text-on-ink"
+                size={22}
+                strokeWidth={1.6}
+                aria-hidden
+              />
             </div>
             <div className="flex items-end justify-between">
               <span className="display text-paper text-[1.5rem]">clevr</span>
@@ -199,15 +152,25 @@ export default function Landing() {
         </p>
 
         <div className="mt-8 flex flex-col items-center gap-3">
-          <Button className="w-full px-10">Join the waitlist</Button>
-          <ButtonLink href="/" variant="outline" className="w-full px-10">
-            <HugeiconsIcon icon={FlashIcon} size={16} strokeWidth={2} aria-hidden />
+          <Button>Join the waitlist</Button>
+          <ButtonLink href="/" variant="outline">
+            <HugeiconsIcon
+              icon={FlashIcon}
+              size={18}
+              strokeWidth={2}
+              aria-hidden
+            />
             Open the app
           </ButtonLink>
         </div>
 
         <p className="text-foreground mt-6 inline-flex items-center gap-2 text-[0.8125rem] font-medium">
-          <HugeiconsIcon icon={LockIcon} size={14} strokeWidth={2} aria-hidden />
+          <HugeiconsIcon
+            icon={LockIcon}
+            size={14}
+            strokeWidth={2}
+            aria-hidden
+          />
           Bank-grade, read-only access
         </p>
 
@@ -225,7 +188,10 @@ export default function Landing() {
 
       {/* Full-bleed rail. */}
       <section aria-labelledby="explore" className="pt-24 text-center">
-        <h2 id="explore" className="display text-foreground text-[2.5rem]">
+        <h2
+          id="explore"
+          className="section-title text-foreground text-[2.625rem]"
+        >
           Explore
           <br />
           the CLEVR app
@@ -243,7 +209,10 @@ export default function Landing() {
 
       {/* Rows, not cards: a name, a mark, a hairline. */}
       <section aria-labelledby="backers" className="pt-24">
-        <h2 id="backers" className="display text-foreground text-center text-[2.5rem]">
+        <h2
+          id="backers"
+          className="section-title text-foreground text-center text-[2.625rem]"
+        >
           Our investors
           <br />
           &amp; press
@@ -254,8 +223,13 @@ export default function Landing() {
               key={name}
               className="border-border flex min-h-[4.5rem] items-center justify-between border-b py-4"
             >
-              <span className="text-foreground text-[0.9375rem] font-medium">{name}</span>
-              <span aria-hidden className="display text-foreground text-[1.5rem] opacity-40">
+              <span className="text-foreground text-[0.9375rem] font-medium">
+                {name}
+              </span>
+              <span
+                aria-hidden
+                className="display text-foreground text-[1.5rem] opacity-40"
+              >
                 {name.slice(0, 1)}
               </span>
             </li>
@@ -263,8 +237,10 @@ export default function Landing() {
         </ul>
 
         <div className="mt-12">
-          <div className="bg-foreground flex h-[13rem] items-end rounded-2xl p-6">
-            <p className="text-on-ink text-[0.8125rem]">Seed round, March 2026</p>
+          <div className="bg-foreground flex h-[13rem] items-end rounded-3xl p-6">
+            <p className="text-on-ink text-[0.8125rem]">
+              Seed round, March 2026
+            </p>
           </div>
           <p className="display text-foreground mt-6 text-[1.375rem] leading-[1.15]">
             CLEVR raises $7.8M to pay shoppers out of the fee shops already pay
@@ -328,14 +304,14 @@ export default function Landing() {
               ))}
             </ul>
             <div className="mt-auto flex justify-end gap-2 pt-8">
-              {STORES.map(([name, icon]) => (
+              {STORES.map(([name, Mark]) => (
                 <Link
                   key={name}
                   href="#waitlist"
                   aria-label={name}
                   className="text-foreground flex h-11 w-11 items-center justify-center"
                 >
-                  <HugeiconsIcon icon={icon} size={24} strokeWidth={1.8} aria-hidden />
+                  <Mark size={24} />
                 </Link>
               ))}
             </div>
