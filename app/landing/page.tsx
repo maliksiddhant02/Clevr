@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import {
   AppleIcon,
@@ -85,7 +86,14 @@ export default function Landing() {
               <span className="sr-only">Menu</span>
             </span>
 
-            <span className="display text-foreground text-[1.75rem]">clevr</span>
+            <Image
+              src="/logo.png"
+              alt="CLEVR"
+              width={1774}
+              height={887}
+              priority
+              className="h-7 w-auto"
+            />
             <span aria-hidden className="h-11 w-11" />
           </summary>
 
@@ -336,12 +344,15 @@ export default function Landing() {
 
         {/* The wordmark as a sign-off, sized to the column rather than set at a
             fixed size: it is a mark, not a heading, so it fills the band. */}
-        <p
-          aria-hidden
-          className="display text-foreground border-border mt-10 border-t pt-14 text-center text-[clamp(3.5rem,35vw,8.5rem)]"
-        >
-          clevr
-        </p>
+        <div className="border-border mt-10 flex justify-center border-t pt-14">
+          <Image
+            src="/logo.png"
+            alt="CLEVR"
+            width={1774}
+            height={887}
+            className="h-[clamp(3.5rem,35vw,8.5rem)] w-auto"
+          />
+        </div>
         <p className="text-muted-foreground mt-6 text-center text-[0.875rem] font-medium">
           © 2026 CLEVR
         </p>
