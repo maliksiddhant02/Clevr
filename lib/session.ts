@@ -60,14 +60,15 @@ async function setSession(session: Session) {
 export async function signIn(formData: FormData): Promise<void> {
   const name = String(formData.get("name") ?? "").trim() || "Demo User";
   const email = String(formData.get("email") ?? "").trim() || "demo@clevr.app";
+  const role = (formData.get("role") as Role) || "shopper";
   const existing = await getSession();
   await setSession({
     id: existing?.id ?? makeId(),
     name,
     email,
-    role: "shopper",
+    role,
   });
-  const next = String(formData.get("next") ?? "").trim() || "/";
+  const next = role === "business" ? "/m" : "/";
   redirect(next);
 }
 
@@ -84,7 +85,16 @@ export async function signInWith(provider: string): Promise<void> {
 
 export async function signInProvider(formData: FormData): Promise<void> {
   const provider = String(formData.get("provider") ?? "Google");
-  await signInWith(provider);
+  const role = (formData.get("role") as Role) || "shopper";
+  const existing = await getSession();
+  await setSession({
+    id: existing?.id ?? makeId(),
+    name: `${provider} User`,
+    email: `demo+${provider.toLowerCase()}@clevr.app`,
+    role,
+  });
+  const next = role === "business" ? "/m" : "/";
+  redirect(next);
 }
 
 export async function signOut(): Promise<void> {

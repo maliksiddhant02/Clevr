@@ -42,15 +42,16 @@ export default function Pay() {
 
       {/* The mark closes the screen the way it closes the landing page. It
           carries `invert` because this is an Ink ground. */}
-      <Image
-        src="/logo.png"
-        alt=""
-        aria-hidden
-        width={1774}
-        height={887}
-        sizes="128px"
-        className="mx-auto mt-10 h-5 w-auto opacity-35 invert"
-      />
+      <Link href="/landing" className="mx-auto mt-10 block">
+        <Image
+          src="/logo.png"
+          alt=""
+          width={1774}
+          height={887}
+          sizes="128px"
+          className="h-5 w-auto opacity-35 invert cursor-pointer"
+        />
+      </Link>
 
       <MvpDialog />
     </main>

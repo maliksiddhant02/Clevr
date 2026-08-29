@@ -39,14 +39,16 @@ export default async function JoinPage({
     <main className="flex flex-1 flex-col px-0 pb-safe">
       {/* Mark */}
       <div className="px-5 pt-6">
-        <Image
-          src="/logo.png"
-          alt="CLEVR"
-          width={1774}
-          height={887}
-          className="h-8 w-auto"
-          priority
-        />
+        <Link href="/landing">
+          <Image
+            src="/logo.png"
+            alt="CLEVR"
+            width={1774}
+            height={887}
+            className="h-8 w-auto cursor-pointer"
+            priority
+          />
+        </Link>
       </div>
 
       <div className="flex flex-1 flex-col justify-center px-5 pb-10 pt-8">
