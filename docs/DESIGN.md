@@ -85,15 +85,31 @@ cards, media blocks and the Ink bands. Sharp corners appear nowhere.
 
 ## 3. Type
 
-One face, every job. The reference sets everything in **Cera Round**, a
-commercial TypeMates family that this repo cannot ship: it is licensed, not
-redistributable, and lifting the `woff2` off their server would be copying
-someone's paid font. **Outfit** stands in — free, on Google Fonts, the same
-geometric skeleton and the same 100–900 variable range, so it covers the 400,
-500, 600, 700 and 900 the reference actually uses. It is flat where Cera Round's
-terminals are rounded; that is the visible difference and the only one. Anyone
-holding a Cera Round licence swaps it at the single `Outfit(...)` declaration in
-[`app/layout.tsx`](../app/layout.tsx).
+One face, every job: **Cera Round Pro**, the same family the reference uses,
+self-hosted from [`app/fonts/`](../app/fonts) and declared once in
+[`app/layout.tsx`](../app/layout.tsx). Four static weights ship, because four
+are used: Regular 400, Medium 500, Bold 700, Black 900. The family's Thin and
+Light are not shipped.
+
+There is **no 600**. CSS font matching resolves a `font-semibold` request upward
+to the next weight it has, so 600 paints as Bold 700 from the real face rather
+than falling back. That is the intended reading: the emphasis steps here are
+400, 500, 700, 900, and `font-semibold` is a synonym for the 700 step.
+
+> **Licence — read before this ships.** The files in `app/fonts/` are
+> **Fontspring DEMO** cuts of Cera Round Pro, trial-licensed for evaluation
+> only. They are not licensed for production use, for web embedding, or for
+> redistribution, and this repository redistributes them by containing them.
+> A production build needs a purchased licence from
+> [TypeMates](https://www.typemates.com/fonts/cera-round-pro), dropped in over
+> the same four filenames. Nothing else changes.
+>
+> The demo cuts also carry **printable ASCII only** — 95 glyphs, no `©`, no
+> curly quotes, no dashes beyond the hyphen. Two characters in the UI fall
+> outside that set and render from the fallback stack: the `©` in the landing
+> footer and the `·` separating day from time in `PaymentRow`. Both are single
+> punctuation marks and neither is load-bearing, so they are left as they are;
+> the licensed family covers them.
 
 - **`.display`** (900, `-0.019em`, `line-height: 1`) for screen titles,
   the brand mark, hero numbers and section openers. Landing sections open at
@@ -101,8 +117,8 @@ holding a Cera Round licence swaps it at the single `Outfit(...)` declaration in
   across two or three short lines with explicit `<br />` rather than wrapping on
   their own: at this weight the shape of the break is part of the design.
   The class deliberately sets no colour so it inverts cleanly on Ink grounds.
-- **Inter 400/500/600** for everything else. Hierarchy comes from weight as
-  much as from size.
+- **400/500/700** for everything else. Hierarchy comes from weight as much as
+  from size.
 - **`tabular-nums`** on every number a reader compares or scans: money,
   percentages, counts, durations. Aligned digits are a correctness feature in a
   payments app, not a typographic flourish.
@@ -111,8 +127,10 @@ holding a Cera Round licence swaps it at the single `Outfit(...)` declaration in
   reference means the merchant's tick never fires. Monospace anywhere else is a
   costume.
 - **The wordmark is lowercase** (`clevr`) in running UI and the landing page,
-  uppercase (`CLEVR`) in prose and legal copy. It closes the landing page as a
-  7rem sign-off band, `aria-hidden`, because it is a mark and not a link.
+  uppercase (`CLEVR`) in prose and legal copy. It closes the landing page as an
+  `aria-hidden` sign-off, sized by `clamp()` to fill the column rather than set
+  at a fixed size: at 375px it measures 298px of glyph, which is the width the
+  reference's own wordmark occupies there.
 
 **Money display:** `splitAud()` in [`lib/money.ts`](../lib/money.ts) renders
 dollars large and cents small (`$2` + `.35`). Every screen uses it, so money
