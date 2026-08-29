@@ -2,13 +2,14 @@
 
 import { Fragment } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import {
   Home01Icon,
   PieChartIcon,
   QrCodeIcon,
   ReceiptIcon,
   UserCircleIcon,
+  BanknoteArrowUpIcon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon, type IconSvgElement } from "@hugeicons/react";
 
@@ -25,23 +26,29 @@ const SHOPPER_TABS: readonly TabDef[] = [
   { href: "/account", label: "Account", icon: UserCircleIcon },
 ];
 
-/**
- * The shopper bar carries a fifth slot in the middle: paying is the product,
- * and it was a button halfway down Home, two centimetres above a bar that had
- * room for it. It is an Ink disc with one Sun mark, which is the system's own
- * emphasis move (DESIGN.md 1) and is what keeps it from reading as a fifth
- * tab: the tabs invert to Ink pills with Paper marks, this inverts to Sun.
- *
- * The merchant bar does not get one. A till shows a code; it never scans one.
- */
+const MERCHANT_TABS: readonly TabDef[] = [
+  { href: "/m", label: "Till", icon: Home01Icon },
+  { href: "/m/activity", label: "Activity", icon: ReceiptIcon },
+  { href: "/m/payouts", label: "Reconcile", icon: BanknoteArrowUpIcon },
+  { href: "/m/account", label: "Account", icon: UserCircleIcon },
+];
+
 export function TabBar({
-  tabs = SHOPPER_TABS,
+  tabs: customTabs,
   scan = false,
 }: {
   tabs?: readonly TabDef[];
   scan?: boolean;
 }) {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const roleParam = searchParams.get("role");
+
+  // Determine if we should display the merchant/business tabs
+  const isMerchant = pathname?.startsWith("/m") || pathname === "/m" || roleParam === "business";
+  const tabs = customTabs ?? (isMerchant ? MERCHANT_TABS : SHOPPER_TABS);
+  const shouldShowScan = customTabs ? scan : !isMerchant;
+
   const half = Math.ceil(tabs.length / 2);
 
   return (
@@ -51,19 +58,19 @@ export function TabBar({
     >
       <ul className="mx-auto flex w-full max-w-[430px] px-2 pt-2 pb-[max(0.5rem,env(safe-area-inset-bottom))]">
         {tabs.map(({ href, label, icon }, i) => {
-          const active = pathname === href;
+          // Align active checks for redirected roles
+          const active = pathname === href || (href === "/m/account" && pathname === "/account");
           const item = (
             <li key={href} className="relative flex-1">
-              {/* Active indicator: a 3px Ink bar sitting on the top hairline.
-                  Editorial and quiet — the label doing the rest of the work. */}
               {active && (
                 <span
                   aria-hidden
                   className="bg-foreground absolute top-[-1px] left-1/2 h-[3px] w-10 -translate-x-1/2 rounded-full"
                 />
               )}
+              {/* Keep the active search params when switching tabs in role preview */}
               <Link
-                href={href}
+                href={roleParam ? `${href}?role=${roleParam}` : href}
                 aria-current={active ? "page" : undefined}
                 className={`flex min-h-12 flex-col items-center justify-center gap-1 pt-1 ${
                   active ? "text-foreground" : "text-muted-foreground"
@@ -84,17 +91,11 @@ export function TabBar({
             </li>
           );
 
-          // The disc sits between the two halves rather than at a fixed index,
-          // so it stays centred if a tab is ever added or removed.
-          if (scan && i === half - 1) {
-            const isMerchant = pathname?.startsWith("/m") || pathname === "/m";
+          if (shouldShowScan && i === half - 1) {
             return (
               <Fragment key={href}>
                 {item}
                 <li key="scan" className="flex flex-1 justify-center">
-                  {/* Lifted clear of the bar. The 4px Sun border is the bar's
-                      own ground, which is what breaks the hairline behind the
-                      disc so it reads as raised without a shadow. */}
                   <Link
                     href={isMerchant ? "/m" : "/pay"}
                     aria-label={isMerchant ? "Till" : "Scan to pay"}

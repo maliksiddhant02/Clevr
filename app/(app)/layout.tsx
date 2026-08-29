@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { TabBar } from "@/components/TabBar";
 
 // The tab shell. Pushed screens (payment detail, pay) live outside this group
@@ -10,7 +11,9 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <div className="flex-1">{children}</div>
-      <TabBar scan />
+      <Suspense fallback={null}>
+        <TabBar scan />
+      </Suspense>
     </>
   );
 }

@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { TabBar, type TabDef } from "@/components/TabBar";
 import {
   Home01Icon,
@@ -20,7 +21,9 @@ export default function MerchantLayout({ children }: { children: React.ReactNode
   return (
     <>
       <div className="flex-1">{children}</div>
-      <TabBar tabs={MERCHANT_TABS} scan={false} />
+      <Suspense fallback={null}>
+        <TabBar tabs={MERCHANT_TABS} scan={false} />
+      </Suspense>
     </>
   );
 }

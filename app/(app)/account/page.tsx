@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useSearchParams, useRouter } from "next/navigation";
 import {
   ArrowRight01Icon,
   BankIcon,
@@ -98,10 +99,14 @@ function Disclosure({ icon, title, status, body }: Row) {
   );
 }
 
-export default function Account() {
+function AccountContent() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
-  const [view, setView] = useState<"shopper" | "business">("shopper");
+
+  // Sync role view state with the URL query parameter
+  const view = searchParams.get("role") === "business" ? "business" : "shopper";
 
   useEffect(() => {
     getSession().then((s) => {
@@ -109,6 +114,11 @@ export default function Account() {
       setLoading(false);
     });
   }, []);
+
+  const toggleView = () => {
+    const next = view === "shopper" ? "business" : "shopper";
+    router.push(`/account?role=${next}`);
+  };
 
   if (loading) {
     return (
@@ -120,7 +130,7 @@ export default function Account() {
 
   return (
     <main className="pt-6 pb-28">
-      {/* Title (Customer Mode badge removed) */}
+      {/* Title */}
       <h1 className="display text-foreground text-[3.5rem]">Account</h1>
 
       {/* Switch to Business View Button below the title */}
@@ -137,7 +147,7 @@ export default function Account() {
         ) : (
           <button
             type="button"
-            onClick={() => setView((prev) => (prev === "shopper" ? "business" : "shopper"))}
+            onClick={toggleView}
             className="bg-foreground text-paper hover:opacity-90 flex h-10 px-5 items-center justify-center rounded-full text-[0.8125rem] font-bold transition-all cursor-pointer"
           >
             {view === "shopper" ? "Switch to business view" : "Switch to customer view"}
@@ -334,5 +344,17 @@ function MvpSignBtn() {
     >
       Sign in
     </button>
+  );
+}
+
+export default function Account() {
+  return (
+    <Suspense fallback={
+      <div className="flex h-dvh items-center justify-center bg-background text-foreground">
+        <span className="text-[1.0625rem] font-semibold">Loading...</span>
+      </div>
+    }>
+      <AccountContent />
+    </Suspense>
   );
 }
