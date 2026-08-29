@@ -120,6 +120,33 @@ body {
   animation: draw-line 1.1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
+/* QR code floating animation — three independent oscillations overlaid so
+   the path never exactly repeats and feels alive, not mechanical.
+   Respects prefers-reduced-motion via the block below.              */
+@keyframes qr-float-y {
+  0%, 100% { translate: 0 0px; }
+  30%       { translate: 0 -14px; }
+  65%       { translate: 0  8px; }
+}
+@keyframes qr-float-x {
+  0%, 100% { translate: 0px 0; }
+  40%       { translate: 10px 0; }
+  75%       { translate: -8px 0; }
+}
+@keyframes qr-spin {
+  0%, 100% { rotate:  -6deg; }
+  35%       { rotate:  -1deg; }
+  70%       { rotate: -10deg; }
+}
+
+.qr-float {
+  animation:
+    qr-float-y 5.4s ease-in-out infinite,
+    qr-float-x 7.1s ease-in-out infinite,
+    qr-spin    9.3s ease-in-out infinite;
+  will-change: translate, rotate;
+}
+
 /* Nothing here may be required to understand the interface. */
 @media (prefers-reduced-motion: reduce) {
   *,

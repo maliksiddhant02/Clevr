@@ -87,7 +87,7 @@ export default function Landing() {
         <div className="mt-12 flex justify-center">
           <svg
             viewBox="0 0 120 120"
-            className="h-48 w-48 -rotate-6 text-foreground"
+            className="qr-float h-48 w-48 text-foreground"
             fill="currentColor"
             aria-hidden
           >
