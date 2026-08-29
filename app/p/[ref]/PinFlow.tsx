@@ -1,13 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { HelpCircleIcon } from "@hugeicons/core-free-icons";
 import { formatAud } from "@/lib/money";
 import type { SamplePayment } from "@/lib/sample";
-import Image from "next/image";
 
 export function PinFlow({ payment }: { payment: SamplePayment }) {
   const router = useRouter();
@@ -20,8 +19,7 @@ export function PinFlow({ payment }: { payment: SamplePayment }) {
     if (key === "⌫") {
       setPin((prev) => prev.slice(0, -1));
     } else if (pin.length < 4) {
-      const nextPin = pin + key;
-      setPin(nextPin);
+      setPin((prev) => prev + key);
     }
   };
 
@@ -38,20 +36,11 @@ export function PinFlow({ payment }: { payment: SamplePayment }) {
     }
   };
 
-  // Auto-submit when PIN reaches 4 digits
-  useEffect(() => {
-    if (pin.length === 4) {
-      const timer = setTimeout(() => {
-        handleSubmit();
-      }, 250);
-      return () => clearTimeout(timer);
-    }
-  }, [pin]);
-
   return (
-    <main className="flex min-h-dvh flex-col bg-paper text-foreground justify-between">
+    // Added -mx-5 px-5 to make the payment page full-bleed, eliminating yellow side borders.
+    <main className="flex min-h-dvh flex-col bg-paper text-foreground justify-between -mx-5 px-5">
       {/* ── Header block matching UPI layout ── */}
-      <div className="px-5 pt-4 pb-4 border-b border-border bg-foreground/3">
+      <div className="pt-4 pb-4 border-b border-border bg-foreground/3">
         <div className="flex items-start justify-between">
           <div>
             <Link
@@ -71,14 +60,10 @@ export function PinFlow({ payment }: { payment: SamplePayment }) {
           </div>
           
           <div className="flex flex-col items-end">
-            <Image
-              src="/logo.png"
-              alt="CLEVR"
-              width={1774}
-              height={887}
-              priority
-              className="h-7 w-auto opacity-80"
-            />
+            {/* Replaced clevr logo top right with Commbank branding */}
+            <span className="text-[1rem] font-black tracking-[-0.03em] text-[#FFCC00] bg-black px-2 py-0.5 rounded-md">
+              CommBank
+            </span>
             <span className="text-[0.625rem] font-semibold text-muted-foreground uppercase tracking-widest mt-1">
               Instant Pay
             </span>
@@ -173,7 +158,7 @@ export function PinFlow({ payment }: { payment: SamplePayment }) {
             0
           </button>
           
-          {/* Submit Action Button */}
+          {/* Submit Action Button - Requires manual click as auto-submit useEffect has been removed */}
           <button
             type="button"
             onClick={handleSubmit}

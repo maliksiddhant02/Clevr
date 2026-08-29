@@ -12,7 +12,7 @@ import {
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import type { IconSvgElement } from "@hugeicons/react";
-import { getSession, signOut, switchRole, signIn, signInWith } from "@/lib/session";
+import { getSession, signOut, switchRole, signIn, signInProvider } from "@/lib/session";
 
 export const metadata: Metadata = {
   title: "CLEVR: Account",
@@ -27,7 +27,7 @@ type Row = {
 
 const SETTING: Row = {
   icon: FlashIcon,
-  title: "One-tap payments",
+  title: "Fast checkout",
   status: "Not set up",
   body: "Authorise CLEVR once in your banking app and every payment after that is a single tap. Your bank holds the authorisation, not us. Coming after launch.",
 };
@@ -49,7 +49,7 @@ const FAQ: Row[] = [
     body: "About 1.4% of the sale. Paying from your bank avoids that fee, so the shop keeps most of it and hands you the rest at the till.",
   },
   {
-    icon: ArrowRight01Icon, // placeholder since ArrowReloadHorizontalIcon isn't in scope
+    icon: ArrowRight01Icon,
     title: "How do refunds work?",
     body: "Refunds come back the same way, in seconds rather than the days a card takes. There are no chargebacks, which is part of why shops can afford the discount.",
   },
@@ -103,28 +103,15 @@ function Disclosure({ icon, title, status, body }: Row) {
 export default async function Account() {
   const session = await getSession();
 
-  // Social sign in server action helpers
-  async function handleGoogle() {
-    "use server";
-    await signInWith("Google");
-  }
-  async function handleApple() {
-    "use server";
-    await signInWith("Apple");
-  }
-  async function handleFacebook() {
-    "use server";
-    await signInWith("Facebook");
-  }
-
   return (
     <main className="pt-4 pb-28">
-      {/* ── Switch to Business View at the top ── */}
-      <div className="flex justify-end mb-6">
+      {/* ── Switch to Business View Header Row ── */}
+      <div className="flex items-center justify-between pt-4 pb-6">
+        <h1 className="display text-foreground text-[2.5rem]">Account</h1>
         <form action={switchRole}>
           <button
             type="submit"
-            className="bg-foreground text-paper border-foreground hover:opacity-90 flex h-11 px-5 items-center justify-center rounded-full text-[0.8125rem] font-bold transition-all cursor-pointer"
+            className="bg-foreground text-paper hover:opacity-90 flex h-10 px-4 items-center justify-center rounded-full text-[0.8125rem] font-bold transition-all cursor-pointer shrink-0"
           >
             Switch to business view
           </button>
@@ -134,11 +121,13 @@ export default async function Account() {
       {session ? (
         // ── SIGNED IN: Profile View ──
         <>
-          <h1 className="display text-foreground text-[3.5rem]">Account</h1>
-
-          <div className="mt-6 rounded-2xl bg-foreground/6 px-4 py-4">
-            <p className="text-foreground font-semibold">{session.name}</p>
-            <p className="text-muted-foreground mt-0.5 text-[0.875rem]">{session.email}</p>
+          <div className="mt-2 rounded-2xl bg-foreground/6 px-4 py-4 flex flex-col gap-1.5">
+            <p className="text-foreground text-[0.9375rem] font-semibold">
+              <span className="text-muted-foreground font-normal">Name:</span> {session.name}
+            </p>
+            <p className="text-foreground text-[0.9375rem] font-semibold">
+              <span className="text-muted-foreground font-normal">Email:</span> {session.email}
+            </p>
           </div>
 
           <ul className="border-border mt-8 divide-y divide-[rgb(0_0_0/0.16)] border-y">
@@ -146,7 +135,10 @@ export default async function Account() {
           </ul>
 
           <div className="mt-6 flex flex-col gap-3">
-            <form action={signOut}>
+            <form
+              action={signOut}
+              onSubmit={`if(!confirm("Are you sure you want to sign out?")) { event.preventDefault(); }` as any}
+            >
               <button
                 type="submit"
                 className="border-border text-foreground hover:bg-foreground/5 flex h-14 w-full items-center justify-center rounded-2xl border text-[1rem] font-medium transition-colors cursor-pointer"
@@ -167,7 +159,7 @@ export default async function Account() {
         </>
       ) : (
         // ── SIGNED OUT: Sign Up Form View ──
-        <div className="flex flex-col pt-2">
+        <div className="flex flex-col">
           {/* Logo */}
           <div className="mb-6">
             <Image
@@ -181,16 +173,17 @@ export default async function Account() {
           </div>
 
           {/* Heading block */}
-          <h1 className="display text-foreground text-[2.75rem] leading-[1.05] font-black">
+          <h2 className="display text-foreground text-[2.75rem] leading-[1.05] font-black">
             Pay by bank.
-          </h1>
+          </h2>
           <p className="text-muted-foreground mt-3 text-[1.0625rem] font-medium leading-normal">
             Keep a share of every card fee the shop just avoided.
           </p>
 
           {/* Social Sign-in Buttons */}
           <div className="mt-8 flex flex-col gap-3">
-            <form action={handleGoogle}>
+            <form action={signInProvider}>
+              <input type="hidden" name="provider" value="Google" />
               <button
                 type="submit"
                 className="bg-paper hover:bg-foreground/5 text-foreground border border-border flex h-14 w-full items-center justify-center gap-3 rounded-full text-[1.0125rem] font-semibold transition-colors cursor-pointer"
@@ -205,7 +198,8 @@ export default async function Account() {
               </button>
             </form>
 
-            <form action={handleApple}>
+            <form action={signInProvider}>
+              <input type="hidden" name="provider" value="Apple" />
               <button
                 type="submit"
                 className="bg-paper hover:bg-foreground/5 text-foreground border border-border flex h-14 w-full items-center justify-center gap-3 rounded-full text-[1.0125rem] font-semibold transition-colors cursor-pointer"
@@ -217,7 +211,8 @@ export default async function Account() {
               </button>
             </form>
 
-            <form action={handleFacebook}>
+            <form action={signInProvider}>
+              <input type="hidden" name="provider" value="Facebook" />
               <button
                 type="submit"
                 className="bg-paper hover:bg-foreground/5 text-foreground border border-border flex h-14 w-full items-center justify-center gap-3 rounded-full text-[1.0125rem] font-semibold transition-colors cursor-pointer"
@@ -305,11 +300,8 @@ function MvpSignBtn() {
   return (
     <button
       type="button"
-      className="text-foreground font-bold underline hover:opacity-85"
-      onClick={() => {
-        const dialog = document.getElementById("mvp") as HTMLDialogElement | null;
-        dialog?.showModal();
-      }}
+      className="text-foreground font-bold underline hover:opacity-85 cursor-pointer"
+      onClick={`(document.getElementById("mvp")).showModal()` as any}
     >
       Sign in
     </button>

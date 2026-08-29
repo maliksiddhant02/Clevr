@@ -1,5 +1,7 @@
 import { notFound } from "next/navigation";
-import { ScreenHeader } from "@/components/ScreenHeader";
+import Link from "next/link";
+import { Cancel01Icon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import { Avatar } from "@/components/Avatar";
 import { cardFeeCents, formatAud, splitAud } from "@/lib/money";
 import { findPayment } from "@/lib/sample";
@@ -24,7 +26,20 @@ export default async function PaymentDetail({
 
   return (
     <main className="pb-12">
-      <ScreenHeader title="Payment" back="/activity" />
+      {/* Custom header displaying a top-left close "X" icon returning to shopper Home */}
+      <header className="flex items-center gap-3 py-4">
+        <Link
+          href="/"
+          aria-label="Close and go home"
+          className="border-foreground text-foreground hover:bg-muted flex h-11 w-11 shrink-0 items-center justify-center rounded-full border transition-colors duration-200"
+        >
+          <HugeiconsIcon icon={Cancel01Icon} size={20} strokeWidth={2} aria-hidden />
+        </Link>
+        <h1 className="text-foreground flex-1 text-center text-[1.0625rem] font-semibold">
+          Payment Details
+        </h1>
+        <span aria-hidden className="h-11 w-11 shrink-0" />
+      </header>
 
       <div className="flex items-center gap-3 pt-6">
         <Avatar name={payment.merchant} size="lg" />
@@ -55,9 +70,6 @@ export default async function PaymentDetail({
             <dt className="text-muted-foreground text-[0.9375rem]">
               {row.label}
             </dt>
-            {/* The reference is the one value a human reads back aloud, so it
-                is the one value set in mono. A misread reference means the
-                merchant's tick never fires. */}
             <dd
               className={`text-[0.9375rem] ${
                 row.mono ? "font-mono tracking-[0.04em]" : "tabular-nums"

@@ -82,6 +82,11 @@ export async function signInWith(provider: string): Promise<void> {
   redirect("/");
 }
 
+export async function signInProvider(formData: FormData): Promise<void> {
+  const provider = String(formData.get("provider") ?? "Google");
+  await signInWith(provider);
+}
+
 export async function signOut(): Promise<void> {
   const store = await cookies();
   store.delete(COOKIE);
