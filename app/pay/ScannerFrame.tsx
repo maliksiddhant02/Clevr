@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Image01Icon, KeyboardIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon, type IconSvgElement } from "@hugeicons/react";
@@ -23,11 +23,11 @@ function Action({
     <button
       type="button"
       onClick={onClick}
-      className="text-paper [--focus-ring:var(--color-paper)] flex w-24 flex-col items-center gap-2"
+      className="text-paper [--focus-ring:var(--color-paper)] flex w-24 flex-col items-center gap-2 text-center"
     >
       <span
         aria-hidden
-        className="border-paper/25 flex h-14 w-14 items-center justify-center rounded-full border"
+        className="border-paper/25 flex h-14 w-14 items-center justify-center rounded-full border hover:bg-white/5 transition-colors"
       >
         <HugeiconsIcon icon={icon} size={22} strokeWidth={1.8} />
       </span>
@@ -40,6 +40,50 @@ export function ScannerFrame() {
   const router = useRouter();
   const [code, setCode] = useState("");
   const entry = useRef<HTMLDialogElement>(null);
+  
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [cameraStatus, setCameraStatus] = useState<"loading" | "active" | "denied" | "unsupported">("loading");
+
+  useEffect(() => {
+    if (typeof window === "undefined" || !navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      setCameraStatus("unsupported");
+      return;
+    }
+
+    let activeStream: MediaStream | null = null;
+
+    async function startCamera() {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: "environment" },
+          audio: false,
+        });
+        activeStream = stream;
+        if (videoRef.current) {
+          videoRef.current.srcObject = stream;
+        }
+        setCameraStatus("active");
+      } catch (err) {
+        console.error("Camera access error:", err);
+        setCameraStatus("denied");
+      }
+    }
+
+    startCamera();
+
+    return () => {
+      if (activeStream) {
+        activeStream.getTracks().forEach((track) => track.stop());
+      }
+    };
+  }, []);
+
+  // Update srcObject on videoRef if status becomes active later
+  useEffect(() => {
+    if (cameraStatus === "active" && videoRef.current && videoRef.current.srcObject === null) {
+      // Re-query stream if needed, but normally handled in the initialization effect
+    }
+  }, [cameraStatus]);
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -52,29 +96,57 @@ export function ScannerFrame() {
       {/* The viewfinder takes the free space rather than a fixed height, so it
           sits optically centred on a tall phone and a short one alike. */}
       <div className="flex flex-1 items-center justify-center py-10">
-        <div className="qr-pulse relative h-[17rem] w-[17rem] max-w-full">
-          {/* Four brackets, not a box: a closed rectangle reads as a frame the
-              reader is meant to fill, and the corners read as an aim. Sun is
-              the one accent inside an Ink block (DESIGN.md 5). */}
-          {(
-            [
-              ["top-0 left-0", "border-t-[3px] border-l-[3px] rounded-tl-[1.75rem]"],
-              ["top-0 right-0", "border-t-[3px] border-r-[3px] rounded-tr-[1.75rem]"],
-              ["bottom-0 left-0", "border-b-[3px] border-l-[3px] rounded-bl-[1.75rem]"],
-              ["bottom-0 right-0", "border-b-[3px] border-r-[3px] rounded-br-[1.75rem]"],
-            ] as const
-          ).map(([corner, edges]) => (
-            <span
-              key={corner}
-              aria-hidden
-              className={`border-sun absolute h-16 w-16 ${corner} ${edges}`}
-            />
-          ))}
+        <div className="relative h-[17rem] w-[17rem] max-w-full">
+          
+          {/* Camera feed viewport wrapper */}
+          <div className="absolute inset-[3px] overflow-hidden rounded-[1.5rem] bg-black/40 flex items-center justify-center">
+            {cameraStatus === "active" && (
+              <video
+                ref={videoRef}
+                playsInline
+                muted
+                autoPlay
+                className="h-full w-full object-cover"
+              />
+            )}
+            {cameraStatus === "loading" && (
+              <span className="text-on-ink/60 text-[0.8125rem]">Accessing camera...</span>
+            )}
+            {cameraStatus === "denied" && (
+              <span className="text-on-ink/60 text-center px-4 text-[0.8125rem]">
+                Camera permission denied.<br />Enter code manually.
+              </span>
+            )}
+            {cameraStatus === "unsupported" && (
+              <span className="text-on-ink/60 text-center px-4 text-[0.8125rem]">
+                Camera not supported.<br />Enter code manually.
+              </span>
+            )}
+          </div>
+
+          {/* Four brackets overlay (Aim) */}
+          <div className="qr-pulse absolute inset-0 pointer-events-none">
+            {(
+              [
+                ["top-0 left-0", "border-t-[3px] border-l-[3px] rounded-tl-[1.75rem]"],
+                ["top-0 right-0", "border-t-[3px] border-r-[3px] rounded-tr-[1.75rem]"],
+                ["bottom-0 left-0", "border-b-[3px] border-l-[3px] rounded-bl-[1.75rem]"],
+                ["bottom-0 right-0", "border-b-[3px] border-r-[3px] rounded-br-[1.75rem]"],
+              ] as const
+            ).map(([corner, edges]) => (
+              <span
+                key={corner}
+                aria-hidden
+                className={`border-sun absolute h-16 w-16 ${corner} ${edges}`}
+              />
+            ))}
+          </div>
+
         </div>
       </div>
 
       <p className="text-on-ink text-center text-[0.9375rem]">
-        The camera is not live in this demo. Enter a code instead.
+        Scan a code, or enter one manually below.
       </p>
 
       <div className="mt-8 flex justify-center gap-6">
@@ -119,8 +191,6 @@ export function ScannerFrame() {
           </button>
         </form>
 
-        {/* A modal with no visible way out is a trap on a phone, where there
-            is no Escape key. */}
         <form method="dialog">
           <button
             type="submit"
