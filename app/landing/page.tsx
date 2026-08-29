@@ -36,9 +36,23 @@ const SLIDES = [
   { title: "Pay in two taps", note: "Scan, confirm, done" },
 ] as const;
 
+// Two columns, long one first, exactly as the reference stacks them.
 const FOOTER = [
-  ["CLEVR card", "Rewards", "Support", "Responsible play", "Privacy policy"],
-  ["How it works", "Reward terms", "Privacy notice", "Terms of service", "Card terms"],
+  [
+    "CLEVR card",
+    "Rewards",
+    "Support",
+    "How it works",
+    "Privacy policy",
+    "Terms of service",
+    "Card terms",
+  ],
+  ["Merchants", "Reward terms", "Privacy notice"],
+] as const;
+
+const STORES = [
+  ["App Store", AppleIcon],
+  ["Google Play", PlayStoreIcon],
 ] as const;
 
 export default function Landing() {
@@ -264,50 +278,71 @@ export default function Landing() {
         </ul>
       </section>
 
-      {/* Footer. Two columns, hairline on top. */}
-      <footer className="border-border mt-24 border-t pt-10">
-        <span className="bg-foreground text-sun display flex h-11 w-11 items-center justify-center rounded-full text-[1.25rem]">
+      {/* The footer is a Paper band: the page's one release from Sun, running
+          full bleed to the bottom edge. See DESIGN.md 1. */}
+      <footer className="bg-card text-foreground -mx-5 mt-24 px-5 pt-[4.5rem] pb-10">
+        {/* The mark on a Sun tile, which is the only Sun left once the ground
+            has gone Paper, so it reads as the accent rather than as more page. */}
+        <span
+          aria-hidden
+          className="bg-sun text-foreground display flex h-12 w-12 items-center justify-center rounded-[0.875rem] text-[1.75rem]"
+        >
           c
         </span>
-        <div className="mt-8 grid grid-cols-2 gap-x-4">
-          {FOOTER.map((column, i) => (
-            <ul key={i}>
-              {column.map((item) => (
+
+        <div className="mt-10 grid grid-cols-2 items-start gap-x-4">
+          <ul>
+            {FOOTER[0].map((item) => (
+              <li key={item}>
+                <Link
+                  href="#waitlist"
+                  className="text-foreground flex min-h-11 items-center text-[1.0625rem] font-semibold"
+                >
+                  {item}
+                </Link>
+              </li>
+            ))}
+          </ul>
+
+          {/* The short column carries the store marks, so they land level with
+              the last link of the long one rather than starting a new row. */}
+          <div className="flex h-full flex-col">
+            <ul>
+              {FOOTER[1].map((item) => (
                 <li key={item}>
                   <Link
                     href="#waitlist"
-                    className="text-foreground flex min-h-11 items-center text-[0.875rem]"
+                    className="text-foreground flex min-h-11 items-center text-[1.0625rem] font-semibold"
                   >
                     {item}
                   </Link>
                 </li>
               ))}
             </ul>
-          ))}
+            <div className="mt-auto flex justify-end gap-2 pt-8">
+              {STORES.map(([name, icon]) => (
+                <Link
+                  key={name}
+                  href="#waitlist"
+                  aria-label={name}
+                  className="text-foreground flex h-11 w-11 items-center justify-center"
+                >
+                  <HugeiconsIcon icon={icon} size={24} strokeWidth={1.8} aria-hidden />
+                </Link>
+              ))}
+            </div>
+          </div>
         </div>
 
-        <div className="mt-8 flex gap-3">
-          {["App Store", "Google Play"].map((store) => (
-            <ButtonLink
-              key={store}
-              href="#waitlist"
-              variant="outline"
-              className="h-11 flex-1 px-4 text-[0.8125rem]"
-            >
-              {store}
-            </ButtonLink>
-          ))}
-        </div>
-
-        {/* The wordmark as a sign-off band, sized to the column rather than to
-            the text: it is a mark, not a link. */}
+        {/* The wordmark as a sign-off, sized to the column rather than set at a
+            fixed size: it is a mark, not a heading, so it fills the band. */}
         <p
           aria-hidden
-          className="display text-foreground -mx-5 mt-16 overflow-hidden text-center text-[7rem] leading-none"
+          className="display text-foreground border-border mt-10 border-t pt-14 text-center text-[clamp(3.5rem,35vw,8.5rem)]"
         >
           clevr
         </p>
-        <p className="text-muted-foreground py-8 text-center text-[0.6875rem]">
+        <p className="text-muted-foreground mt-6 text-center text-[0.875rem] font-medium">
           © 2026 CLEVR
         </p>
       </footer>

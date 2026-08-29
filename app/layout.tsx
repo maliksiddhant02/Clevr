@@ -1,12 +1,13 @@
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
+import { Outfit } from "next/font/google";
 import "./globals.css";
 
-// One face, two jobs. Inter at 400/500/600 carries body and UI; the same face
-// at 900 with tight tracking is the display voice. The variable font ships
-// every weight in one file, so the second job costs nothing.
-const inter = Inter({
-  variable: "--font-inter",
+// One face, every job. Outfit is the free stand-in for Cera Round, which the
+// reference site licenses and this repo cannot ship: same geometric skeleton,
+// same 100-900 variable range, so 400/500/600 carry body and UI and 900 is the
+// display voice. Swapping in a licensed Cera Round is this one declaration.
+const outfit = Outfit({
+  variable: "--font-outfit",
   subsets: ["latin"],
 });
 
@@ -16,13 +17,13 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#ffe500",
+  themeColor: "#fff401",
   // No maximumScale or userScalable:false. Never block pinch zoom.
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${inter.variable} h-full antialiased`}>
+    <html lang="en" className={`${outfit.variable} h-full antialiased`}>
       <body className="min-h-full">
         {/* Mobile-only. Both real surfaces are phones: a stall owner's handset
             and a stranger's handset. On anything wider this stays a centred

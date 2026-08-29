@@ -22,6 +22,12 @@ a solid Ink block with Paper type on it, and Sun returns inside that block as
 the single accent. That inversion is the entire emphasis system: Sun ground with
 Ink type, or Ink ground with Paper type and one Sun mark. Nothing else.
 
+There is one **Paper band**: the landing page's footer. It is the page's only
+release from Sun, and it works for the same reason the Ink blocks do — the
+ground changes, so Sun stops being the room and becomes an object in it, which
+is why the brand tile in that footer reads as a mark rather than as more page.
+Paper is a band, never a card stack, and never more than one per page.
+
 Consequences that are not negotiable:
 
 - **No gradients.** Anywhere.
@@ -48,16 +54,15 @@ yellow below it.
 
 | Token | Value | Role |
 |---|---|---|
-| `background` | `#ffe500` | Sun. The page canvas, edge to edge, every route. |
-| `foreground` | `#101010` | Ink. Type, fills, dark grounds, icons. |
-| body text | `#2b2823` | Graphite, set on `body`. Softer than Ink, never harsh. |
-| `paper` | `#ffffff` | Type and pills **on** Ink. |
-| `card` | `#ffffff` | Paper card surfaces sitting on Sun. |
-| `muted` | `#f2d400` | Deep Sun. Chart washes, tracks, chips, hover states. |
-| `muted-foreground` | `#4a4530` | Secondary text. **7.2:1 on Sun, 9.1:1 on Paper. Measured.** |
-| `border` | `rgb(16 16 16 / 0.18)` | The hairline. Works on Sun and on Paper. |
-| `sun` | `#ffe500` | The accent **on Ink grounds only**. Same value as the page. |
-| `on-ink` | `#e9e7de` | Secondary text on Ink blocks. 13.6:1. |
+| `background` | `#fff401` | Sun. The page canvas, edge to edge, every route. |
+| `foreground` | `#000000` | Ink. Type, fills, dark grounds, icons. Also `body`. |
+| `paper` | `#ffffff` | Type and pills **on** Ink, and the footer band's ground. |
+| `card` | `#ffffff` | Paper card and band surfaces sitting on Sun. |
+| `muted` | `#f2e800` | Deep Sun. Chart washes, tracks, chips, hover states. |
+| `muted-foreground` | `#4a4a45` | Secondary text. **7.7:1 on Sun, 8.0:1 on Paper. Measured.** |
+| `border` | `rgb(0 0 0 / 0.16)` | The hairline. Works on Sun and on Paper. |
+| `sun` | `#fff401` | The accent **on Ink and Paper grounds only**. |
+| `on-ink` | `#d9d9d9` | Secondary text on Ink blocks. 11.6:1. |
 | `success` | `#054d28` | Spruce. Money the shopper kept. Nothing else. |
 
 `sun` and `background` hold the same value on purpose, and they are two tokens
@@ -66,10 +71,13 @@ inside an inverted block. Writing `text-sun` on a Sun ground is the one way to
 make an element vanish, and having a separate name makes that mistake visible in
 review.
 
-`muted-foreground` is the one colour that had to be recomputed rather than
-picked. Mid-greys that look correct on white measure under 3:1 against Sun,
-because Sun's luminance is close to Paper's. The token is a warm dark that
-passes on both surfaces.
+Sun, Ink and Paper are taken from the reference implementation's own custom
+properties rather than sampled from a screenshot, so `#fff401` is exact. The
+greys are not. The reference sets secondary text at `rgba(0,0,0,0.2)` and
+`0.5`; the first measures 1.4:1 on Paper and the second about 3.5:1 on Sun, and
+both fail. `muted-foreground` is a solid neutral chosen to pass on Sun *and*
+Paper, which is the one place this system deliberately departs from what it
+copies. Rule 1 in §7 outranks fidelity.
 
 **Radii.** Pills (`rounded-full`) on buttons, tabs, chips and avatars. 10px
 (`rounded-xl`, `rounded-lg`) on controls and tiles. 28px (`rounded-2xl`) on
@@ -77,9 +85,17 @@ cards, media blocks and the Ink bands. Sharp corners appear nowhere.
 
 ## 3. Type
 
-One face, two jobs. Inter ships as a variable font, so the second job is free.
+One face, every job. The reference sets everything in **Cera Round**, a
+commercial TypeMates family that this repo cannot ship: it is licensed, not
+redistributable, and lifting the `woff2` off their server would be copying
+someone's paid font. **Outfit** stands in — free, on Google Fonts, the same
+geometric skeleton and the same 100–900 variable range, so it covers the 400,
+500, 600, 700 and 900 the reference actually uses. It is flat where Cera Round's
+terminals are rounded; that is the visible difference and the only one. Anyone
+holding a Cera Round licence swaps it at the single `Outfit(...)` declaration in
+[`app/layout.tsx`](../app/layout.tsx).
 
-- **`.display`** (Inter 900, `-0.04em`, `line-height: 0.92`) for screen titles,
+- **`.display`** (900, `-0.019em`, `line-height: 1`) for screen titles,
   the brand mark, hero numbers and section openers. Landing sections open at
   40px and the hero runs at 46px, which is meant to feel loud. Headlines break
   across two or three short lines with explicit `<br />` rather than wrapping on

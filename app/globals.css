@@ -6,19 +6,19 @@
 @theme inline {
   /* The page is the accent. Sun yellow runs edge to edge on every screen and
      Ink is the only mark on it; emphasis inverts to a solid Ink block. */
-  --color-background: #ffe500; /* Sun: page canvas, edge to edge     */
-  --color-foreground: #101010; /* Ink: type, fills, dark grounds     */
+  --color-background: #fff401; /* Sun: page canvas, edge to edge     */
+  --color-foreground: #000000; /* Ink: type, fills, dark grounds     */
   --color-paper: #ffffff; /* Paper: type and pills on Ink       */
-  --color-card: #ffffff; /* Paper: card surfaces on Sun        */
-  --color-muted: #f2d400; /* Deep Sun: tracks, chips, hover     */
-  --color-muted-foreground: #4a4530; /* 7.2:1 on Sun, 9.1:1 on Paper       */
-  --color-border: rgb(16 16 16 / 0.18);
-  --color-sun: #ffe500; /* the accent on Ink grounds only     */
-  --color-on-ink: #e9e7de; /* secondary text on Ink, 13.6:1      */
+  --color-card: #ffffff; /* Paper: card and band surfaces      */
+  --color-muted: #f2e800; /* Deep Sun: tracks, chips, hover     */
+  --color-muted-foreground: #4a4a45; /* 7.7:1 on Sun, 8.0:1 on Paper       */
+  --color-border: rgb(0 0 0 / 0.16);
+  --color-sun: #fff401; /* the accent on Ink grounds only     */
+  --color-on-ink: #d9d9d9; /* secondary text on Ink, 11.6:1      */
   --color-success: #054d28; /* Spruce: money the shopper kept     */
 
   /* Inter does the quiet work; Inter Black at 900 does the shouting. */
-  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-sans: var(--font-outfit), system-ui, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
 
   /* Pills by default, 10px on controls, 28px on cards and media. */
@@ -49,12 +49,12 @@ html {
   background-color: var(--color-background);
   scrollbar-gutter: stable;
   scrollbar-width: thin;
-  scrollbar-color: rgb(16 16 16 / 0.3) transparent;
+  scrollbar-color: rgb(0 0 0 / 0.3) transparent;
 }
 
 body {
   background-color: var(--color-background);
-  color: #2b2823; /* Graphite: softer than Ink, never harsh */
+  color: var(--color-foreground);
   font-family: var(--font-sans);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
@@ -65,13 +65,13 @@ body {
   color: var(--color-sun);
 }
 
-/* The display voice: Inter Black, tracked tight enough to read as one block.
-   Reserved for screen titles, the brand mark and section openers. Colour is
-   deliberately left to the caller so it inverts cleanly on Ink grounds. */
+/* The display voice: the face at 900, tracked tight enough to read as one
+   block. Reserved for screen titles, the brand mark and section openers.
+   Colour is deliberately left to the caller so it inverts on Ink grounds. */
 .display {
   font-weight: 900;
-  letter-spacing: -0.04em;
-  line-height: 0.92;
+  letter-spacing: -0.019em;
+  line-height: 1;
 }
 
 /* Focus rings are never removed without a replacement: the tab bar and the
