@@ -1,4 +1,5 @@
 import { formatAud, splitAud } from "@/lib/money";
+import { Card } from "@/components/Card";
 import { PaymentRow } from "@/components/PaymentRow";
 import { PAYMENTS, SAVED_CENTS, SPENT_CENTS, byDay } from "@/lib/sample";
 
@@ -47,11 +48,13 @@ export default function Activity() {
             >
               {day}
             </h2>
-            <ul>
-              {payments.map((p) => (
-                <PaymentRow key={p.ref} payment={p} />
-              ))}
-            </ul>
+            <Card>
+              <ul>
+                {payments.map((p) => (
+                  <PaymentRow key={p.ref} payment={p} />
+                ))}
+              </ul>
+            </Card>
           </section>
         ))}
       </div>

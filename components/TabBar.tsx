@@ -53,26 +53,30 @@ export function TabBar({
         {tabs.map(({ href, label, icon }, i) => {
           const active = pathname === href;
           const item = (
-            <li key={href} className="flex-1">
+            <li key={href} className="relative flex-1">
+              {/* Active indicator: a 3px Ink bar sitting on the top hairline.
+                  Editorial and quiet — the label doing the rest of the work. */}
+              {active && (
+                <span
+                  aria-hidden
+                  className="bg-foreground absolute top-[-1px] left-1/2 h-[3px] w-10 -translate-x-1/2 rounded-full"
+                />
+              )}
               <Link
                 href={href}
                 aria-current={active ? "page" : undefined}
-                className={`flex min-h-12 flex-col items-center justify-center gap-1 ${
+                className={`flex min-h-12 flex-col items-center justify-center gap-1 pt-1 ${
                   active ? "text-foreground" : "text-muted-foreground"
                 }`}
               >
-                {/* The Ink pill is the app's single active-state signal, and
-                    only one tab can be active at a time. */}
-                <span
+                <HugeiconsIcon
+                  icon={icon}
+                  size={22}
+                  strokeWidth={active ? 2.2 : 1.7}
                   aria-hidden
-                  className={`flex h-7 w-14 items-center justify-center rounded-full transition-colors duration-200 ${
-                    active ? "bg-foreground text-paper" : "bg-transparent"
-                  }`}
-                >
-                  <HugeiconsIcon icon={icon} size={20} strokeWidth={active ? 2.2 : 1.8} />
-                </span>
+                />
                 <span
-                  className={`text-[0.8125rem] leading-none ${active ? "font-semibold" : "font-medium"}`}
+                  className={`text-[0.8125rem] leading-none ${active ? "font-bold" : "font-medium"}`}
                 >
                   {label}
                 </span>

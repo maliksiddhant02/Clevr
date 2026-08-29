@@ -116,7 +116,6 @@ export default function Account() {
       </div>
     );
   }
-  /* */
 
   return (
     <main className="pt-6 pb-28">

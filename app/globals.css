@@ -135,6 +135,44 @@ body {
   animation: qr-pulse 2.4s cubic-bezier(0.37, 0, 0.63, 1) infinite;
 }
 
+/* Native <dialog> entrance: fade + subtle scale, backdrop fades in.
+   Uses `allow-discrete` so opacity/scale can animate across the discrete
+   display change that `showModal()` triggers, without any JS. */
+dialog {
+  opacity: 0;
+  scale: 0.96;
+  transition:
+    opacity 0.25s ease-out,
+    scale 0.25s ease-out,
+    overlay 0.25s ease-out allow-discrete,
+    display 0.25s ease-out allow-discrete;
+}
+dialog[open] {
+  opacity: 1;
+  scale: 1;
+}
+@starting-style {
+  dialog[open] {
+    opacity: 0;
+    scale: 0.96;
+  }
+}
+dialog::backdrop {
+  opacity: 0;
+  transition:
+    opacity 0.25s ease-out,
+    overlay 0.25s ease-out allow-discrete,
+    display 0.25s ease-out allow-discrete;
+}
+dialog[open]::backdrop {
+  opacity: 1;
+}
+@starting-style {
+  dialog[open]::backdrop {
+    opacity: 0;
+  }
+}
+
 /* The one authored moment in the app: the savings line draws itself, once. */
 @keyframes draw-line {
   from {
