@@ -49,7 +49,6 @@ const STORES = [
 export default function Landing() {
   return (
     <main>
-      <MvpDialog />
       <NavSheet />
 
       {/* Hero, at the reference's measurements: an 11px gutter rather than the
@@ -161,7 +160,7 @@ export default function Landing() {
           <ButtonLink
             href="https://apps.apple.com/us/app/coverd-win-purchases-back/id6741347396"
             variant="outline"
-            className="w-64 font-outfit"
+            className="w-full max-w-64 font-outfit"
             target="_blank"
             rel="noopener"
           >
@@ -211,6 +210,7 @@ export default function Landing() {
           alt=""
           width={1254}
           height={1254}
+          sizes="48px"
           className="h-12 w-12 rounded-[0.875rem]"
         />
 
@@ -260,9 +260,11 @@ export default function Landing() {
         <div className="border-border mt-10 flex justify-center border-t pt-14">
           <Image
             src="/logo.png"
-            alt="CLEVR"
+            alt=""
+            aria-hidden
             width={1774}
             height={887}
+            sizes="(max-width: 430px) 70vw, 272px"
             className="h-[clamp(3.5rem,35vw,8.5rem)] w-auto"
           />
         </div>
@@ -270,6 +272,10 @@ export default function Landing() {
           © 2026 CLEVR
         </p>
       </footer>
+
+      {/* Last in source order: its heading would otherwise precede the page's
+          own h1 in every heading-order scan. */}
+      <MvpDialog />
     </main>
   );
 }

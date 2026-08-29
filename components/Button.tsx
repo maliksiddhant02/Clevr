@@ -3,9 +3,17 @@ import type { ComponentProps, ReactNode } from "react";
 
 const VARIANT = {
   // Ink fill, Paper text. The fill does all the work: no border, no shadow.
-  primary: "bg-foreground text-paper hover:opacity-90",
+  // Both filled pills carry their focus ring INSIDE the fill, in the fill's
+  // own contrasting colour. An outside ring cannot work here: Chrome's focus
+  // ring contrast adjustment samples the element's own background, so an Ink
+  // ring on an Ink pill is repainted white (landing on Sun at 1.15:1) and a
+  // Paper ring on a Paper pill is repainted black. Inset, each ring is 21:1
+  // against the fill it sits on and nothing adjusts it away.
+  primary:
+    "bg-foreground text-paper hover:opacity-90 [--focus-ring:var(--color-paper)] [--focus-ring-offset:-5px]",
   // Paper fill, for a pill sitting on an Ink ground where outline would vanish.
-  paper: "bg-paper text-foreground hover:opacity-90",
+  paper:
+    "bg-paper text-foreground hover:opacity-90 [--focus-ring:var(--color-foreground)] [--focus-ring-offset:-5px]",
   outline: "border-foreground text-foreground border bg-transparent hover:bg-muted",
   ghost: "text-muted-foreground hover:text-foreground bg-transparent",
 } as const;

@@ -8,7 +8,12 @@ import { Button } from "@/components/Button";
 function SubmitButton() {
   const { pending } = useFormStatus();
   return (
-    <Button type="submit" className="w-full font-outfit" disabled={pending}>
+    <Button
+      type="submit"
+      className="w-full font-outfit"
+      aria-disabled={pending}
+      onClick={(e) => pending && e.preventDefault()}
+    >
       {pending ? "Joining…" : "Join the waitlist"}
     </Button>
   );
@@ -29,7 +34,7 @@ export function WaitlistForm() {
   return (
     <>
       <Button
-        className="w-64 font-outfit"
+        className="w-full max-w-64 font-outfit"
         onClick={() => ref.current?.showModal()}
       >
         Join the waitlist
@@ -38,7 +43,7 @@ export function WaitlistForm() {
       <dialog
         ref={ref}
         aria-labelledby="waitlist-title"
-        className="bg-card text-foreground m-auto w-[min(21.25rem,calc(100vw-2.5rem))] rounded-3xl p-6 text-center backdrop:bg-black/60"
+        className="bg-card text-foreground m-auto w-[min(21.25rem,calc(100vw-2.5rem))] rounded-3xl p-6 text-center backdrop:bg-foreground/60"
       >
         {state?.ok ? (
           <>
@@ -72,7 +77,7 @@ export function WaitlistForm() {
                 inputMode="email"
                 placeholder="you@example.com"
                 aria-label="Email"
-                className="border-border text-foreground placeholder:text-muted-foreground focus:border-foreground h-14 w-full rounded-full border bg-transparent px-5 text-center text-[1rem] outline-none"
+                className="border-muted-foreground text-foreground placeholder:text-muted-foreground focus:border-foreground h-14 w-full rounded-full border bg-transparent px-5 text-center text-[1rem]"
               />
               <SubmitButton />
             </form>

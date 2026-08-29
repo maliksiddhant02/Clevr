@@ -17,7 +17,8 @@
   --color-on-ink: #d9d9d9; /* secondary text on Ink, 11.6:1      */
   --color-success: #054d28; /* Spruce: money the shopper kept     */
 
-  /* Inter does the quiet work; Inter Black at 900 does the shouting. */
+  /* Cera Round Pro does the quiet work and the shouting; Outfit catches the
+     glyphs the demo cuts sabotage. See DESIGN.md 3. */
   --font-sans: var(--font-cera-round), var(--font-outfit), system-ui, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
 
@@ -81,6 +82,7 @@ body {
   font-weight: 900;
   letter-spacing: -0.019em;
   line-height: 1;
+  overflow-wrap: anywhere;
 }
 
 /* Section openers are Bold at 1.2, not Black at 1. The reference reserves its
@@ -90,13 +92,19 @@ body {
   font-weight: 700;
   letter-spacing: -0.019em;
   line-height: 1.2;
+  overflow-wrap: anywhere;
 }
 
 /* Focus rings are never removed without a replacement: the tab bar and the
-   list rows are the whole interface. */
+   list rows are the whole interface.
+
+   Ink is right on Sun and on Paper, and invisible on the ground this system
+   inverts to. So the colour and the offset are variables a control on an Ink
+   fill can override: this rule is unlayered and would otherwise outrank any
+   utility class trying to correct it. See Button.tsx. */
 :focus-visible {
-  outline: 2px solid var(--color-foreground);
-  outline-offset: 2px;
+  outline: 2px solid var(--focus-ring, var(--color-foreground));
+  outline-offset: var(--focus-ring-offset, 2px);
   border-radius: 4px;
 }
 

@@ -20,7 +20,7 @@ export function MockDisclaimer() {
     <dialog
       ref={ref}
       aria-labelledby="disclaimer-title"
-      className="bg-card text-foreground m-auto w-[min(21.25rem,calc(100vw-2.5rem))] rounded-3xl p-6 text-center backdrop:bg-black/60"
+      className="bg-card text-foreground m-auto w-[min(21.25rem,calc(100vw-2.5rem))] rounded-3xl p-6 text-center backdrop:bg-foreground/60"
     >
       <div className="bg-foreground text-paper mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl">
         <HugeiconsIcon icon={FlashIcon} size={24} strokeWidth={2} />

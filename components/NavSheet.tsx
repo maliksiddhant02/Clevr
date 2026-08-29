@@ -42,12 +42,29 @@ export function NavSheet() {
   const [open, setOpen] = useState(false);
   const [sheetHeight, setSheetHeight] = useState(0);
   const navRef = useRef<HTMLElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+
+  // Closing from anywhere but the trigger leaves focus inside a subtree that
+  // is about to be inert and clipped to zero height: no ring anywhere on
+  // screen, and the next Tab resumes from a position nobody can see.
+  const close = () => {
+    if (navRef.current?.contains(document.activeElement)) {
+      triggerRef.current?.focus();
+    }
+    setOpen(false);
+  };
 
   // Escape closes. The sheet covers the page, and a reader who opened it by
   // accident should not have to hunt for the one control that undoes it.
   useEffect(() => {
     if (!open) return;
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return;
+      if (navRef.current?.contains(document.activeElement)) {
+        triggerRef.current?.focus();
+      }
+      setOpen(false);
+    };
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
   }, [open]);
@@ -62,7 +79,7 @@ export function NavSheet() {
         type="button"
         tabIndex={-1}
         aria-hidden
-        onClick={() => setOpen(false)}
+        onClick={close}
         className={`bg-foreground/45 fixed inset-0 z-0 transition-opacity duration-200 ease-out ${
           open ? "opacity-100" : "pointer-events-none opacity-0"
         }`}
@@ -78,6 +95,7 @@ export function NavSheet() {
         >
           <button
             type="button"
+            ref={triggerRef}
             onClick={() => {
               // Measured at the moment of the tap rather than watched: the
               // sheet's height only matters when it is about to move, and a
@@ -116,6 +134,7 @@ export function NavSheet() {
             width={1774}
             height={887}
             priority
+            sizes="88px"
             className="h-11 w-auto"
           />
           <span aria-hidden className="h-11 w-11" />
@@ -141,7 +160,7 @@ export function NavSheet() {
                 here is the product. */}
             <Link
               href="/"
-              onClick={() => setOpen(false)}
+              onClick={close}
               className="text-foreground flex min-h-16 items-center justify-center text-[1.375rem] font-bold"
             >
               Go to the app
@@ -154,7 +173,7 @@ export function NavSheet() {
                   aria-label={name}
                   onClick={() => {
                     // The sheet is what got tapped through; it goes with it.
-                    setOpen(false);
+                    close();
                     openMvp();
                   }}
                   className="border-border text-foreground flex h-12 w-16 items-center justify-center rounded-full border"

@@ -16,7 +16,7 @@ export function MvpDialog() {
   return (
     <dialog
       id="mvp"
-      className="bg-card text-foreground m-auto w-[min(21.25rem,calc(100vw-2.5rem))] rounded-3xl p-6 text-center backdrop:bg-black/60"
+      className="bg-card text-foreground m-auto w-[min(21.25rem,calc(100vw-2.5rem))] rounded-3xl p-6 text-center backdrop:bg-foreground/60"
     >
       <h2 className="display text-[1.5rem]">Not wired up yet</h2>
       <p className="text-muted-foreground mt-3 text-[0.9375rem] leading-relaxed">
