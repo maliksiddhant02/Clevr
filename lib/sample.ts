@@ -26,11 +26,15 @@ export const PAYMENTS: SamplePayment[] = [
   { ref: "CLVRT5J1M", merchant: "Brew & Co", paidCents: 950, savedCents: 5, day: "Tue 25 Aug", time: "8:47", settledSeconds: 2 },
 ];
 
-export const PAYMENT_COUNT = 12;
-export const DAYS_ACTIVE = 14;
+export const PAYMENT_COUNT = 184;
+export const DAYS_ACTIVE = 213;
 
-export const SAVED_CENTS = PAYMENTS.reduce((n, p) => n + p.savedCents, 0);
-export const SPENT_CENTS = PAYMENTS.reduce((n, p) => n + p.paidCents, 0);
+// Lifetime aggregates for the home/insights hero numbers. Decoupled from the
+// visible PAYMENTS list, which is only the last week: this represents the
+// user's full history since joining, so the row-level "you kept 3¢" stays
+// realistic while the headline reads like a shopper who has actually used it.
+export const SAVED_CENTS = 128_640; // $1,286.40 kept lifetime
+export const SPENT_CENTS = 4_432_180; // $44,321.80 paid by bank lifetime
 
 export function findPayment(ref: string): SamplePayment | undefined {
   return PAYMENTS.find((p) => p.ref === ref);

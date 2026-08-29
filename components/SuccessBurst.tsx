@@ -7,7 +7,7 @@ import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 // PhonePe-style celebratory overlay: full-screen deep green, confetti falling,
 // success tick + burst centred, a brief line of type. Self-dismissing.
 // Fires a short haptic on mount where the platform allows it.
-export function SuccessBurst({ durationMs = 2600 }: { durationMs?: number }) {
+export function SuccessBurst({ durationMs = 2800 }: { durationMs?: number }) {
   const [show, setShow] = useState(true);
   const reduced = useReducedMotion();
 
@@ -18,23 +18,27 @@ export function SuccessBurst({ durationMs = 2600 }: { durationMs?: number }) {
     return () => clearTimeout(t);
   }, [durationMs]);
 
+  // Cape sweep: green sheet enters from the right, settles, then continues
+  // out the left — one continuous horizontal motion, not a return-swipe.
+  // Reduced-motion collapses both to a plain fade.
+  const sheet = reduced
+    ? { initial: { opacity: 0 }, animate: { opacity: 1 }, exit: { opacity: 0 } }
+    : { initial: { x: "100%" }, animate: { x: "0%" }, exit: { x: "-100%" } };
+
   return (
     <AnimatePresence>
       {show && (
         <motion.div
           aria-live="polite"
           aria-label="Payment successful"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{
-            opacity: 0,
-            transition: { duration: 0.45, ease: [0.16, 1, 0.3, 1] }
-          }}
+          initial={sheet.initial}
+          animate={sheet.animate}
+          exit={sheet.exit}
           transition={{
-            duration: reduced ? 0 : 0.25,
-            ease: "easeOut",
+            duration: reduced ? 0.25 : 0.6,
+            ease: [0.83, 0, 0.17, 1],
           }}
-          className="bg-success pointer-events-none fixed inset-0 z-50 overflow-hidden"
+          className="bg-success pointer-events-none fixed inset-0 z-50 overflow-hidden will-change-transform"
         >
           {/* Confetti fills the whole viewport, plays once. */}
           <DotLottieReact
