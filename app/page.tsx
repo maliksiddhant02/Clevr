@@ -73,13 +73,6 @@ export default function Landing() {
         <span className="border-foreground text-foreground inline-flex h-7 items-center rounded-full border px-4 text-[0.8125rem] font-semibold tracking-[0.14em] uppercase">
           New
         </span>
-        <h2 className="section-title text-foreground mt-6 text-[2.625rem]">
-          Get up to 40% back
-          <br />
-          of every card fee
-          <span className="align-super text-[1.25rem]">*</span>
-        </h2>
-
         {/* Real QR to waitlist */}
         <div className="mt-12 flex justify-center">
           <Image
@@ -105,7 +98,7 @@ export default function Landing() {
         </div>
 
         <p className="text-muted-foreground mt-10 text-left text-[0.8125rem] leading-relaxed">
-          * Joining the waitlist is not an application.
+          Joining the waitlist is not an application.
           CLEVR is not a bank and does not hold deposits.
         </p>
       </section>
