@@ -2,9 +2,10 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { AppleMark, GooglePlayMark } from "@/components/StoreMarks";
-import { Button, ButtonLink } from "@/components/Button";
+import { ButtonLink } from "@/components/Button";
 import { CardRail } from "@/components/CardRail";
 import { NavSheet } from "@/components/NavSheet";
+import { WaitlistForm } from "@/components/WaitlistForm";
 
 export const metadata: Metadata = {
   title: "CLEVR — Pay by bank, pay less",
@@ -155,7 +156,7 @@ export default function Landing() {
         </p>
 
         <div className="mt-8 flex flex-col items-center gap-3">
-          <Button className="w-64 font-outfit">Join the waitlist</Button>
+          <WaitlistForm />
           <ButtonLink
             href="https://apps.apple.com/us/app/coverd-win-purchases-back/id6741347396"
             variant="outline"
