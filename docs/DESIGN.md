@@ -108,11 +108,21 @@ than falling back. That is the intended reading: the emphasis steps here are
 > the same four filenames. Nothing else changes.
 >
 > The demo cuts also carry **printable ASCII only** — 95 glyphs, no `©`, no
-> curly quotes, no dashes beyond the hyphen. Two characters in the UI fall
-> outside that set and render from the fallback stack: the `©` in the landing
-> footer and the `·` separating day from time in `PaymentRow`. Both are single
-> punctuation marks and neither is load-bearing, so they are left as they are;
-> the licensed family covers them.
+> curly quotes, no dashes beyond the hyphen.
+
+**Outfit** sits behind Cera Round in the stack to catch exactly those glyphs.
+It is geometric, spans the same 100–900, and is close enough that a stray
+copyright mark or curly quote does not read as a different typeface mid-word.
+System sans was doing that job before and it showed.
+
+`adjustFontFallback: false` on the local font is what makes this work. Without
+it Next generates a metric-adjusted local face and inserts it directly after
+Cera Round, which catches every missing glyph before Outfit is ever reached.
+
+Verified per glyph in the browser rather than assumed: `©`, `·`, `’` and `—`
+each measure identically to Outfit and differently to `system-ui`, while ASCII
+still measures as Cera Round. Buy the licensed family and the fallback becomes
+dead weight; it can go.
 
 - **`.display`** (900, `-0.019em`, `line-height: 1`) for screen titles,
   the brand mark, hero numbers and section openers. Landing sections open at
@@ -129,6 +139,12 @@ than falling back. That is the intended reading: the emphasis steps here are
   else. The reference is the one value a human reads back aloud, and a misread
   reference means the merchant's tick never fires. Monospace anywhere else is a
   costume.
+- **The wordmark is the artwork, not type.** `public/logo.png` is the `clevr`
+  mark, black on transparent, used in the landing bar, the app header, the
+  product card and the footer sign-off. On the one Ink ground it sits on, the
+  card mock, it carries `invert`. `app/icon.png` is the Sun tile with the `C`
+  mark and stands in for the footer's brand tile. Setting the wordmark as text
+  is what the mark exists to replace.
 - **The wordmark is lowercase** (`clevr`) in running UI and the landing page,
   uppercase (`CLEVR`) in prose and legal copy. It closes the landing page as an
   `aria-hidden` sign-off, sized by `clamp()` to fill the column rather than set

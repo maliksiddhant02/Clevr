@@ -1,10 +1,16 @@
+import Image from "next/image";
 import Link from "next/link";
 import { UserCircleIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { ButtonLink } from "@/components/Button";
 import { PaymentRow } from "@/components/PaymentRow";
 import { formatAud, splitAud, yearlyRateCents } from "@/lib/money";
-import { DAYS_ACTIVE, PAYMENTS, PAYMENT_COUNT, SAVED_CENTS } from "@/lib/sample";
+import {
+  DAYS_ACTIVE,
+  PAYMENTS,
+  PAYMENT_COUNT,
+  SAVED_CENTS,
+} from "@/lib/sample";
 
 export default function Home() {
   const rate = yearlyRateCents(SAVED_CENTS, PAYMENT_COUNT, DAYS_ACTIVE);
@@ -13,13 +19,25 @@ export default function Home() {
   return (
     <main className="pt-5 pb-28">
       <header className="flex items-center justify-between">
-        <span className="display text-foreground text-[1.5rem]">CLEVR</span>
+        <Image
+          src="/logo.png"
+          alt="CLEVR"
+          width={1774}
+          height={887}
+          priority
+          className="h-6 w-auto"
+        />
         <Link
           href="/account"
           aria-label="Account"
           className="border-foreground text-foreground hover:bg-muted flex h-11 w-11 items-center justify-center rounded-full border transition-colors duration-200"
         >
-          <HugeiconsIcon icon={UserCircleIcon} size={19} strokeWidth={1.8} aria-hidden />
+          <HugeiconsIcon
+            icon={UserCircleIcon}
+            size={19}
+            strokeWidth={1.8}
+            aria-hidden
+          />
         </Link>
       </header>
 
@@ -64,7 +82,10 @@ export default function Home() {
 
       <section aria-labelledby="recent-heading" className="pt-10">
         <div className="mb-3 flex items-baseline justify-between">
-          <h2 id="recent-heading" className="display text-foreground text-[1.5rem]">
+          <h2
+            id="recent-heading"
+            className="display text-foreground text-[1.5rem]"
+          >
             Recent
           </h2>
           <Link

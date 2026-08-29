@@ -138,7 +138,15 @@ export default function Landing() {
               />
             </div>
             <div className="flex items-end justify-between">
-              <span className="display text-paper text-[1.5rem]">clevr</span>
+              {/* Inverted: the mark ships black on transparent, and this is
+                  the one place it sits on Ink. */}
+              <Image
+                src="/logo.png"
+                alt=""
+                width={1774}
+                height={887}
+                className="h-6 w-auto invert"
+              />
               <span className="text-on-ink font-mono text-[0.75rem] tracking-[0.2em]">
                 4417
               </span>
@@ -267,12 +275,15 @@ export default function Landing() {
       <footer className="bg-card text-foreground -mx-5 mt-24 px-5 pt-[4.5rem] pb-10">
         {/* The mark on a Sun tile, which is the only Sun left once the ground
             has gone Paper, so it reads as the accent rather than as more page. */}
-        <span
-          aria-hidden
-          className="bg-sun text-foreground display flex h-12 w-12 items-center justify-center rounded-[0.875rem] text-[1.75rem]"
-        >
-          c
-        </span>
+        {/* The app icon itself: a Sun tile carrying the mark, which is the
+            only Sun left once the ground has gone Paper. */}
+        <Image
+          src="/icon.png"
+          alt=""
+          width={1254}
+          height={1254}
+          className="h-12 w-12 rounded-[0.875rem]"
+        />
 
         <div className="mt-10 grid grid-cols-2 items-start gap-x-4">
           <ul>

@@ -18,7 +18,7 @@
   --color-success: #054d28; /* Spruce: money the shopper kept     */
 
   /* Inter does the quiet work; Inter Black at 900 does the shouting. */
-  --font-sans: var(--font-cera-round), system-ui, sans-serif;
+  --font-sans: var(--font-cera-round), var(--font-outfit), system-ui, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
 
   /* Pills by default, 10px on controls, 28px on cards, 40px on media.

@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { Outfit } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 
@@ -9,17 +10,45 @@ import "./globals.css";
 // `font-semibold` request upward to 700, which is the intended reading here:
 // the system's emphasis steps are 400, 500, 700 and 900.
 //
-// LICENCE: these are Fontspring DEMO files, trial-licensed for evaluation only
-// and restricted to printable ASCII. Not licensed for production or for
-// redistribution. See DESIGN.md 3 before this ships anywhere public.
+// The cuts in app/fonts carry printable ASCII only, so anything outside that
+// set falls through to the next family in the stack. Outfit is there to catch
+// it: geometric, the same 100-900 range, close enough that a stray copyright
+// mark or curly quote does not read as a different typeface mid-sentence.
+// System sans was doing that job before and it showed.
+//
+// LICENCE: the local cuts are Fontspring DEMO files, trial-licensed for
+// evaluation only. Not licensed for production or for redistribution. Dropping
+// the purchased family in over the same four filenames also makes the Outfit
+// fallback dead weight, and it can go. See DESIGN.md 3.
+const outfit = Outfit({
+  variable: "--font-outfit",
+  subsets: ["latin"],
+});
+
 const ceraRound = localFont({
   variable: "--font-cera-round",
   display: "swap",
+  // Off, deliberately. Next otherwise generates a metric-adjusted local face
+  // and inserts it directly after this family, which would catch every glyph
+  // the cuts are missing before Outfit ever gets a chance at them.
+  adjustFontFallback: false,
   src: [
-    { path: "./fonts/CeraRoundPro-Regular.woff2", weight: "400", style: "normal" },
-    { path: "./fonts/CeraRoundPro-Medium.woff2", weight: "500", style: "normal" },
+    {
+      path: "./fonts/CeraRoundPro-Regular.woff2",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "./fonts/CeraRoundPro-Medium.woff2",
+      weight: "500",
+      style: "normal",
+    },
     { path: "./fonts/CeraRoundPro-Bold.woff2", weight: "700", style: "normal" },
-    { path: "./fonts/CeraRoundPro-Black.woff2", weight: "900", style: "normal" },
+    {
+      path: "./fonts/CeraRoundPro-Black.woff2",
+      weight: "900",
+      style: "normal",
+    },
   ],
 });
 
@@ -35,7 +64,10 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${ceraRound.variable} h-full antialiased`}>
+    <html
+      lang="en"
+      className={`${ceraRound.variable} ${outfit.variable} h-full antialiased`}
+    >
       <body className="min-h-full">
         {/* Mobile-only. Both real surfaces are phones: a stall owner's handset
             and a stranger's handset. On anything wider this stays a centred
