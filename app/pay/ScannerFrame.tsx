@@ -78,13 +78,6 @@ export function ScannerFrame() {
     };
   }, []);
 
-  // Update srcObject on videoRef if status becomes active later
-  useEffect(() => {
-    if (cameraStatus === "active" && videoRef.current && videoRef.current.srcObject === null) {
-      // Re-query stream if needed, but normally handled in the initialization effect
-    }
-  }, [cameraStatus]);
-
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     const ref = code.trim().toUpperCase();
@@ -100,15 +93,17 @@ export function ScannerFrame() {
           
           {/* Camera feed viewport wrapper */}
           <div className="absolute inset-[3px] overflow-hidden rounded-[1.5rem] bg-black/40 flex items-center justify-center">
-            {cameraStatus === "active" && (
-              <video
-                ref={videoRef}
-                playsInline
-                muted
-                autoPlay
-                className="h-full w-full object-cover"
-              />
-            )}
+            {/* The video element must be always mounted in the DOM to avoid the race condition
+                where videoRef.current is null when the getUserMedia stream resolves. */}
+            <video
+              ref={videoRef}
+              playsInline
+              muted
+              autoPlay
+              className={`h-full w-full object-cover transition-opacity duration-200 ${
+                cameraStatus === "active" ? "opacity-100" : "absolute opacity-0 pointer-events-none"
+              }`}
+            />
             {cameraStatus === "loading" && (
               <span className="text-on-ink/60 text-[0.8125rem]">Accessing camera...</span>
             )}
