@@ -19,20 +19,21 @@ export function DonutChart({
   caption: string;
 }) {
   const total = segments.reduce((n, s) => n + s.cents, 0) || 1;
-  let offset = 0;
 
-  const slices = segments.map((s, i) => {
+  const slices = segments.reduce<
+    { label: string; cents: number; percent: number; color: string; dash: number; offset: number }[]
+  >((acc, s, i) => {
+    const currentOffset = acc.length > 0 ? acc[acc.length - 1].offset + acc[acc.length - 1].dash : 0;
     const fraction = s.cents / total;
-    const slice = {
+    acc.push({
       ...s,
       percent: Math.round(fraction * 100),
       color: COLORS[i % COLORS.length],
       dash: fraction * CIRC,
-      offset,
-    };
-    offset += fraction * CIRC;
-    return slice;
-  });
+      offset: currentOffset,
+    });
+    return acc;
+  }, []);
 
   return (
     <div className="flex items-center gap-5">

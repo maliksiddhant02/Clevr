@@ -1,10 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import {
-  LockIcon,
-} from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
 import { AppleMark, GooglePlayMark } from "@/components/StoreMarks";
 import { Button, ButtonLink } from "@/components/Button";
 import { CardRail } from "@/components/CardRail";
@@ -87,67 +83,46 @@ export default function Landing() {
           <span className="align-super text-[1.25rem]">*</span>
         </h2>
 
-        {/* The product illustration: a QR code pay card. */}
+        {/* Floating QR code — Ink on Sun, slightly rotated. */}
         <div className="mt-12 flex justify-center">
-          <div className="bg-foreground flex h-[13.5rem] w-[21rem] max-w-full -rotate-6 items-center justify-between rounded-3xl p-6 text-left">
-            <div className="flex flex-col justify-between h-full">
-              <span aria-hidden className="bg-sun block h-8 w-11 rounded-lg" />
-              <div>
-                <Image
-                  src="/logo.png"
-                  alt=""
-                  width={1774}
-                  height={887}
-                  className="h-6 w-auto invert"
-                />
-                <p className="text-on-ink mt-2 text-[0.8125rem] font-medium font-outfit">
-                  Scan to pay
-                </p>
-              </div>
-            </div>
-            
-            {/* Stylized QR Code Scanner */}
-            <div className="relative flex h-28 w-28 items-center justify-center rounded-2xl bg-black/40 p-2">
-              <span className="border-sun absolute top-0 left-0 h-3 w-3 border-t-2 border-l-2" />
-              <span className="border-sun absolute top-0 right-0 h-3 w-3 border-t-2 border-r-2" />
-              <span className="border-sun absolute bottom-0 left-0 h-3 w-3 border-b-2 border-l-2" />
-              <span className="border-sun absolute bottom-0 right-0 h-3 w-3 border-b-2 border-r-2" />
-              
-              <svg viewBox="0 0 120 120" className="h-full w-full text-sun" fill="currentColor">
-                <rect x="10" y="10" width="30" height="30" rx="3" fill="none" stroke="currentColor" strokeWidth="4" />
-                <rect x="17" y="17" width="16" height="16" rx="1" fill="currentColor" />
-                
-                <rect x="80" y="10" width="30" height="30" rx="3" fill="none" stroke="currentColor" strokeWidth="4" />
-                <rect x="87" y="17" width="16" height="16" rx="1" fill="currentColor" />
-                
-                <rect x="10" y="80" width="30" height="30" rx="3" fill="none" stroke="currentColor" strokeWidth="4" />
-                <rect x="17" y="87" width="16" height="16" rx="1" fill="currentColor" />
-                
-                <rect x="50" y="15" width="8" height="8" rx="1" />
-                <rect x="62" y="15" width="12" height="8" rx="1" />
-                <rect x="50" y="27" width="16" height="8" rx="1" />
-                <rect x="70" y="27" width="6" height="12" rx="1" />
-                <rect x="50" y="39" width="12" height="6" rx="1" />
-                
-                <rect x="15" y="50" width="8" height="12" rx="1" />
-                <rect x="27" y="50" width="16" height="8" rx="1" />
-                
-                <rect x="85" y="50" width="12" height="8" rx="1" />
-                <rect x="101" y="50" width="8" height="16" rx="1" />
-                
-                <rect x="50" y="65" width="24" height="8" rx="1" />
-                <rect x="50" y="77" width="8" height="16" rx="1" />
-                <rect x="62" y="77" width="16" height="8" rx="1" />
-                
-                <rect x="85" y="70" width="8" height="8" rx="1" />
-                <rect x="97" y="70" width="12" height="12" rx="1" />
-                
-                <rect x="85" y="85" width="16" height="8" rx="1" />
-                <rect x="85" y="97" width="8" height="12" rx="1" />
-                <rect x="97" y="97" width="12" height="8" rx="1" />
-              </svg>
-            </div>
-          </div>
+          <svg
+            viewBox="0 0 120 120"
+            className="h-48 w-48 -rotate-6 text-foreground"
+            fill="currentColor"
+            aria-hidden
+          >
+            {/* Top-left finder */}
+            <rect x="8" y="8" width="32" height="32" rx="4" fill="none" stroke="currentColor" strokeWidth="5" />
+            <rect x="16" y="16" width="16" height="16" rx="2" />
+            {/* Top-right finder */}
+            <rect x="80" y="8" width="32" height="32" rx="4" fill="none" stroke="currentColor" strokeWidth="5" />
+            <rect x="88" y="16" width="16" height="16" rx="2" />
+            {/* Bottom-left finder */}
+            <rect x="8" y="80" width="32" height="32" rx="4" fill="none" stroke="currentColor" strokeWidth="5" />
+            <rect x="16" y="88" width="16" height="16" rx="2" />
+            {/* Data modules */}
+            <rect x="48" y="10" width="7" height="7" rx="1" />
+            <rect x="58" y="10" width="10" height="7" rx="1" />
+            <rect x="48" y="20" width="14" height="7" rx="1" />
+            <rect x="65" y="20" width="5" height="10" rx="1" />
+            <rect x="48" y="31" width="10" height="5" rx="1" />
+            <rect x="10" y="48" width="7" height="10" rx="1" />
+            <rect x="21" y="48" width="14" height="7" rx="1" />
+            <rect x="48" y="48" width="10" height="7" rx="1" />
+            <rect x="61" y="48" width="7" height="7" rx="1" />
+            <rect x="71" y="48" width="10" height="14" rx="1" />
+            <rect x="85" y="48" width="7" height="10" rx="1" />
+            <rect x="95" y="48" width="10" height="7" rx="1" />
+            <rect x="48" y="61" width="20" height="7" rx="1" />
+            <rect x="48" y="71" width="7" height="14" rx="1" />
+            <rect x="58" y="71" width="14" height="7" rx="1" />
+            <rect x="85" y="61" width="7" height="7" rx="1" />
+            <rect x="95" y="61" width="10" height="10" rx="1" />
+            <rect x="85" y="75" width="14" height="7" rx="1" />
+            <rect x="85" y="85" width="7" height="10" rx="1" />
+            <rect x="95" y="85" width="10" height="7" rx="1" />
+            <rect x="71" y="61" width="7" height="28" rx="1" />
+          </svg>
         </div>
 
         <p className="text-foreground mx-auto mt-14 max-w-[19rem] text-[0.9375rem] font-bold">
@@ -169,15 +144,7 @@ export default function Landing() {
           </ButtonLink>
         </div>
 
-        <p className="text-foreground mt-6 inline-flex items-center gap-2 text-[0.8125rem] font-medium">
-          <HugeiconsIcon
-            icon={LockIcon}
-            size={14}
-            strokeWidth={2}
-            aria-hidden
-          />
-          Bank-grade, read-only access
-        </p>
+
 
         {/* The claims about money, written the way a bank would write them. */}
         <p className="text-muted-foreground mt-10 text-left text-[0.6875rem] leading-relaxed">
