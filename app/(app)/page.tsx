@@ -37,7 +37,7 @@ export default function Home() {
             width={1774}
             height={887}
             priority
-            className="h-11 w-auto"
+            className="h-16 w-auto"
           />
         </Link>
         <Link

@@ -134,8 +134,8 @@ export function NavSheet() {
             width={1774}
             height={887}
             priority
-            sizes="88px"
-            className="h-11 w-auto"
+            sizes="128px"
+            className="h-16 w-auto"
           />
           <span aria-hidden className="h-11 w-11" />
         </div>
