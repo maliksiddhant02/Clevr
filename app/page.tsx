@@ -22,12 +22,12 @@ const SLIDES = [
   },
   {
     title: "See what you kept",
-    note: "Down to the cent",
+    note: "Every fee, every payment, itemised",
     photo: "/photos/coffee.jpg",
   },
   {
     title: "Pay in two taps",
-    note: "Scan, confirm, done",
+    note: "Scan the code, confirm in your bank app",
     photo: "/photos/petrol.jpg",
   },
 ] as const;
@@ -74,9 +74,9 @@ export default function Landing() {
           New
         </span>
         <h2 className="section-title text-foreground mt-6 text-[2.625rem]">
-          Keep up to 40%
+          Get up to 40% back
           <br />
-          of every fee
+          of every card fee
           <span className="align-super text-[1.25rem]">*</span>
         </h2>
 
@@ -124,7 +124,7 @@ export default function Landing() {
           <CardRail label="Inside the CLEVR app" slides={SLIDES} />
         </div>
         <p className="text-foreground mx-auto mt-8 max-w-[19rem] text-[1.0625rem] font-bold">
-          See how much you keep on every purchase.
+          Every payment shows exactly what you kept and where.
         </p>
       </section>
 

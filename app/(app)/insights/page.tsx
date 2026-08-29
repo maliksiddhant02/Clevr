@@ -2,10 +2,11 @@ import { Card } from "@/components/Card";
 import { DonutChart } from "@/components/DonutChart";
 import { SavingsChart } from "@/components/SavingsChart";
 import { formatAud } from "@/lib/money";
-import { PAYMENTS, SAVED_CENTS, topMerchants } from "@/lib/sample";
+import { PAYMENT_COUNT, SAVED_CENTS, topMerchants } from "@/lib/sample";
 
 export default function Insights() {
-  const avgSaved = Math.round(SAVED_CENTS / PAYMENTS.length);
+  // Averaged over lifetime payments, not just the visible 7-row week snapshot.
+  const avgSaved = Math.round(SAVED_CENTS / PAYMENT_COUNT);
   const merchants = topMerchants();
 
   return (
@@ -28,7 +29,7 @@ export default function Insights() {
         </div>
         <div className="py-5 pl-5">
           <p className="display text-foreground text-[1.75rem] tabular-nums">
-            {PAYMENTS.length}
+            {PAYMENT_COUNT}
           </p>
           <p className="text-muted-foreground mt-1.5 text-[0.9375rem]">
             payments by bank

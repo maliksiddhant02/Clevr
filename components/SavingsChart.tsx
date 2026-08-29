@@ -7,27 +7,30 @@ import { AreaChart } from "@/components/AreaChart";
 import { formatAud } from "@/lib/money";
 
 // Sample data until payments are queried by shopper_cookie. TECHNICAL.md §14.
+// Weekly/monthly totals proportional to lib/sample.ts SAVED_CENTS ($1,286.40
+// over 213 days). Averages out to ~$6/day, ~$42/week, ~$180/month.
+// Deltas are versus the previous period so the % has a referent.
 const RANGES = {
   week: {
-    delta: "+4.2%",
+    delta: "+12% vs last week",
     bars: [
-      { label: "Mon", cents: 5 },
-      { label: "Tue", cents: 12 },
-      { label: "Wed", cents: 3 },
-      { label: "Thu", cents: 21 },
-      { label: "Fri", cents: 9 },
-      { label: "Sat", cents: 34 },
-      { label: "Sun", cents: 15 },
+      { label: "Mon", cents: 480 },
+      { label: "Tue", cents: 720 },
+      { label: "Wed", cents: 380 },
+      { label: "Thu", cents: 1150 },
+      { label: "Fri", cents: 640 },
+      { label: "Sat", cents: 1820 },
+      { label: "Sun", cents: 910 },
     ],
   },
   month: {
-    delta: "+8.6%",
+    delta: "+9% vs last month",
     bars: [
-      { label: "1 Aug", cents: 41 },
-      { label: "8 Aug", cents: 63 },
-      { label: "15 Aug", cents: 28 },
-      { label: "22 Aug", cents: 74 },
-      { label: "29 Aug", cents: 52 },
+      { label: "1 Aug", cents: 3210 },
+      { label: "8 Aug", cents: 4860 },
+      { label: "15 Aug", cents: 2740 },
+      { label: "22 Aug", cents: 5410 },
+      { label: "29 Aug", cents: 4190 },
     ],
   },
 } as const;
@@ -53,7 +56,7 @@ export function SavingsChart() {
               type="button"
               onClick={() => setRange(r)}
               aria-pressed={range === r}
-              className={`min-h-11 rounded-full px-4 text-[0.9375rem] font-medium capitalize transition-colors duration-200 ${
+              className={`min-h-11 rounded-full px-5 text-[1rem] font-semibold capitalize transition-colors duration-200 ${
                 range === r ? "bg-foreground text-paper" : "text-foreground"
               }`}
             >
@@ -61,8 +64,8 @@ export function SavingsChart() {
             </button>
           ))}
         </div>
-        <span className="text-success inline-flex items-center gap-1 text-[0.9375rem] font-semibold tabular-nums">
-          <HugeiconsIcon icon={ChartUpIcon} size={14} strokeWidth={2.4} aria-hidden />
+        <span className="text-success inline-flex items-center gap-1.5 text-[0.9375rem] font-semibold">
+          <HugeiconsIcon icon={ChartUpIcon} size={16} strokeWidth={2.4} aria-hidden />
           {delta}
         </span>
       </div>
@@ -70,8 +73,8 @@ export function SavingsChart() {
       <p className="display text-foreground mb-1.5 text-[3rem] tabular-nums">
         {formatAud(total)}
       </p>
-      <p className="text-muted-foreground mb-4 text-[0.9375rem]">
-        kept by paying from your bank
+      <p className="text-muted-foreground mb-4 text-[1rem]">
+        kept this {range}
       </p>
 
       <AreaChart data={bars} />

@@ -1,7 +1,7 @@
 import { formatAud, splitAud } from "@/lib/money";
 import { Card } from "@/components/Card";
 import { PaymentRow } from "@/components/PaymentRow";
-import { PAYMENTS, SAVED_CENTS, SPENT_CENTS, byDay } from "@/lib/sample";
+import { PAYMENTS, PAYMENT_COUNT, SAVED_CENTS, SPENT_CENTS, byDay } from "@/lib/sample";
 
 export default function Activity() {
   const days = byDay(PAYMENTS);
@@ -22,7 +22,7 @@ export default function Activity() {
         <div className="border-border mt-6 grid grid-cols-2 border-y">
           <div className="border-border border-r py-4 pr-4">
             <p className="display text-foreground text-[1.5rem] tabular-nums">
-              {PAYMENTS.length}
+              {PAYMENT_COUNT}
             </p>
             <p className="text-muted-foreground mt-1.5 text-[0.9375rem]">
               payments
