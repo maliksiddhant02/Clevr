@@ -4,7 +4,7 @@ import { findPayment } from "@/lib/sample";
 import { formatAud } from "@/lib/money";
 
 export const metadata: Metadata = {
-  title: "CLEVR — Payment complete",
+  title: "CLEVR: Payment complete",
 };
 
 export default async function DonePage({

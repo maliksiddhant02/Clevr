@@ -33,7 +33,7 @@ const FAQ: Row[] = [
   {
     icon: QrCodeIcon,
     title: "How do I pay?",
-    body: "Find the QR code at the counter and scan it with your phone's camera — no app and no signup needed. Your banking app opens with the amount already filled in. Once you pay, the shop's screen confirms before you leave.",
+    body: "Find the QR code at the counter and scan it with your phone's camera. No app and no signup needed. Your banking app opens with the amount already filled in. Once you pay, the shop's screen confirms before you leave.",
   },
   {
     icon: BankIcon,

@@ -3,7 +3,7 @@ import { ScreenHeader } from "@/components/ScreenHeader";
 import { ScannerFrame } from "./ScannerFrame";
 
 export const metadata: Metadata = {
-  title: "CLEVR — Scan to pay",
+  title: "CLEVR: Scan to pay",
 };
 
 export default function Pay() {

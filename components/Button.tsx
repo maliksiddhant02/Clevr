@@ -37,8 +37,20 @@ export function ButtonLink({
   className = "",
   ...rest
 }: Props & ComponentProps<typeof Link>) {
+  const cls = `${BASE} ${VARIANT[variant]} ${className}`;
+
+  // An in-page anchor is the browser's job. Routing one through next/link sets
+  // the hash without moving the page, which loses the CSS smooth scroll with it.
+  if (typeof rest.href === "string" && rest.href.startsWith("#")) {
+    return (
+      <a {...(rest as ComponentProps<"a">)} className={cls}>
+        {children}
+      </a>
+    );
+  }
+
   return (
-    <Link className={`${BASE} ${VARIANT[variant]} ${className}`} {...rest}>
+    <Link className={cls} {...rest}>
       {children}
     </Link>
   );

@@ -20,7 +20,7 @@ export function MvpDialog() {
     >
       <h2 className="display text-[1.5rem]">Not wired up yet</h2>
       <p className="text-muted-foreground mt-3 text-[0.9375rem] leading-relaxed">
-        CLEVR is an MVP. This is a placeholder — nothing behind it is real
+        CLEVR is an MVP. This is a placeholder. Nothing behind it is real
         yet.
       </p>
       {/* method="dialog" closes it: no handler, no listener. */}

@@ -3,7 +3,7 @@ import { BIZ_PAYMENTS, BIZ_MERCHANT } from "@/lib/biz-sample";
 import { ScanRow } from "@/components/ScanRow";
 
 export const metadata: Metadata = {
-  title: "CLEVR — Activity",
+  title: "CLEVR: Activity",
 };
 
 type DayGroup = [string, typeof BIZ_PAYMENTS];

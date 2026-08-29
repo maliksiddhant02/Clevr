@@ -6,7 +6,7 @@ import { formatAud } from "@/lib/money";
 import { notFound } from "next/navigation";
 
 export const metadata: Metadata = {
-  title: "CLEVR — Waiting for payment",
+  title: "CLEVR: Waiting for payment",
 };
 
 export default async function MerchantWaitPage({

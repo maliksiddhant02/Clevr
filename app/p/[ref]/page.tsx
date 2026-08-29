@@ -4,7 +4,7 @@ import { formatAud } from "@/lib/money";
 import { PayFlow } from "./PayFlow";
 
 export const metadata: Metadata = {
-  title: "CLEVR — Pay",
+  title: "CLEVR: Pay",
 };
 
 // Slow-lane rule (TECHNICAL.md §11): everyone renders the pay page. No app,

@@ -5,7 +5,7 @@ import { signIn, signInWith } from "@/lib/session";
 import { GoogleMark, AppleMark, FacebookMark } from "@/components/StoreMarks";
 
 export const metadata: Metadata = {
-  title: "CLEVR — Join",
+  title: "CLEVR: Join",
   description: "Create an account or sign in to CLEVR.",
 };
 
@@ -53,7 +53,7 @@ export default async function JoinPage({
         {/* Payment waiting banner */}
         {pending && (
           <p className="text-foreground mb-6 text-[0.9375rem] font-medium">
-            A payment is waiting — sign in to continue.
+            A payment is waiting. Sign in to continue.
           </p>
         )}
 

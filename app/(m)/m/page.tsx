@@ -5,7 +5,7 @@ import { PaymentRow } from "@/components/PaymentRow";
 import { Keypad } from "@/components/Keypad";
 
 export const metadata: Metadata = {
-  title: "CLEVR — Till",
+  title: "CLEVR: Till",
 };
 
 export default function TillPage() {

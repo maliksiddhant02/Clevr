@@ -53,6 +53,9 @@
    phone column jumps sideways every time you change tabs. */
 html {
   background-color: var(--color-background);
+  /* The hero's waitlist link is an in-page jump; landing there instantly
+     loses the reader's place. */
+  scroll-behavior: smooth;
   scrollbar-gutter: stable;
   scrollbar-width: thin;
   scrollbar-color: rgb(0 0 0 / 0.3) transparent;
@@ -155,5 +158,9 @@ body {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+
+  html {
+    scroll-behavior: auto;
   }
 }

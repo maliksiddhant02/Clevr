@@ -39,3 +39,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Impeccable working files
+.agents/
+.impeccable/
+skills-lock.json

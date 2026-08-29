@@ -4,7 +4,7 @@ import { switchRole, signOut } from "@/lib/session";
 import { getSession } from "@/lib/session";
 
 export const metadata: Metadata = {
-  title: "CLEVR — Merchant account",
+  title: "CLEVR: Merchant account",
 };
 
 export default async function MerchantAccountPage() {

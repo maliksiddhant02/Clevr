@@ -4,7 +4,7 @@ import { reconcile, monthTotals } from "@/lib/reconcile";
 import { formatAud } from "@/lib/money";
 
 export const metadata: Metadata = {
-  title: "CLEVR — Reconcile",
+  title: "CLEVR: Reconcile",
 };
 
 export default function PayoutsPage() {

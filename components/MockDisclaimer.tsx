@@ -1,55 +1,45 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 import { FlashIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 
+/**
+ * Shown on every entry to the app, not once per browser. Nothing behind this
+ * screen is real, and a reader who saw the notice last week is still owed it
+ * when they hand the phone to someone else.
+ */
 export function MockDisclaimer() {
-  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDialogElement>(null);
 
   useEffect(() => {
-    // Check localStorage to see if they've already dismissed the disclaimer
-    const dismissed = localStorage.getItem("clevr_mock_dismissed");
-    if (!dismissed) {
-      setOpen(true);
-    }
+    ref.current?.showModal();
   }, []);
 
-  function dismiss() {
-    localStorage.setItem("clevr_mock_dismissed", "true");
-    setOpen(false);
-  }
-
-  if (!open) return null;
-
   return (
-    <div
-      role="dialog"
-      aria-modal="true"
+    <dialog
+      ref={ref}
       aria-labelledby="disclaimer-title"
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-5 backdrop-blur-xs"
+      className="bg-card text-foreground m-auto w-[min(21.25rem,calc(100vw-2.5rem))] rounded-3xl p-6 text-center backdrop:bg-black/60"
     >
-      <div className="bg-card border-border flex w-full max-w-[340px] flex-col items-center rounded-3xl border p-6 text-center shadow-2xl animate-in fade-in zoom-in-95 duration-200">
-        <div className="bg-foreground text-paper flex h-12 w-12 items-center justify-center rounded-2xl mb-4">
-          <HugeiconsIcon icon={FlashIcon} size={24} strokeWidth={2} />
-        </div>
-        <h2
-          id="disclaimer-title"
-          className="display text-foreground text-[1.5rem] font-bold leading-tight"
-        >
-          CLEVR Demo
-        </h2>
-        <p className="text-muted-foreground mt-3 text-[0.9375rem] leading-relaxed">
-          This is a demonstration of the CLEVR payment flow. All banking rails, accounts, and transactions shown in this app are mock simulations.
-        </p>
+      <div className="bg-foreground text-paper mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl">
+        <HugeiconsIcon icon={FlashIcon} size={24} strokeWidth={2} />
+      </div>
+      <h2 id="disclaimer-title" className="display text-[1.5rem]">
+        CLEVR is an MVP
+      </h2>
+      <p className="text-muted-foreground mt-3 text-[0.9375rem] leading-relaxed">
+        Every account and payment here is mock data.
+      </p>
+      {/* method="dialog" closes it: no handler, no listener. */}
+      <form method="dialog">
         <button
-          type="button"
-          onClick={dismiss}
-          className="bg-foreground text-paper mt-6 flex h-12 w-full items-center justify-center rounded-2xl text-[0.9375rem] font-semibold transition-transform duration-150 active:scale-[0.98]"
+          type="submit"
+          className="bg-foreground text-paper mt-6 flex h-12 w-full items-center justify-center rounded-2xl text-[0.9375rem] font-semibold"
         >
           Got it
         </button>
-      </div>
-    </div>
+      </form>
+    </dialog>
   );
 }

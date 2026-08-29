@@ -8,7 +8,7 @@ import { NavSheet } from "@/components/NavSheet";
 import { WaitlistForm } from "@/components/WaitlistForm";
 
 export const metadata: Metadata = {
-  title: "CLEVR — Pay by bank, pay less",
+  title: "CLEVR: Pay by bank, pay less",
   description:
     "Pay a shop straight from your bank and keep a share of the card fee the shop just avoided.",
 };
@@ -152,8 +152,8 @@ export default function Landing() {
         </div>
 
         <p className="text-foreground mx-auto mt-14 max-w-[21rem] text-[1.0625rem] font-bold">
-          No annual fee, no interest, no credit check. Pay from the account you
-          already have and keep a share of what the shop saves.
+          No annual fee, no interest, no credit check. Pay from the account
+          you already have.
         </p>
 
         <div className="mt-8 flex flex-col items-center gap-3">
