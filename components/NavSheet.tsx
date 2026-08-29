@@ -159,7 +159,7 @@ export function NavSheet() {
                 already on is furniture; the only thing a reader wants from
                 here is the product. */}
             <Link
-              href="/"
+              href="/app"
               onClick={close}
               className="text-foreground flex min-h-16 items-center justify-center text-[1.375rem] font-bold"
             >

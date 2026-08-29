@@ -16,7 +16,7 @@ export default function Pay() {
     <main className="bg-foreground text-paper -mx-5 flex min-h-dvh flex-col px-5 pb-[max(2rem,env(safe-area-inset-bottom))]">
       <header className="flex items-center gap-4 pt-4 pb-2">
         <Link
-          href="/"
+          href="/app"
           aria-label="Close"
           className="border-paper/25 text-paper [--focus-ring:var(--color-paper)] flex h-11 w-11 shrink-0 items-center justify-center rounded-full border hover:bg-white/10 transition-colors"
         >

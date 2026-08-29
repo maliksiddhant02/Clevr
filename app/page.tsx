@@ -14,8 +14,6 @@ export const metadata: Metadata = {
     "Pay a shop straight from your bank and keep a share of the card fee the shop just avoided.",
 };
 
-// Paired to what each photograph is actually of: a phone out at the shelf, a
-// coffee bought with the saving, a tank paid for at the pump.
 const SLIDES = [
   {
     title: "Track your spend",
@@ -34,9 +32,6 @@ const SLIDES = [
   },
 ] as const;
 
-// Two columns, long one first, exactly as the reference stacks them.
-// Six links, three a column: what you can do on the left, the legal on the
-// right. An even split reads as two lists rather than one list that ran out.
 const FOOTER = [
   ["Support", "How it works", "Merchants"],
   ["Privacy policy", "Privacy notice", "Terms of service"],
@@ -52,16 +47,8 @@ export default function Landing() {
     <main>
       <NavSheet />
 
-      {/* Hero, at the reference's measurements: an 11px gutter rather than the
-          shell's 20px, a 52px radius, and a height that runs to just short of
-          the fold. The headline sits at 36%, which is where the reference puts
-          it, and which is why the composition was built to take a photo. */}
+      {/* Hero */}
       <section className="bg-foreground relative -mx-[calc(1.25rem-11px)] flex h-[calc(100dvh-5rem-11px)] min-h-[34rem] flex-col overflow-hidden rounded-[52px] px-7 pb-10 text-center">
-        {/* The Ink ground stays underneath: it is what paints before the photo
-            decodes and if the photo ever fails, so the type is never white on
-            white. The scrim over the photo is a flat Ink layer, not a gradient
-            — the system has none anywhere — and it is what makes the headline's
-            contrast a measured number rather than a hope about the image. */}
         <Image
           src="/photos/hero.jpg"
           alt=""
@@ -71,15 +58,8 @@ export default function Landing() {
           className="object-cover"
         />
         <span aria-hidden className="bg-foreground/55 absolute inset-0" />
-        {/* The free space is split 52:48 above and below the type rather than
-            padded by a percentage: percentage padding resolves against width,
-            which puts the headline in a different place on every screen. This
-            lands its top at 36% of the block, where the reference has it. */}
         <div aria-hidden className="relative grow-[52]" />
         <div className="relative">
-          {/* Paper, not on-ink. The on-ink grey is measured against flat Ink,
-              where it has 11.6:1 to spend; over a photograph that budget is
-              gone and it drops to 3.5:1. */}
           <HeroCopy />
         </div>
         <div aria-hidden className="relative grow-[48]" />
@@ -88,9 +68,7 @@ export default function Landing() {
         </ButtonLink>
       </section>
 
-
-
-      {/* The claim. Badge, headline, the card, then the two actions. */}
+      {/* The claim */}
       <section id="waitlist" className="pt-20 text-center">
         <span className="border-foreground text-foreground inline-flex h-7 items-center rounded-full border px-4 text-[0.8125rem] font-semibold tracking-[0.14em] uppercase">
           New
@@ -102,8 +80,7 @@ export default function Landing() {
           <span className="align-super text-[1.25rem]">*</span>
         </h2>
 
-        {/* Real QR to the deployed waitlist. Generated Sun-on-Ink to match
-            the system; keeps the same float animation as the placeholder. */}
+        {/* Real QR to waitlist */}
         <div className="mt-12 flex justify-center">
           <Image
             src="/qr.png"
@@ -127,16 +104,13 @@ export default function Landing() {
           </MvpPill>
         </div>
 
-
-
-        {/* The claims about money, written the way a bank would write them. */}
         <p className="text-muted-foreground mt-10 text-left text-[0.8125rem] leading-relaxed">
           * Joining the waitlist is not an application.
           CLEVR is not a bank and does not hold deposits.
         </p>
       </section>
 
-      {/* Full-bleed rail. */}
+      {/* Explore */}
       <section aria-labelledby="explore" className="pt-24 text-center">
         <h2
           id="explore"
@@ -154,15 +128,8 @@ export default function Landing() {
         </p>
       </section>
 
-
-
-      {/* The footer is a Paper band: the page's one release from Sun, running
-          full bleed to the bottom edge. See DESIGN.md 1. */}
+      {/* Footer */}
       <footer className="bg-card text-foreground -mx-5 mt-24 px-5 pt-[4.5rem] pb-10">
-        {/* The mark on a Sun tile, which is the only Sun left once the ground
-            has gone Paper, so it reads as the accent rather than as more page. */}
-        {/* The app icon itself: a Sun tile carrying the mark, which is the
-            only Sun left once the ground has gone Paper. */}
         <Image
           src="/icon.png"
           alt=""
@@ -185,8 +152,6 @@ export default function Landing() {
             ))}
           </ul>
 
-          {/* The short column carries the store marks, so they land level with
-              the last link of the long one rather than starting a new row. */}
           <div className="flex h-full flex-col">
             <ul>
               {FOOTER[1].map((item) => (
@@ -213,8 +178,6 @@ export default function Landing() {
           </div>
         </div>
 
-        {/* The wordmark as a sign-off, sized to the column rather than set at a
-            fixed size: it is a mark, not a heading, so it fills the band. */}
         <div className="border-border mt-10 flex justify-center border-t pt-14">
           <Image
             src="/logo.png"
@@ -231,8 +194,6 @@ export default function Landing() {
         </p>
       </footer>
 
-      {/* Last in source order: its heading would otherwise precede the page's
-          own h1 in every heading-order scan. */}
       <MvpDialog />
     </main>
   );

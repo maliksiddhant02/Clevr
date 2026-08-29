@@ -22,12 +22,9 @@ export default function Home() {
     <main className="pt-5 pb-28">
       <MockDisclaimer />
       <header className="flex items-center justify-between">
-        {/* The mark is the way back out to the landing page, which is the
-            convention everywhere else and the only exit the app otherwise
-            does not offer. `-my-2 py-2` gives it a 44px target without
-            changing how the header sits. */}
+        {/* Pointers updated to landing root / */}
         <Link
-          href="/landing"
+          href="/"
           aria-label="CLEVR home"
           className="-my-2 -ml-[19px] py-2"
         >

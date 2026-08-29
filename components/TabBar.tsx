@@ -19,7 +19,7 @@ export type TabDef = {
 };
 
 const SHOPPER_TABS: readonly TabDef[] = [
-  { href: "/", label: "Home", icon: Home01Icon },
+  { href: "/app", label: "Home", icon: Home01Icon },
   { href: "/activity", label: "Activity", icon: ReceiptIcon },
   { href: "/insights", label: "Insights", icon: PieChartIcon },
   { href: "/account", label: "Account", icon: UserCircleIcon },

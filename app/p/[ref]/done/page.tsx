@@ -64,7 +64,7 @@ export default function DonePage({
       {/* ── Top Bar with "X" Close Button (with px-5 horizontal padding) ── */}
       <div className="flex items-center justify-between w-full px-5">
         <Link
-          href="/"
+          href="/app"
           aria-label="Close and go home"
           className="border-foreground/15 text-foreground hover:bg-foreground/5 flex h-11 w-11 shrink-0 items-center justify-center rounded-full border transition-colors duration-200"
         >
@@ -147,7 +147,7 @@ export default function DonePage({
       {/* ── Bottom Done button (with px-5 horizontal padding) ── */}
       <div className="w-full px-5">
         <Link
-          href="/"
+          href="/app"
           className="border-foreground text-foreground hover:bg-foreground/5 flex h-14 w-full items-center justify-center rounded-2xl border text-[1rem] font-bold transition-colors cursor-pointer"
         >
           Done

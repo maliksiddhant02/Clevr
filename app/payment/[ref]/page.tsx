@@ -29,7 +29,7 @@ export default async function PaymentDetail({
       {/* Custom header displaying a top-left close "X" icon returning to shopper Home */}
       <header className="flex items-center gap-3 py-4">
         <Link
-          href="/"
+          href="/app"
           aria-label="Close and go home"
           className="border-foreground text-foreground hover:bg-muted flex h-11 w-11 shrink-0 items-center justify-center rounded-full border transition-colors duration-200"
         >

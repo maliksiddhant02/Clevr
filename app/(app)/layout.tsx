@@ -6,7 +6,7 @@ import { TabBar } from "@/components/TabBar";
 // Clearance for the fixed tab bar is set per screen rather than here, so a
 // screen that ends in a full-bleed band can run the band to the bottom edge
 // and put the clearance inside it.
-export default function AppLayout({ children }: LayoutProps<"/">) {
+export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <div className="flex-1">{children}</div>
