@@ -23,7 +23,11 @@ export default function Home() {
             convention everywhere else and the only exit the app otherwise
             does not offer. `-my-2 py-2` gives it a 44px target without
             changing how the header sits. */}
-        <Link href="/landing" aria-label="CLEVR home" className="-my-2 py-2">
+        <Link
+          href="/landing"
+          aria-label="CLEVR home"
+          className="-my-2 -ml-[19px] py-2"
+        >
           <Image
             src="/logo.png"
             alt=""

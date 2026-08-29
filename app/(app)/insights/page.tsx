@@ -67,8 +67,8 @@ export default function Insights() {
           {formatAud(feesKept)}
         </p>
         <p className="text-on-ink mt-5 text-[1.0625rem] leading-relaxed">
-          in card fees your shops avoided on these sales. That money stayed with
-          the businesses you bought from rather than the card networks.
+          in card fees your shops avoided. That money stayed with them, not the
+          card networks.
         </p>
       </section>
     </main>

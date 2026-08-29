@@ -21,22 +21,22 @@ const ROWS: {
     icon: FlashIcon,
     title: "One-tap payments",
     status: "Not set up",
-    body: "Authorise CLEVR once inside your own banking app and every future payment becomes a single tap, at card speed, still with the discount. The authorisation is held by your bank, not by CLEVR. Rolling out after launch.",
+    body: "Authorise CLEVR once in your banking app and every payment after that is a single tap. Your bank holds the authorisation, not us. Coming after launch.",
   },
   {
     icon: BankIcon,
-    title: "How CLEVR works",
-    body: "Scan the shop's QR, pay from your own bank account over Australia's instant payment rail, and keep a slice of the card fee the shop just avoided. The money goes straight from you to the shop. It never passes through CLEVR.",
+    title: "How it works",
+    body: "Scan the shop's QR and pay from your bank. The shop avoids the card fee and hands part of it back to you. Your money goes straight to the shop, never through us.",
   },
   {
     icon: ArrowReloadHorizontalIcon,
     title: "Refunds",
-    body: "A shop pushes a refund back over the same rail, so it lands in seconds rather than the days a card refund takes. There are no chargebacks on this rail, which is part of why shops can afford the discount.",
+    body: "Refunds come back the same way, in seconds rather than the days a card takes. There are no chargebacks, which is part of why shops can afford the discount.",
   },
   {
     icon: LockIcon,
     title: "Your data",
-    body: "CLEVR does not sell shopper data, to merchants or to anyone else. Shops only ever see their own sales. Your payment history stays on this device unless you set up an account.",
+    body: "We do not sell your data, to shops or to anyone. Shops see only their own sales. Your history stays on this device until you make an account.",
   },
 ];
 

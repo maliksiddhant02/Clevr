@@ -33,16 +33,11 @@ const SLIDES = [
 ] as const;
 
 // Two columns, long one first, exactly as the reference stacks them.
+// Six links, three a column: what you can do on the left, the legal on the
+// right. An even split reads as two lists rather than one list that ran out.
 const FOOTER = [
-  [
-    "CLEVR card",
-    "Support",
-    "How it works",
-    "Privacy policy",
-    "Terms of service",
-    "Card terms",
-  ],
-  ["Merchants", "Privacy notice"],
+  ["Support", "How it works", "Merchants"],
+  ["Privacy policy", "Privacy notice", "Terms of service"],
 ] as const;
 
 const STORES = [
