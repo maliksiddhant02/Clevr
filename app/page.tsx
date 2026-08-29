@@ -85,8 +85,8 @@ export default function Landing() {
           <Image
             src="/qr.png"
             alt="Scan to join the waitlist"
-            width={800}
-            height={800}
+            width={1024}
+            height={1024}
             className="qr-float h-48 w-48"
           />
         </div>
