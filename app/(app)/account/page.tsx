@@ -1,5 +1,8 @@
-import type { Metadata } from "next";
+"use client";
+
+import { useState, useEffect } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import {
   ArrowRight01Icon,
   BankIcon,
@@ -8,15 +11,10 @@ import {
   PercentIcon,
   QrCodeIcon,
   SafeIcon,
-  UserCircleIcon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import type { IconSvgElement } from "@hugeicons/react";
-import { getSession, signOut, switchRole, signIn, signInProvider } from "@/lib/session";
-
-export const metadata: Metadata = {
-  title: "CLEVR: Account",
-};
+import { getSession, signOut, switchRole, signIn, signInProvider, type Session } from "@/lib/session";
 
 type Row = {
   icon: IconSvgElement;
@@ -100,8 +98,24 @@ function Disclosure({ icon, title, status, body }: Row) {
   );
 }
 
-export default async function Account() {
-  const session = await getSession();
+export default function Account() {
+  const [session, setSession] = useState<Session | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    getSession().then((s) => {
+      setSession(s);
+      setLoading(false);
+    });
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex h-dvh items-center justify-center bg-background text-foreground">
+        <span className="text-[1.0625rem] font-semibold">Loading...</span>
+      </div>
+    );
+  }
 
   return (
     <main className="pt-4 pb-28">
@@ -137,7 +151,11 @@ export default async function Account() {
           <div className="mt-6 flex flex-col gap-3">
             <form
               action={signOut}
-              onSubmit={`if(!confirm("Are you sure you want to sign out?")) { event.preventDefault(); }` as any}
+              onSubmit={(e) => {
+                if (!confirm("Are you sure you want to sign out?")) {
+                  e.preventDefault();
+                }
+              }}
             >
               <button
                 type="submit"
@@ -301,7 +319,10 @@ function MvpSignBtn() {
     <button
       type="button"
       className="text-foreground font-bold underline hover:opacity-85 cursor-pointer"
-      onClick={`(document.getElementById("mvp")).showModal()` as any}
+      onClick={() => {
+        const dialog = document.getElementById("mvp") as HTMLDialogElement | null;
+        dialog?.showModal();
+      }}
     >
       Sign in
     </button>
