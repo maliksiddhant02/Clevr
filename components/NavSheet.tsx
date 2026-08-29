@@ -61,8 +61,10 @@ export function NavSheet() {
 
       <div className="absolute inset-x-0 top-0">
         <div
-          className={`relative z-20 flex items-center justify-between px-5 pt-4 pb-6 ${
-            open ? "bg-card" : ""
+          className={`relative z-20 flex items-center justify-between px-5 pt-4 pb-6 transition-colors ${
+            open
+              ? "bg-card duration-0"
+              : "bg-transparent duration-0 delay-[270ms]"
           }`}
         >
           <button
@@ -105,7 +107,7 @@ export function NavSheet() {
             width={1774}
             height={887}
             priority
-            className="h-7 w-auto"
+            className="h-11 w-auto"
           />
           <span aria-hidden className="h-11 w-11" />
         </div>

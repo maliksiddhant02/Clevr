@@ -25,7 +25,7 @@ export default function Home() {
           width={1774}
           height={887}
           priority
-          className="h-6 w-auto"
+          className="h-11 w-auto"
         />
         <Link
           href="/account"
