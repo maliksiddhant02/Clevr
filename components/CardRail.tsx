@@ -1,11 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 
 import { railIndex } from "@/lib/rail";
 
 /**
- * A horizontal rail of Ink media blocks. The scroll is the platform's own
+ * A horizontal rail of photographic media blocks. The scroll is the platform's own
  * (`snap-x` plus `overflow-x-auto`), not a carousel library; the only state is
  * which dot is lit, derived from scroll position. See DESIGN.md §6.
  */
@@ -14,7 +15,7 @@ export function CardRail({
   slides,
 }: {
   label: string;
-  slides: readonly { title: string; note: string }[];
+  slides: readonly { title: string; note: string; photo: string }[];
 }) {
   const [index, setIndex] = useState(0);
 
@@ -31,11 +32,24 @@ export function CardRail({
       >
         {slides.map((s) => (
           <li key={s.title} className="w-[94%] shrink-0 snap-center">
-            {/* 84% and 25.5rem: the reference's rail cards measure 314x407 in
-                a 375px viewport, at a 40px radius. */}
-            <div className="bg-foreground flex h-[25.5rem] flex-col justify-end rounded-3xl p-6">
-              <p className="text-on-ink text-[0.9375rem]">{s.note}</p>
-              <p className="display text-paper mt-2 text-[1.75rem]">{s.title}</p>
+            {/* 94% and 25.5rem: the reference's rail cards measure 314x407 in
+                a 375px viewport, at a 40px radius. The Ink ground stays under
+                the photo, so the label is never white on white while the image
+                decodes; the scrim over it is flat, because the system has no
+                gradients. */}
+            <div className="bg-foreground relative flex h-[25.5rem] flex-col justify-end overflow-hidden rounded-3xl p-6">
+              <Image
+                src={s.photo}
+                alt=""
+                fill
+                sizes="(max-width: 430px) 94vw, 400px"
+                className="object-cover"
+              />
+              <span aria-hidden className="bg-foreground/55 absolute inset-0" />
+              <p className="text-paper relative text-[0.9375rem]">{s.note}</p>
+              <p className="display text-paper relative mt-2 text-[1.75rem]">
+                {s.title}
+              </p>
             </div>
           </li>
         ))}

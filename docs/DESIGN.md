@@ -285,13 +285,25 @@ to understand the interface.** Motion is confirmation, never information.
 
 ## 6. Media, rails and charts
 
-**Media blocks.** The landing page's hero, product card, rail slides and press
-block are solid Ink rectangles at `rounded-2xl` with type laid on them. They are
-not placeholders waiting for photography. A stock photo would say less than the
-sentence already sitting on the block, and a photo-led hero is exactly the
-generic move the palette exists to prevent. If real photography ever lands, it
-goes inside the same rounded rectangle at the same radius, with the type kept on
-an Ink scrim so contrast stays measurable.
+**Media blocks.** The landing hero and the three rail slides carry photography.
+The Ink ground stays underneath each one: it is what paints before the image
+decodes and if the image ever fails, so type is never white on white.
+
+**The scrim is flat Ink at 55%, not a gradient** — the system has none anywhere
+— and it is what turns the contrast into a measured number rather than a hope
+about the picture.
+
+**Secondary text on photography is Paper, not `on-ink`.** That grey is measured
+against flat Ink, where it has 11.6:1 to spend; over a photograph the budget is
+gone and it lands at 3.3–4.0:1. This is the one rule the in-browser audit cannot
+catch: the scrim is semi-transparent, so a DOM contrast check walks past it to
+the opaque Ink parent and reports pure black. Type over photography is measured
+offline instead, compositing the scrim over the image and taking the brightest
+1% of pixels under the text. At 55% the worst case on the current set is 4.96:1
+against a 4.5 requirement.
+
+The product card and the press block stay solid Ink. Not everything needs a
+photograph, and a card is a rectangle with a wordmark on it.
 
 **Rails.** Horizontal scrolling is the platform's: `overflow-x-auto` plus
 `snap-x snap-mandatory`, with `.rail` hiding the scrollbar. `CardRail` holds one

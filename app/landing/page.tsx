@@ -12,10 +12,24 @@ export const metadata: Metadata = {
     "Pay a shop straight from your bank and keep a share of the card fee the shop just avoided.",
 };
 
+// Paired to what each photograph is actually of: a phone out at the shelf, a
+// coffee bought with the saving, a tank paid for at the pump.
 const SLIDES = [
-  { title: "Track your spend", note: "Every payment, every fee" },
-  { title: "See what you kept", note: "Down to the cent" },
-  { title: "Pay in two taps", note: "Scan, confirm, done" },
+  {
+    title: "Track your spend",
+    note: "Every payment, every fee",
+    photo: "/photos/shopping.jpg",
+  },
+  {
+    title: "See what you kept",
+    note: "Down to the cent",
+    photo: "/photos/coffee.jpg",
+  },
+  {
+    title: "Pay in two taps",
+    note: "Scan, confirm, done",
+    photo: "/photos/petrol.jpg",
+  },
 ] as const;
 
 // Two columns, long one first, exactly as the reference stacks them.
@@ -43,28 +57,43 @@ export default function Landing() {
 
       {/* Hero, at the reference's measurements: an 11px gutter rather than the
           shell's 20px, a 52px radius, and a height that runs to just short of
-          the fold. The headline sits at 36% rather than at the bottom, so the
-          block reads as a picture with type on it even while it is still a
-          flat Ink ground. Drop a photo in behind the type and nothing else
-          about this section has to change. */}
-      <section className="bg-foreground -mx-[calc(1.25rem-11px)] flex h-[calc(100dvh-5rem-11px)] min-h-[34rem] flex-col rounded-[52px] px-7 pb-10 text-center">
+          the fold. The headline sits at 36%, which is where the reference puts
+          it, and which is why the composition was built to take a photo. */}
+      <section className="bg-foreground relative -mx-[calc(1.25rem-11px)] flex h-[calc(100dvh-5rem-11px)] min-h-[34rem] flex-col overflow-hidden rounded-[52px] px-7 pb-10 text-center">
+        {/* The Ink ground stays underneath: it is what paints before the photo
+            decodes and if the photo ever fails, so the type is never white on
+            white. The scrim over the photo is a flat Ink layer, not a gradient
+            — the system has none anywhere — and it is what makes the headline's
+            contrast a measured number rather than a hope about the image. */}
+        <Image
+          src="/photos/hero.jpg"
+          alt=""
+          fill
+          priority
+          sizes="(max-width: 430px) 100vw, 430px"
+          className="object-cover"
+        />
+        <span aria-hidden className="bg-foreground/55 absolute inset-0" />
         {/* The free space is split 52:48 above and below the type rather than
             padded by a percentage: percentage padding resolves against width,
             which puts the headline in a different place on every screen. This
             lands its top at 36% of the block, where the reference has it. */}
-        <div aria-hidden className="grow-[52]" />
-        <div>
+        <div aria-hidden className="relative grow-[52]" />
+        <div className="relative">
           <h1 className="display text-paper text-[2.78rem]">
             Pay by bank,
             <br />
             keep the fee
           </h1>
-          <p className="text-on-ink mt-4 text-[1.0625rem] font-medium">
+          {/* Paper, not on-ink. The on-ink grey is measured against flat Ink,
+              where it has 11.6:1 to spend; over a photograph that budget is
+              gone and it drops to 3.5:1. */}
+          <p className="text-paper mt-4 text-[1.0625rem] font-medium">
             Nothing hidden. Your rules.
           </p>
         </div>
-        <div aria-hidden className="grow-[48]" />
-        <ButtonLink href="#waitlist" variant="paper" className="self-center">
+        <div aria-hidden className="relative grow-[48]" />
+        <ButtonLink href="#waitlist" variant="paper" className="relative self-center">
           Join the waitlist
         </ButtonLink>
       </section>
