@@ -20,18 +20,19 @@ function Action({
   onClick: () => void;
 }) {
   return (
+    // Styled using standard ink-on-yellow layouts.
     <button
       type="button"
       onClick={onClick}
-      className="text-paper [--focus-ring:var(--color-paper)] flex w-24 flex-col items-center gap-2 text-center"
+      className="text-foreground flex w-24 flex-col items-center gap-2 text-center"
     >
       <span
         aria-hidden
-        className="border-paper/25 flex h-14 w-14 items-center justify-center rounded-full border hover:bg-white/10 backdrop-blur-sm transition-colors"
+        className="border-foreground/15 flex h-14 w-14 items-center justify-center rounded-full border hover:bg-foreground/5 backdrop-blur-sm transition-colors"
       >
         <HugeiconsIcon icon={icon} size={22} strokeWidth={1.8} />
       </span>
-      <span className="text-on-ink text-[0.8125rem] leading-none">{label}</span>
+      <span className="text-muted-foreground text-[0.8125rem] leading-none">{label}</span>
     </button>
   );
 }
@@ -144,8 +145,9 @@ export function ScannerFrame() {
       </div>
 
       {/* Control row and labels layered on top of video */}
-      <div className="relative z-10">
-        <p className="text-on-ink text-center text-[0.9375rem] drop-shadow-sm font-medium">
+      <div className="relative z-10 pb-4">
+        {/* Changed class to text-foreground font-semibold to match yellow canvas */}
+        <p className="text-foreground text-center text-[0.9375rem] font-semibold drop-shadow-sm">
           Scan a code, or enter one manually below.
         </p>
 

@@ -10,48 +10,46 @@ export const metadata: Metadata = {
   title: "CLEVR: Scan to pay",
 };
 
-// The one screen in the app that is Ink end to end. That is not a borrowed
-// dark theme: a viewfinder is a dark surface everywhere because the subject is
-// what the camera sees, and this system already has the move for it. Ink
-// ground, Paper type, one Sun accent, which here is the aim itself.
-//
-// It sits outside the tab group, so it opens over the app with a close mark
-// rather than a back arrow: scanning is a thing you finish or abandon.
 export default function Pay() {
   return (
-    <main className="bg-foreground text-paper -mx-5 flex min-h-dvh flex-col px-5 pb-[max(2rem,env(safe-area-inset-bottom))]">
-      <header className="flex items-center gap-4 pt-4 pb-2">
+    // Changed bg-foreground to bg-background (Sun yellow) and text-paper to text-foreground (Ink black).
+    <main className="bg-background text-foreground -mx-5 flex min-h-dvh flex-col justify-between">
+      {/* Pinned top header: relative z-20 to sit above the camera dark overlay mask */}
+      <header className="relative z-20 bg-background border-b border-border flex items-center gap-4 pt-4 pb-3 px-5">
         <Link
           href="/"
           aria-label="Close"
-          className="border-paper/25 text-paper [--focus-ring:var(--color-paper)] flex h-11 w-11 shrink-0 items-center justify-center rounded-full border"
+          className="border-foreground/15 text-foreground hover:bg-foreground/5 flex h-11 w-11 shrink-0 items-center justify-center rounded-full border transition-colors duration-200"
         >
           <HugeiconsIcon icon={Cancel01Icon} size={20} strokeWidth={2} aria-hidden />
         </Link>
         <div>
-          <h1 className="text-paper text-[1.25rem] font-bold leading-tight">
+          <h1 className="text-foreground text-[1.25rem] font-bold leading-tight">
             Scan to pay
           </h1>
-          <p className="text-on-ink mt-0.5 text-[0.8125rem]">
+          <p className="text-muted-foreground mt-0.5 text-[0.8125rem]">
             Any CLEVR shop code
           </p>
         </div>
       </header>
 
+      {/* Camera and Aim framing in the middle */}
       <ScannerFrame />
 
-      {/* The mark closes the screen the way it closes the landing page. It
-          carries `invert` because this is an Ink ground. */}
-      <Link href="/landing" className="mx-auto mt-10 block">
-        <Image
-          src="/logo.png"
-          alt=""
-          width={1774}
-          height={887}
-          sizes="128px"
-          className="h-5 w-auto opacity-35 invert cursor-pointer"
-        />
-      </Link>
+      {/* Pinned bottom footer: relative z-20 to sit above the dark overlay mask */}
+      <footer className="relative z-20 bg-background pt-6 pb-[max(1.5rem,env(safe-area-inset-bottom))] px-5">
+        <Link href="/landing" className="mx-auto block text-center">
+          {/* Removed invert class so the logo draws as black on the yellow ground */}
+          <Image
+            src="/logo.png"
+            alt="CLEVR"
+            width={1774}
+            height={887}
+            sizes="128px"
+            className="mx-auto h-5 w-auto opacity-35 cursor-pointer"
+          />
+        </Link>
+      </footer>
 
       <MvpDialog />
     </main>
