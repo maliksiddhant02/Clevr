@@ -52,8 +52,8 @@ export function SavingsChart() {
               type="button"
               onClick={() => setRange(r)}
               aria-pressed={range === r}
-              className={`text-foreground min-h-11 rounded-full px-4 text-[0.8125rem] font-medium capitalize transition-colors duration-200 ${
-                range === r ? "bg-lime" : ""
+              className={`min-h-11 rounded-full px-4 text-[0.8125rem] font-medium capitalize transition-colors duration-200 ${
+                range === r ? "bg-foreground text-paper" : "text-foreground"
               }`}
             >
               This {r}

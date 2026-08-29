@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#ffffff",
+  themeColor: "#ffe500",
   // No maximumScale or userScalable:false. Never block pinch zoom.
 };
 

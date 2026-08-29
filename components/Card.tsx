@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
 /**
- * A Fog surface on the Paper canvas. No border and no shadow: the fill is the
+ * A Paper surface on the Sun canvas. No border and no shadow: the fill is the
  * boundary. Emphasis is not a card variant in this system, it is a full-bleed
  * band written inline at the point of use. See DESIGN.md §1.
  */

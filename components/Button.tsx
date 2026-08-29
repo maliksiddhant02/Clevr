@@ -2,8 +2,10 @@ import Link from "next/link";
 import type { ComponentProps, ReactNode } from "react";
 
 const VARIANT = {
-  // Lime fill, forest text. The fill does all the work: no border, no shadow.
-  primary: "bg-lime text-foreground hover:brightness-95",
+  // Ink fill, Paper text. The fill does all the work: no border, no shadow.
+  primary: "bg-foreground text-paper hover:opacity-90",
+  // Paper fill, for a pill sitting on an Ink ground where outline would vanish.
+  paper: "bg-paper text-foreground hover:opacity-90",
   outline: "border-foreground text-foreground border bg-transparent hover:bg-muted",
   ghost: "text-muted-foreground hover:text-foreground bg-transparent",
 } as const;

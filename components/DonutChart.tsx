@@ -1,8 +1,9 @@
 import { formatAud } from "@/lib/money";
 
-// A tonal green ramp with one lime spark, not a rainbow: one colour with
-// variations tells a story, five unrelated hues tell none.
-const COLORS = ["#163300", "#054d28", "#9fe870", "#c9d3c2", "#e2f6d5"] as const;
+// A tonal Ink ramp with one Sun spark, not a rainbow: one colour with
+// variations tells a story, five unrelated hues tell none. Read on a Paper
+// card, so the ramp darkens away from the card rather than from the page.
+const COLORS = ["#101010", "#3f3c33", "#ffe500", "#a3a094", "#d6d3c6"] as const;
 
 const R = 52;
 const STROKE = 18;

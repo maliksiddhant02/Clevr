@@ -4,26 +4,28 @@
    Everything visual centralizes here. No inline styles except data-driven
    geometry (chart heights, arc lengths). */
 @theme inline {
-  /* Deep forest green carries the weight; one electric lime is the only
-     accent, and it is always a fill, never text on a light surface. */
-  --color-background: #ffffff; /* Paper: page canvas               */
-  --color-foreground: #163300; /* Forest Ink: headings, emphasis, dark grounds */
-  --color-card: #e8ebe6; /* Fog: card surfaces               */
-  --color-muted: #e2f6d5; /* Linen Mist: discs, chips, tracks */
-  --color-muted-foreground: #5b5d5b; /* 6.6:1 on Paper, 5.5:1 on Fog     */
-  --color-border: rgb(14 15 12 / 0.12);
-  --color-lime: #9fe870; /* fills and active states only     */
-  --color-on-forest: #c7d8b8; /* secondary text on Forest Ink, 9.3:1 */
-  --color-success: #054d28; /* Spruce: money the shopper kept   */
+  /* The page is the accent. Sun yellow runs edge to edge on every screen and
+     Ink is the only mark on it; emphasis inverts to a solid Ink block. */
+  --color-background: #ffe500; /* Sun: page canvas, edge to edge     */
+  --color-foreground: #101010; /* Ink: type, fills, dark grounds     */
+  --color-paper: #ffffff; /* Paper: type and pills on Ink       */
+  --color-card: #ffffff; /* Paper: card surfaces on Sun        */
+  --color-muted: #f2d400; /* Deep Sun: tracks, chips, hover     */
+  --color-muted-foreground: #4a4530; /* 7.2:1 on Sun, 9.1:1 on Paper       */
+  --color-border: rgb(16 16 16 / 0.18);
+  --color-sun: #ffe500; /* the accent on Ink grounds only     */
+  --color-on-ink: #e9e7de; /* secondary text on Ink, 13.6:1      */
+  --color-success: #054d28; /* Spruce: money the shopper kept     */
 
   /* Inter does the quiet work; Inter Black at 900 does the shouting. */
   --font-sans: var(--font-inter), system-ui, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
 
-  /* Pills by default, 10px on controls, 28px on cards. */
+  /* Pills by default, 10px on controls, 28px on cards and media. */
   --radius-lg: 10px;
   --radius-xl: 10px;
   --radius-2xl: 28px;
+  --radius-3xl: 28px;
 
   /* Flat by design: a hairline border is the only elevation. Neutralised
      rather than deleted, so a stray `shadow-md` cannot reintroduce
@@ -44,27 +46,28 @@
    (/pay, /account) has no scrollbar and a long one does, so the centred
    phone column jumps sideways every time you change tabs. */
 html {
+  background-color: var(--color-background);
   scrollbar-gutter: stable;
   scrollbar-width: thin;
-  scrollbar-color: rgb(22 51 0 / 0.28) transparent;
+  scrollbar-color: rgb(16 16 16 / 0.3) transparent;
 }
 
 body {
   background-color: var(--color-background);
-  color: #454745; /* Charcoal: softer than black, never harsh */
+  color: #2b2823; /* Graphite: softer than Ink, never harsh */
   font-family: var(--font-sans);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }
 
 ::selection {
-  background-color: var(--color-lime);
-  color: var(--color-foreground);
+  background-color: var(--color-foreground);
+  color: var(--color-sun);
 }
 
 /* The display voice: Inter Black, tracked tight enough to read as one block.
    Reserved for screen titles, the brand mark and section openers. Colour is
-   deliberately left to the caller so it inverts cleanly on dark surfaces. */
+   deliberately left to the caller so it inverts cleanly on Ink grounds. */
 .display {
   font-weight: 900;
   letter-spacing: -0.04em;
@@ -77,6 +80,14 @@ body {
   outline: 2px solid var(--color-foreground);
   outline-offset: 2px;
   border-radius: 4px;
+}
+
+/* Horizontal card rails: the scroll is the platform's, not a carousel lib's. */
+.rail {
+  scrollbar-width: none;
+}
+.rail::-webkit-scrollbar {
+  display: none;
 }
 
 /* The one authored moment in the app: the savings line draws itself, once. */

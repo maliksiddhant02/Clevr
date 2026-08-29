@@ -31,12 +31,12 @@ export function TabBar() {
                   active ? "text-foreground" : "text-muted-foreground"
                 }`}
               >
-                {/* The lime pill is the app's single active-state signal, and
+                {/* The Ink pill is the app's single active-state signal, and
                     only one tab can be active at a time. */}
                 <span
                   aria-hidden
                   className={`flex h-7 w-14 items-center justify-center rounded-full transition-colors duration-200 ${
-                    active ? "bg-lime" : "bg-transparent"
+                    active ? "bg-foreground text-paper" : "bg-transparent"
                   }`}
                 >
                   <Icon size={20} strokeWidth={active ? 2.2 : 1.8} />

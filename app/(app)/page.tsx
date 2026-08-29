@@ -50,12 +50,12 @@ export default function Home() {
       </ButtonLink>
 
       {/* Full bleed, so the page reads as bands rather than as a card stack. */}
-      <section className="bg-foreground text-background -mx-5 mt-12 px-5 py-12">
+      <section className="bg-foreground text-paper -mx-5 mt-12 px-5 py-12">
         <p className="display text-[2.375rem] leading-[0.88]">
           Every card tap costs the shop about{" "}
-          <span className="text-lime">1.4%</span>.
+          <span className="text-sun">1.4%</span>.
         </p>
-        <p className="text-on-forest mt-5 text-[0.9375rem] leading-relaxed">
+        <p className="text-on-ink mt-5 text-[0.9375rem] leading-relaxed">
           Paying from your bank avoids that fee. The shop hands part of the
           saving back to you at the till and keeps the rest.
         </p>

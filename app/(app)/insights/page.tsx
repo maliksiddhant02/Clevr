@@ -62,11 +62,11 @@ export default function Insights() {
 
       {/* The merchant-side number, which the shopper sees nowhere else. Full
           bleed to the bottom edge, with the tab-bar clearance inside it. */}
-      <section className="bg-foreground text-background -mx-5 -mb-28 mt-12 px-5 pt-12 pb-32">
-        <p className="display text-lime text-[4rem] tabular-nums">
+      <section className="bg-foreground text-paper -mx-5 -mb-28 mt-12 px-5 pt-12 pb-32">
+        <p className="display text-sun text-[4rem] tabular-nums">
           {formatAud(feesKept)}
         </p>
-        <p className="text-on-forest mt-5 text-[0.9375rem] leading-relaxed">
+        <p className="text-on-ink mt-5 text-[0.9375rem] leading-relaxed">
           in card fees your shops avoided on these sales. That money stayed with
           the businesses you bought from rather than the card networks.
         </p>
