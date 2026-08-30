@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { HelpCircleIcon } from "@hugeicons/core-free-icons";
+import { Alert02Icon, HelpCircleIcon } from "@hugeicons/core-free-icons";
 import { formatAud } from "@/lib/money";
 import type { SamplePayment } from "@/lib/sample";
 import { SuccessBurst } from "@/components/SuccessBurst";
@@ -94,9 +94,23 @@ export function PinFlow({ payment }: { payment: SamplePayment }) {
 
       {/* ── Center Content PIN Indicators (with px-5 horizontal padding) ── */}
       <div className="flex flex-col items-center justify-center flex-1 py-6 px-5 gap-6">
+        {/* Why the keypad is here at all. A bank tries the face first and
+            falls back without ceremony, so this does the same: no sheet, no
+            scan, no wait. The banner is the whole of the fallback, and it is
+            on screen the instant the screen is.
+
+            An Ink pill rather than a second Ink band — the band below already
+            carries the Sun accent, and two filled blocks stacked would each
+            argue for being the important one. No red: the system has none,
+            and the sentence is the signal. */}
+        <p className="bg-foreground text-paper inline-flex items-center gap-2 rounded-full px-4 py-2.5 text-[0.9375rem] font-semibold">
+          <HugeiconsIcon icon={Alert02Icon} size={17} strokeWidth={2.2} aria-hidden />
+          Face ID not recognised
+        </p>
+
         <div className="text-center">
-          <h2 className="text-muted-foreground text-[0.875rem] font-bold uppercase tracking-widest">
-            Enter 4-Digit PIN
+          <h2 className="text-foreground text-[1.0625rem] font-bold">
+            Enter your PIN
           </h2>
           
           {/* PIN circles */}
