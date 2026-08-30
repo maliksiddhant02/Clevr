@@ -3,7 +3,7 @@ import Image from "next/image";
 import { AppleMark, GooglePlayMark } from "@/components/StoreMarks";
 import { ButtonLink } from "@/components/Button";
 import { CardRail } from "@/components/CardRail";
-import { MvpButton, MvpDialog, MvpPill } from "@/components/Mvp";
+import { MvpButton, MvpDialog } from "@/components/Mvp";
 import { NavSheet } from "@/components/NavSheet";
 import { HeroCopy } from "@/components/HeroCopy";
 import { WaitlistForm } from "@/components/WaitlistForm";
@@ -37,6 +37,14 @@ const FOOTER = [
   ["Privacy policy", "Privacy notice", "Terms of service"],
 ] as const;
 
+// Three things a shop owner asks in the first minute, answered in the order
+// they ask them. Not features: the objections.
+const BUSINESS_FACTS = [
+  ["No terminal", "A printed code on the counter, or the amount typed into a phone."],
+  ["No lock-in", "No monthly fee, no contract, no minimum turnover."],
+  ["Same day", "Money lands in your bank account, not in a processor's."],
+] as const;
+
 const STORES = [
   ["App Store", AppleMark],
   ["Google Play", GooglePlayMark],
@@ -64,7 +72,7 @@ export default function Landing() {
         </div>
         <div aria-hidden className="relative grow-[48]" />
         <ButtonLink href="#waitlist" variant="paper" className="relative self-center">
-          Join the waitlist
+          Get CLEVR
         </ButtonLink>
       </section>
 
@@ -120,12 +128,12 @@ export default function Landing() {
           you already have.
         </p>
 
-        <div className="mt-8 flex flex-col items-center gap-3">
+        {/* One pill. "Get the App" sat under this one making the same promise
+            at the same size, and two 64px pills in a column is a stack, not a
+            hierarchy. The store marks still live in the nav sheet and the
+            footer, which is where a reader looks for them. */}
+        <div className="mt-8 flex justify-center">
           <WaitlistForm />
-          <MvpPill variant="outline" className="w-full max-w-64 font-outfit">
-            <AppleMark size={20} />
-            Get the App
-          </MvpPill>
         </div>
 
         <p className="text-muted-foreground mt-10 text-left text-[0.8125rem] leading-relaxed">
@@ -150,6 +158,51 @@ export default function Landing() {
         <p className="text-foreground mx-auto mt-8 max-w-[19rem] text-[1.0625rem] font-bold">
           Every payment shows exactly what you kept and where.
         </p>
+      </section>
+
+      {/* For business — the Ink band.
+
+          The other half of this market is the shop, and until now the page did
+          not say a word to it. That is what earns the band: not composition
+          looking for content, but a reader the page owes an answer. It is the
+          system's own emphasis device, Paper type on Ink with one Sun mark,
+          and it puts the second ask somewhere it cannot be mistaken for a
+          second version of the first.
+
+          It takes the hero's inset rather than full bleed: a 40px corner needs
+          a gutter to read as a corner, and this band answers the hero. */}
+      <section
+        aria-labelledby="business"
+        className="bg-foreground text-paper -mx-[calc(1.25rem-11px)] mt-24 rounded-[40px] px-7 pt-16 pb-14"
+      >
+        <h2 id="business" className="section-title text-paper text-[2.625rem]">
+          Stop paying
+          <br />
+          to get paid
+        </h2>
+        <p className="text-on-ink mt-6 text-[1.0625rem] leading-relaxed">
+          Card fees take about{" "}
+          <span className="text-sun font-bold tabular-nums">1.4%</span> of every
+          sale before you see it. CLEVR settles to your bank, and you decide how
+          much of what you save goes back to the shopper.
+        </p>
+
+        <dl className="border-paper/20 divide-paper/20 mt-10 divide-y border-y">
+          {BUSINESS_FACTS.map(([term, detail]) => (
+            <div key={term} className="flex items-baseline gap-4 py-4">
+              <dt className="text-paper w-28 shrink-0 text-[1.0625rem] font-bold">
+                {term}
+              </dt>
+              <dd className="text-on-ink text-[0.9375rem] leading-relaxed">
+                {detail}
+              </dd>
+            </div>
+          ))}
+        </dl>
+
+        <div className="mt-10 flex justify-center">
+          <WaitlistForm audience="business" variant="paper" className="w-full max-w-72" />
+        </div>
       </section>
 
       {/* Footer */}

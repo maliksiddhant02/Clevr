@@ -70,9 +70,20 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* Selection is part of the system, not the browser's guess at one: Ink ground,
+   Sun mark, the same inversion everything else uses. On an Ink block that pair
+   is Ink on Ink and the selection disappears, so it flips there. Without the
+   flip, dragging across the business band paints a word Sun and it reads as a
+   second accent the design did not put there. */
 ::selection {
   background-color: var(--color-foreground);
   color: var(--color-sun);
+}
+
+.bg-foreground::selection,
+.bg-foreground ::selection {
+  background-color: var(--color-sun);
+  color: var(--color-foreground);
 }
 
 /* The display voice: the face at 900, tracked tight enough to read as one

@@ -155,16 +155,23 @@ export function NavSheet() {
             inert={!open}
             className="bg-card absolute inset-x-0 bottom-0 rounded-b-2xl px-5 pt-2 pb-8 text-center"
           >
-            {/* One destination. A marketing menu that lists the page you are
-                already on is furniture; the only thing a reader wants from
-                here is the product. */}
-            <Link
-              href="/app"
-              onClick={close}
-              className="text-foreground flex min-h-16 items-center justify-center text-[1.375rem] font-bold"
-            >
-              Go to the app
-            </Link>
+            {/* Two destinations, one per audience, and nothing else. A
+                marketing menu that lists the page you are already on is
+                furniture; the only thing a reader wants from here is whichever
+                side of the product they came for. */}
+            {[
+              { href: "/app", label: "Go to the app" },
+              { href: "/m", label: "Go to the till" },
+            ].map(({ href, label }) => (
+              <Link
+                key={href}
+                href={href}
+                onClick={close}
+                className="text-foreground flex min-h-16 items-center justify-center text-[1.375rem] font-bold"
+              >
+                {label}
+              </Link>
+            ))}
 
             <div className="border-border mt-4 flex justify-center gap-3 border-t pt-7">
               {STORES.map(({ name, Mark }) => (

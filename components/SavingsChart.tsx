@@ -7,30 +7,32 @@ import { AreaChart } from "@/components/AreaChart";
 import { formatAud } from "@/lib/money";
 
 // Sample data until payments are queried by shopper_cookie. TECHNICAL.md §14.
-// Weekly/monthly totals proportional to lib/sample.ts SAVED_CENTS ($1,286.40
-// over 213 days). Averages out to ~$6/day, ~$42/week, ~$180/month.
+// Weekly/monthly totals proportional to lib/sample.ts SAVED_CENTS ($418.80
+// over 213 days). That averages ~$2/day, but the average is not the shape: a
+// week with a television in it is one tall bar and six short ones, and
+// flattening that would hide the whole point of a big-ticket payment.
 // Deltas are versus the previous period so the % has a referent.
 const RANGES = {
   week: {
     delta: "+12% vs last week",
     bars: [
-      { label: "Mon", cents: 480 },
-      { label: "Tue", cents: 720 },
-      { label: "Wed", cents: 380 },
-      { label: "Thu", cents: 1150 },
-      { label: "Fri", cents: 640 },
-      { label: "Sat", cents: 1820 },
-      { label: "Sun", cents: 910 },
+      { label: "Mon", cents: 186 },
+      { label: "Tue", cents: 263 },
+      { label: "Wed", cents: 201 },
+      { label: "Thu", cents: 512 },
+      { label: "Fri", cents: 340 },
+      { label: "Sat", cents: 1620 },
+      { label: "Sun", cents: 118 },
     ],
   },
   month: {
     delta: "+9% vs last month",
     bars: [
-      { label: "1 Aug", cents: 3210 },
-      { label: "8 Aug", cents: 4860 },
-      { label: "15 Aug", cents: 2740 },
-      { label: "22 Aug", cents: 5410 },
-      { label: "29 Aug", cents: 4190 },
+      { label: "1 Aug", cents: 1240 },
+      { label: "8 Aug", cents: 890 },
+      { label: "15 Aug", cents: 2310 },
+      { label: "22 Aug", cents: 1105 },
+      { label: "29 Aug", cents: 3240 },
     ],
   },
 } as const;

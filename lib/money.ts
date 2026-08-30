@@ -27,9 +27,18 @@ export function cardFeeCents(amount: Cents, bps = 140): Cents {
   return Math.round((amount * bps) / 10000);
 }
 
+/**
+ * Grouped, because the till rings up televisions. `$1484.01` is four digits a
+ * reader has to count; `$1,484.01` is a number. `splitAud` has always grouped,
+ * so an ungrouped `formatAud` also meant the same amount read two ways on two
+ * screens.
+ */
 export function formatAud(cents: Cents): string {
   const sign = cents < 0 ? "-" : "";
-  return `${sign}$${(Math.abs(cents) / 100).toFixed(2)}`;
+  return `${sign}$${(Math.abs(cents) / 100).toLocaleString("en-AU", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  })}`;
 }
 
 /**

@@ -18,16 +18,28 @@ export async function joinWaitlist(
     return { ok: false, message: "Waitlist is not configured yet." };
   }
 
-  const res = await fetch(`${url}/rest/v1/waitlist`, {
-    method: "POST",
-    headers: {
-      apikey: key,
-      Authorization: `Bearer ${key}`,
-      "Content-Type": "application/json",
-      Prefer: "return=minimal",
-    },
-    body: JSON.stringify({ email }),
-  });
+  // Shopper or shop owner. Anything else on the wire is someone editing the
+  // hidden field, and it lands in the same bucket as an unlabelled signup.
+  const raw = String(formData.get("audience") ?? "");
+  const audience = raw === "business" ? "business" : "shopper";
+
+  const post = (body: Record<string, string>) =>
+    fetch(`${url}/rest/v1/waitlist`, {
+      method: "POST",
+      headers: {
+        apikey: key,
+        Authorization: `Bearer ${key}`,
+        "Content-Type": "application/json",
+        Prefer: "return=minimal",
+      },
+      body: JSON.stringify(body),
+    });
+
+  // The `audience` column is new. Until the migration lands, PostgREST answers
+  // an unknown column with 400 (PGRST204) — retry without it rather than
+  // telling a real signup that something went wrong.
+  let res = await post({ email, audience });
+  if (res.status === 400) res = await post({ email });
 
   if (res.status === 201) return { ok: true, message: "You're on the list." };
   // 23505 = unique_violation. Treat duplicates as success — don't leak membership state loudly, but also don't confuse the user.

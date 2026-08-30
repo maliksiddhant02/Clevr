@@ -1,4 +1,4 @@
-import type { BizPayment } from "@/lib/biz-sample";
+import { localDay, type BizPayment } from "@/lib/biz-sample";
 import { formatAud } from "@/lib/money";
 import Link from "next/link";
 
@@ -6,8 +6,8 @@ import Link from "next/link";
 // Abandoned (expired) row — muted, struck-through amount, no chevron.
 
 function dateLabel(iso: string): string {
-  const today = new Date().toISOString().slice(0, 10);
-  const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+  const today = localDay();
+  const yesterday = localDay(new Date(Date.now() - 86400000));
   const date = iso.slice(0, 10);
   if (date === today) return "Today";
   if (date === yesterday) return "Yesterday";

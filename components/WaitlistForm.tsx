@@ -5,6 +5,36 @@ import { useFormStatus } from "react-dom";
 import { joinWaitlist, type WaitlistState } from "@/app/actions/waitlist";
 import { Button } from "@/components/Button";
 
+/**
+ * Two audiences, one list. A shop owner and a shopper want different things
+ * from this page, so the button that speaks to each of them says a different
+ * sentence — but they are the same form, the same table and the same answer,
+ * because splitting them into two flows would be two of everything to serve
+ * one extra column.
+ *
+ * `openParam` is what `?open=` has to say for this copy to auto-open. The
+ * landing page renders both, and a QR pointed at the shopper list must not
+ * open the merchant one behind it.
+ */
+const AUDIENCE = {
+  shopper: {
+    openParam: "waitlist",
+    label: "Get CLEVR",
+    title: "Get CLEVR",
+    blurb: "We will email you when CLEVR opens.",
+  },
+  business: {
+    openParam: "business",
+    label: "Get CLEVR for business",
+    title: "CLEVR for business",
+    blurb: "We will email you when CLEVR opens to shops.",
+  },
+} as const;
+
+export type Audience = keyof typeof AUDIENCE;
+
+// The opener says what you get; the submit says what pressing it does. Both
+// audiences join the same list, so both say so.
 function SubmitButton() {
   const { pending } = useFormStatus();
   return (
@@ -27,7 +57,16 @@ function SubmitButton() {
  * One dialog, two states: the form, then its answer. A second dialog for the
  * confirmation would close the first and reopen somewhere else on the screen.
  */
-export function WaitlistForm() {
+export function WaitlistForm({
+  audience = "shopper",
+  variant = "primary",
+  className = "w-full max-w-64",
+}: {
+  audience?: Audience;
+  variant?: "primary" | "paper" | "outline";
+  className?: string;
+}) {
+  const copy = AUDIENCE[audience];
   const [state, action] = useActionState<WaitlistState, FormData>(joinWaitlist, null);
   const ref = useRef<HTMLDialogElement>(null);
 
@@ -35,32 +74,35 @@ export function WaitlistForm() {
   // directly so the page stays statically prerenderable — useSearchParams
   // would force a Suspense boundary or a CSR bailout.
   useEffect(() => {
-    if (new URLSearchParams(window.location.search).get("open") === "waitlist") {
+    if (new URLSearchParams(window.location.search).get("open") === copy.openParam) {
       ref.current?.showModal();
     }
-  }, []);
+  }, [copy.openParam]);
+
+  const titleId = `waitlist-title-${audience}`;
 
   return (
     <>
       <Button
-        className="w-full max-w-64 font-outfit"
+        variant={variant}
+        className={`${className} font-outfit`}
         onClick={() => ref.current?.showModal()}
       >
-        Join the waitlist
+        {copy.label}
       </Button>
 
       <dialog
         ref={ref}
-        aria-labelledby="waitlist-title"
+        aria-labelledby={titleId}
         className="bg-card text-foreground m-auto w-[min(21.25rem,calc(100vw-2.5rem))] rounded-3xl p-6 text-center backdrop:bg-foreground/60"
       >
         {state?.ok ? (
           <>
-            <h2 id="waitlist-title" className="display text-[1.5rem]">
+            <h2 id={titleId} className="display text-[1.5rem]">
               {state.message}
             </h2>
             <p className="text-muted-foreground mt-3 text-[0.9375rem] leading-relaxed">
-              We will email you when CLEVR opens.
+              {copy.blurb}
             </p>
             {/* method="dialog" closes it: no handler, no listener. */}
             <form method="dialog">
@@ -69,14 +111,15 @@ export function WaitlistForm() {
           </>
         ) : (
           <>
-            <h2 id="waitlist-title" className="display text-[1.5rem]">
-              Join the waitlist
+            <h2 id={titleId} className="display text-[1.5rem]">
+              {copy.title}
             </h2>
             <p className="text-muted-foreground mt-3 text-[0.9375rem] leading-relaxed">
-              We will email you when CLEVR opens.
+              {copy.blurb}
             </p>
 
             <form action={action} className="mt-5 flex flex-col gap-3">
+              <input type="hidden" name="audience" value={audience} />
               <input
                 type="email"
                 name="email"

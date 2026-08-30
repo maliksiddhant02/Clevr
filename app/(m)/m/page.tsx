@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { formatAud } from "@/lib/money";
-import { BIZ_PAYMENTS, BIZ_MERCHANT } from "@/lib/biz-sample";
+import { BIZ_PAYMENTS, BIZ_MERCHANT, localDay } from "@/lib/biz-sample";
 import { PaymentRow } from "@/components/PaymentRow";
 import { Keypad } from "@/components/Keypad";
 
@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function TillPage() {
   const settled = BIZ_PAYMENTS.filter((p) => p.status === "settled");
-  const today = new Date().toISOString().slice(0, 10);
+  const today = localDay();
   const todaySettled = settled.filter((p) => p.settledAt?.startsWith(today));
 
   const todayGross = todaySettled.reduce((n, p) => n + p.amountCents, 0);

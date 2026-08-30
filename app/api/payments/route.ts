@@ -1,4 +1,6 @@
 import { NextResponse } from "next/server";
+import { discountCents } from "@/lib/money";
+import { BIZ_MERCHANT } from "@/lib/biz-sample";
 
 // In-process mock store. Keyed by ref.
 // Structure matches the real DB schema (TECHNICAL.md §10) so the swap is
@@ -39,12 +41,13 @@ export async function POST(request: Request) {
   }
 
   const n = (body as Record<string, unknown>)?.amountCents;
-  if (!Number.isSafeInteger(n) || (n as number) < 1 || (n as number) > 100_000) {
+  // 10k ceiling, not 1k: the till has to be able to ring up a television.
+  if (!Number.isSafeInteger(n) || (n as number) < 1 || (n as number) > 1_000_000) {
     return NextResponse.json({ error: "invalid amount" }, { status: 400 });
   }
   const amountCents = n as number;
-  const discountCents = Math.max(1, Math.round((amountCents * 50) / 10000));
-  const shopperPaysCents = amountCents - discountCents;
+  const discount = discountCents(amountCents, BIZ_MERCHANT.discountBps);
+  const shopperPaysCents = amountCents - discount;
 
   const customRef = (body as Record<string, unknown>)?.ref;
   const ref = typeof customRef === "string" && customRef.startsWith("CLVR") ? customRef : makeRef();
@@ -52,7 +55,7 @@ export async function POST(request: Request) {
   const payment: MockPayment = {
     ref,
     amountCents,
-    discountCents,
+    discountCents: discount,
     shopperPaysCents,
     payid: PAYID,
     status: "pending",
@@ -68,7 +71,7 @@ export async function POST(request: Request) {
       ref,
       payid: PAYID,
       amountCents,
-      discountCents,
+      discountCents: discount,
       shopperPaysCents,
       expiresAt: new Date(payment.expiresAt).toISOString(),
     },

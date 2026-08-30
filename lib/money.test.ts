@@ -40,7 +40,8 @@ test("rejects junk amounts rather than quietly coercing them", () => {
 test("formats cents as AUD", () => {
   assert.equal(formatAud(995), "$9.95");
   assert.equal(formatAud(5), "$0.05");
-  assert.equal(formatAud(100000), "$1000.00");
+  assert.equal(formatAud(100000), "$1,000.00");
+  assert.equal(formatAud(148401), "$1,484.01");
 });
 
 test("no annual projection from a single payment", () => {

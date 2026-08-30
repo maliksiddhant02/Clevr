@@ -33,7 +33,8 @@ export function MockDisclaimer() {
         CLEVR is an MVP
       </h2>
       <p className="text-muted-foreground mt-3 text-[0.9375rem] leading-relaxed">
-        Every account and payment here is mock data.
+        Every account and payment here is mock data. Shop names are
+        illustrative, not partners.
       </p>
       {/* method="dialog" closes it: no handler, no listener. */}
       <form method="dialog">

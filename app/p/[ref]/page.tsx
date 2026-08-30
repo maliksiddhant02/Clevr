@@ -18,9 +18,9 @@ export default async function ShopperPage({
   // Fall back to a stub when ref is unknown — any ref works on sample data.
   const payment = findPayment(ref) ?? {
     ref,
-    merchant: "Brew & Co",
-    paidCents: 995,
-    savedCents: 5,
+    merchant: "JB Hi-Fi",
+    paidCents: 34_551,
+    savedCents: 349,
     day: "Today",
     time: new Date().toLocaleTimeString("en-AU", { hour: "2-digit", minute: "2-digit" }),
     settledSeconds: 4,

@@ -22,6 +22,18 @@ function toDate(iso: string): string {
   return iso.slice(0, 10);
 }
 
+/**
+ * Today in the reader's own day. Not `toISOString().slice(0, 10)`: that is the
+ * UTC day, so west of Greenwich an evening settlement is filed under tomorrow
+ * and "pending today" lands on the wrong row. Written out rather than imported
+ * to keep this module free of anything but arithmetic.
+ */
+function localDay(): string {
+  const d = new Date();
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+}
+
 export function reconcile(payments: BizPayment[]): DayRecord[] {
   const settled = payments.filter((p) => p.status === "settled" && p.settledAt);
 
@@ -45,7 +57,7 @@ export function reconcile(payments: BizPayment[]): DayRecord[] {
     map.set(date, rec);
   }
 
-  const today = new Date().toISOString().slice(0, 10);
+  const today = localDay();
   const records = [...map.values()].sort((a, b) => b.date.localeCompare(a.date));
 
   // Mark today's record as pending until a real settlement batch closes it.
@@ -61,7 +73,7 @@ export function monthTotals(records: DayRecord[]): {
   discountGivenCents: number;
   cardFeesAvoidedCents: number;
 } {
-  const thisMonth = new Date().toISOString().slice(0, 7);
+  const thisMonth = localDay().slice(0, 7);
   const month = records.filter((r) => r.date.startsWith(thisMonth));
   return {
     grossCents: month.reduce((n, r) => n + r.grossCents, 0),

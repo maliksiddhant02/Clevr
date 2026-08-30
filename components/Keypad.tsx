@@ -2,7 +2,8 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { formatAud } from "@/lib/money";
+import { formatAud, shopperPays } from "@/lib/money";
+import { BIZ_MERCHANT } from "@/lib/biz-sample";
 
 const KEYS = ["1", "2", "3", "4", "5", "6", "7", "8", "9", ".", "0", "⌫"] as const;
 
@@ -21,14 +22,14 @@ export function Keypad() {
     // Max 2 decimal places
     const dot = raw.indexOf(".");
     if (dot >= 0 && raw.length - dot > 2) return;
-    // Max $1000
-    if (raw.length > 6) return;
+    // Max $9,999.99 — the till rings up televisions, not just coffees.
+    if (raw.length > 7) return;
     setRaw((s) => s + k);
   }
 
   function toCents(s: string): number | null {
     const n = parseFloat(s);
-    if (isNaN(n) || n <= 0 || n > 1000) return null;
+    if (isNaN(n) || n <= 0 || n > 9999.99) return null;
     return Math.round(n * 100);
   }
 
@@ -71,7 +72,7 @@ export function Keypad() {
         </p>
         {cents && (
           <p className="text-muted-foreground mt-2 text-[0.9375rem]">
-            Shopper pays {formatAud(Math.max(1, cents - Math.max(1, Math.round(cents * 50 / 10000))))}
+            Shopper pays {formatAud(shopperPays(cents, BIZ_MERCHANT.discountBps))}
           </p>
         )}
       </div>

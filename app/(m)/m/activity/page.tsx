@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { BIZ_PAYMENTS, BIZ_MERCHANT } from "@/lib/biz-sample";
+import { BIZ_PAYMENTS, BIZ_MERCHANT, localDay } from "@/lib/biz-sample";
 import { ScanRow } from "@/components/ScanRow";
 
 export const metadata: Metadata = {
@@ -20,8 +20,8 @@ function groupByDay(payments: typeof BIZ_PAYMENTS): DayGroup[] {
 }
 
 function dayLabel(iso: string): string {
-  const today = new Date().toISOString().slice(0, 10);
-  const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+  const today = localDay();
+  const yesterday = localDay(new Date(Date.now() - 86400000));
   if (iso === today) return "Today";
   if (iso === yesterday) return "Yesterday";
   return new Date(iso).toLocaleDateString("en-AU", {

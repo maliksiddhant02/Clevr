@@ -8,6 +8,10 @@ export default function Insights() {
   // Averaged over lifetime payments, not just the visible 7-row week snapshot.
   const avgSaved = Math.round(SAVED_CENTS / PAYMENT_COUNT);
   const merchants = topMerchants();
+  // The donut's centre is the sum of its own slices. SAVED_CENTS is the
+  // lifetime figure and the slices are this week, so putting it in the middle
+  // labelled a total the ring does not add up to.
+  const keptByShop = merchants.reduce((n, m) => n + m.cents, 0);
 
   return (
     <main className="pt-6 pb-28">
@@ -47,7 +51,7 @@ export default function Insights() {
         <Card>
           <DonutChart
             segments={merchants.map((m) => ({ label: m.merchant, cents: m.cents }))}
-            totalCents={SAVED_CENTS}
+            totalCents={keptByShop}
             caption={`Kept by shop. ${merchants
               .map((m) => `${m.merchant} ${formatAud(m.cents)}`)
               .join(", ")}.`}

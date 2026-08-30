@@ -29,9 +29,9 @@ export default function DonePage({
       setRef(p.ref);
       const data = findPayment(p.ref) ?? {
         ref: p.ref,
-        merchant: "Brew & Co",
-        paidCents: 995,
-        savedCents: 5,
+        merchant: "JB Hi-Fi",
+        paidCents: 34_551,
+        savedCents: 349,
         day: "Today",
         time: "now",
         settledSeconds: 4,
