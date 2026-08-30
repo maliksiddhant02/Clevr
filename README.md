@@ -56,14 +56,38 @@ The Supabase schema:
 ```sql
 create table waitlist (
   id bigint generated always as identity primary key,
-  email text not null unique,
-  created_at timestamptz not null default now()
+  email text not null,
+  audience text not null default 'shopper'
+    check (audience in ('shopper', 'business')),
+  created_at timestamptz not null default now(),
+  unique (email, audience)
 );
 ```
 
+**One table, two lists.** The landing page has two buttons — Get CLEVR and Get
+CLEVR for business — and both post the same form to the same row. `audience`
+is what tells them apart, and the uniqueness is on the pair, so a shop owner
+who also shops can be on both lists without either signup being swallowed as
+a duplicate.
+
+If the table predates the `audience` column, run:
+
+```sql
+alter table waitlist
+  add column audience text not null default 'shopper'
+    check (audience in ('shopper', 'business'));
+alter table waitlist drop constraint waitlist_email_key;
+alter table waitlist add constraint waitlist_email_audience_key
+  unique (email, audience);
+```
+
+Until that runs, `joinWaitlist` retries the insert without `audience` when
+PostgREST rejects the unknown column, so signups keep working and land
+unlabelled rather than erroring.
+
 Service role bypasses RLS; the insert only ever happens server-side from the
 `joinWaitlist` action in `app/actions/waitlist.ts`, so the key stays off the
-client.
+client. The browser never sees the key and never talks to Supabase.
 
 ## Design
 

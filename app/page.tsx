@@ -6,6 +6,7 @@ import { CardRail } from "@/components/CardRail";
 import { MvpButton, MvpDialog } from "@/components/Mvp";
 import { NavSheet } from "@/components/NavSheet";
 import { HeroCopy } from "@/components/HeroCopy";
+import { cardFeeCents, discountCents, formatAud } from "@/lib/money";
 import { WaitlistForm } from "@/components/WaitlistForm";
 
 export const metadata: Metadata = {
@@ -37,13 +38,23 @@ const FOOTER = [
   ["Privacy policy", "Privacy notice", "Terms of service"],
 ] as const;
 
-// Three things a shop owner asks in the first minute, answered in the order
-// they ask them. Not features: the objections.
-const BUSINESS_FACTS = [
-  ["No terminal", "A printed code on the counter, or the amount typed into a phone."],
-  ["No lock-in", "No monthly fee, no contract, no minimum turnover."],
-  ["Same day", "Money lands in your bank account, not in a processor's."],
-] as const;
+// The dial, worked out on a round number. Every figure is computed from the
+// same functions the app itself settles payments with, so the landing page
+// cannot quietly drift away from what the product does.
+const EXAMPLE_SALE = 100_000;
+// Round dollars, no cents: `formatAud` is right for a fee and wrong for the
+// hypothetical sale it is charged on. "$1,000.00 sale" reads like a receipt
+// for something that never happened.
+const EXAMPLE_LABEL = `$${(EXAMPLE_SALE / 100).toLocaleString("en-AU")}`;
+const CARD_FEE = cardFeeCents(EXAMPLE_SALE);
+const RATES = [50, 100, 140].map((bps) => {
+  const back = discountCents(EXAMPLE_SALE, bps);
+  return {
+    rate: `${(bps / 100).toFixed(2)}%`,
+    back: formatAud(back),
+    kept: formatAud(CARD_FEE - back),
+  };
+});
 
 const STORES = [
   ["App Store", AppleMark],
@@ -124,16 +135,24 @@ export default function Landing() {
         </div>
 
         <p className="text-foreground mx-auto mt-14 max-w-[21rem] text-[1.0625rem] font-bold">
-          No annual fee, no interest, no credit check. Pay from the account
-          you already have.
+          No surcharge, no card fee, no signup. Pay from the account you
+          already have.
         </p>
 
-        {/* One pill. "Get the App" sat under this one making the same promise
-            at the same size, and two 64px pills in a column is a stack, not a
-            hierarchy. The store marks still live in the nav sheet and the
-            footer, which is where a reader looks for them. */}
-        <div className="mt-8 flex justify-center">
+        {/* Two pills, one audience each, and a real step between them: Ink
+            fill for the reader this page is written for, outline for the one
+            it is not. The second is a jump, not an ask — a shop owner who has
+            not read the case for it yet has no reason to hand over an email,
+            and the case is four screens down. */}
+        <div className="mt-8 flex flex-col items-center gap-3">
           <WaitlistForm />
+          <ButtonLink
+            href="#business"
+            variant="outline"
+            className="font-outfit w-full max-w-64"
+          >
+            CLEVR for business
+          </ButtonLink>
         </div>
 
         <p className="text-muted-foreground mt-10 text-left text-[0.8125rem] leading-relaxed">
@@ -160,45 +179,94 @@ export default function Landing() {
         </p>
       </section>
 
-      {/* For business — the Ink band.
+      {/* For business.
 
-          The other half of this market is the shop, and until now the page did
-          not say a word to it. That is what earns the band: not composition
-          looking for content, but a reader the page owes an answer. It is the
-          system's own emphasis device, Paper type on Ink with one Sun mark,
-          and it puts the second ask somewhere it cannot be mistaken for a
-          second version of the first.
+          This started as a heading, a paragraph and three benefit rows, which
+          is the shape every generated landing page arrives in: two-word label,
+          one supporting sentence, three times. It said nothing a reader could
+          check. The rest of this page is full of real money — a receipt, an
+          amount, a saving — and the band was the only place talking in
+          adjectives.
+
+          So it does arithmetic instead. The table is the product: the fee stops
+          being a rate somebody else picks and becomes a dial, and the numbers
+          in it are computed by the same functions that settle a payment in the
+          app. A shop owner can check it against their own takings, which is
+          the only kind of claim worth making to one.
 
           It takes the hero's inset rather than full bleed: a 40px corner needs
           a gutter to read as a corner, and this band answers the hero. */}
       <section
-        aria-labelledby="business"
-        className="bg-foreground text-paper -mx-[calc(1.25rem-11px)] mt-24 rounded-[40px] px-7 pt-16 pb-14"
+        id="business"
+        aria-labelledby="business-heading"
+        className="bg-foreground text-paper -mx-[calc(1.25rem-11px)] mt-24 scroll-mt-6 rounded-[40px] px-7 pt-16 pb-14"
       >
-        <h2 id="business" className="section-title text-paper text-[2.625rem]">
-          Stop paying
+        <h2
+          id="business-heading"
+          className="section-title text-paper text-[2.625rem]"
+        >
+          The card fee
           <br />
-          to get paid
+          becomes
+          <br />
+          your discount
         </h2>
         <p className="text-on-ink mt-6 text-[1.0625rem] leading-relaxed">
-          Card fees take about{" "}
+          An acquirer takes about{" "}
           <span className="text-sun font-bold tabular-nums">1.4%</span> of every
-          sale before you see it. CLEVR settles to your bank, and you decide how
-          much of what you save goes back to the shopper.
+          card sale and never asks. Paid from a bank account that fee is not
+          charged at all, and what you hand back in its place is a number you
+          set. It goes to the person who just spent the money.
         </p>
 
-        <dl className="border-paper/20 divide-paper/20 mt-10 divide-y border-y">
-          {BUSINESS_FACTS.map(([term, detail]) => (
-            <div key={term} className="flex items-baseline gap-4 py-4">
-              <dt className="text-paper w-28 shrink-0 text-[1.0625rem] font-bold">
-                {term}
-              </dt>
-              <dd className="text-on-ink text-[0.9375rem] leading-relaxed">
-                {detail}
-              </dd>
-            </div>
-          ))}
-        </dl>
+        <figure className="mt-10">
+          <table className="w-full border-collapse text-[0.9375rem]">
+            <caption className="text-on-ink pb-4 text-left text-[0.9375rem] leading-relaxed">
+              On a {EXAMPLE_LABEL} sale, where a card would have taken{" "}
+              <span className="text-paper font-semibold tabular-nums">
+                {formatAud(CARD_FEE)}
+              </span>
+              :
+            </caption>
+            <thead>
+              <tr className="border-paper/20 border-b">
+                <th scope="col" className="text-on-ink pb-2.5 text-left font-medium">
+                  You set
+                </th>
+                <th scope="col" className="text-on-ink pb-2.5 text-right font-medium">
+                  Shopper gets
+                </th>
+                <th scope="col" className="text-on-ink pb-2.5 text-right font-medium">
+                  You keep
+                </th>
+              </tr>
+            </thead>
+            <tbody className="divide-paper/20 divide-y">
+              {RATES.map((row) => (
+                <tr key={row.rate}>
+                  <th
+                    scope="row"
+                    className="text-paper py-3.5 text-left font-bold tabular-nums"
+                  >
+                    {row.rate}
+                  </th>
+                  <td className="text-paper py-3.5 text-right font-semibold tabular-nums">
+                    {row.back}
+                  </td>
+                  <td className="text-paper py-3.5 text-right font-semibold tabular-nums">
+                    {row.kept}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </figure>
+
+        <p className="text-on-ink mt-8 text-[1.0625rem] leading-relaxed">
+          No terminal, no monthly fee, no contract. The money lands in your
+          bank account rather than in a processor&rsquo;s, on the day of the
+          sale.
+        </p>
 
         <div className="mt-10 flex justify-center">
           <WaitlistForm audience="business" variant="paper" className="w-full max-w-72" />
