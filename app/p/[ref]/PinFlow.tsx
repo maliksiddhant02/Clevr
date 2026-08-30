@@ -7,11 +7,15 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import { HelpCircleIcon } from "@hugeicons/core-free-icons";
 import { formatAud } from "@/lib/money";
 import type { SamplePayment } from "@/lib/sample";
+import { SuccessBurst } from "@/components/SuccessBurst";
 
 export function PinFlow({ payment }: { payment: SamplePayment }) {
   const router = useRouter();
   const [pin, setPin] = useState<string>("");
   const [loading, setLoading] = useState(false);
+  // Confirmed, but still on this screen: the green sheet sweeps in over the
+  // keypad and the route changes underneath it. See SuccessBurst.
+  const [confirmed, setConfirmed] = useState(false);
 
   const handleKey = (key: string) => {
     if (loading) return;
@@ -27,8 +31,11 @@ export function PinFlow({ payment }: { payment: SamplePayment }) {
     if (pin.length !== 4 || loading) return;
     setLoading(true);
     try {
-      await fetch(`/api/payments/${payment.ref}/confirm`, { method: "POST" });
-      router.push(`/p/${payment.ref}/done`);
+      // POST /api/payments/[ref] is the settle trigger. The old path had a
+      // trailing /confirm, which is not a route: every payment 404ed on the
+      // way to a receipt that looked like it had worked.
+      await fetch(`/api/payments/${payment.ref}`, { method: "POST" });
+      setConfirmed(true);
     } catch (err) {
       console.error("Payment confirmation failed:", err);
       setLoading(false);
@@ -39,6 +46,12 @@ export function PinFlow({ payment }: { payment: SamplePayment }) {
     // Removed px-5 from the top level main container so keypad grid lines touch screen edges.
     // -mx-5 cancels parent padding to make container run 100% full column width.
     <main className="flex min-h-dvh flex-col bg-background text-foreground justify-between -mx-5">
+      {confirmed && (
+        <SuccessBurst
+          phase="enter"
+          onCovered={() => router.push(`/p/${payment.ref}/done`)}
+        />
+      )}
       {/* ── Header block matching UPI layout (with px-5 horizontal padding) ── */}
       <div className="pt-4 pb-4 border-b border-border bg-foreground/3 px-5">
         <div className="flex items-start justify-between">

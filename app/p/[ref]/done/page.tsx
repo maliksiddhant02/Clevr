@@ -62,7 +62,7 @@ export default function DonePage({
     // Replaced bg-paper with bg-background (Sun yellow) and removed horizontal container padding.
     // Kept -mx-5 to make the container run 100% full column width.
     <main className="flex min-h-dvh flex-col bg-background text-foreground justify-between -mx-5 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-4">
-      <SuccessBurst />
+      <SuccessBurst phase="cover" />
       {/* ── Top Bar with "X" Close Button (with px-5 horizontal padding) ── */}
       <div className="flex items-center justify-between w-full px-5">
         <Link

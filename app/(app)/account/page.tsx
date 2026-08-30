@@ -14,24 +14,17 @@ import {
   SafeIcon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import type { IconSvgElement } from "@hugeicons/react";
+import { Disclosure, type DisclosureRow } from "@/components/Disclosure";
 import { getSession, signOut, switchRole, signIn, signInProvider, type Session } from "@/lib/session";
 
-type Row = {
-  icon: IconSvgElement;
-  title: string;
-  status?: string;
-  body: string;
-};
-
-const SETTING: Row = {
+const SETTING: DisclosureRow = {
   icon: FlashIcon,
   title: "Fast checkout",
   status: "Not set up",
   body: "Authorise CLEVR once in your banking app and every payment after that is a single tap. Your bank holds the authorisation, not us. Coming after launch.",
 };
 
-const FAQ: Row[] = [
+const FAQ: DisclosureRow[] = [
   {
     icon: QrCodeIcon,
     title: "How do I pay?",
@@ -63,41 +56,6 @@ const FAQ: Row[] = [
     body: "We do not sell it, to shops or to anyone. Shops see only their own sales. Your history stays on this device until you make an account.",
   },
 ];
-
-function Disclosure({ icon, title, status, body }: Row) {
-  return (
-    <li>
-      <details className="group">
-        <summary className="flex min-h-16 cursor-pointer list-none items-center gap-3 py-4 [&::-webkit-details-marker]:hidden">
-          <span
-            aria-hidden
-            className="bg-muted text-foreground flex h-9 w-9 shrink-0 items-center justify-center rounded-full"
-          >
-            <HugeiconsIcon icon={icon} size={17} strokeWidth={2} />
-          </span>
-          <span className="text-foreground flex-1 text-[1.0625rem] font-semibold">
-            {title}
-          </span>
-          {status && (
-            <span className="text-foreground bg-card shrink-0 rounded-full px-2.5 py-1 text-[0.8125rem] font-medium">
-              {status}
-            </span>
-          )}
-          <HugeiconsIcon
-            icon={ArrowRight01Icon}
-            size={17}
-            strokeWidth={2}
-            aria-hidden
-            className="text-muted-foreground shrink-0 transition-transform duration-200 group-open:rotate-90"
-          />
-        </summary>
-        <p className="text-muted-foreground pb-5 text-[0.9375rem] leading-relaxed">
-          {body}
-        </p>
-      </details>
-    </li>
-  );
-}
 
 function AccountContent() {
   const router = useRouter();

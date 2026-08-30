@@ -35,9 +35,10 @@ export function Keypad() {
 
   async function handleSubmit() {
     const cents = toCents(raw);
-    if (!cents) return;
+    if (!cents || loading) return;
+    setLoading(true);
 
-    // Generate Crockford Base32 6-character random suffix
+    // Crockford base32, same alphabet as the server's own refs.
     const CHARS = "0123456789ABCDEFGHJKMNPQRSTVWXYZ";
     let suffix = "";
     for (let i = 0; i < 6; i++) {
@@ -45,10 +46,10 @@ export function Keypad() {
     }
     const dataRef = "CLVR" + suffix;
 
-    // Redirect instantly to avoid loading/network latency
-    router.push(`/m/${dataRef}`);
-
-    // Fire API request in background
+    // Create first, then go. This used to navigate immediately and post in
+    // the background, which raced: the charge screen would load, ask for a
+    // payment that did not exist yet, and sit on "Reconnecting" with a dash
+    // where the amount goes. The call is local and takes a few milliseconds.
     try {
       await fetch("/api/payments", {
         method: "POST",
@@ -56,8 +57,11 @@ export function Keypad() {
         body: JSON.stringify({ amountCents: cents, ref: dataRef }),
       });
     } catch (err) {
-      console.error("Failed to create payment reference in background:", err);
+      console.error("Could not create the payment:", err);
+      setLoading(false);
+      return;
     }
+    router.push(`/m/${dataRef}`);
   }
 
   const display = raw ? `$${raw}` : "$0.00";

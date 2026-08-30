@@ -1,8 +1,9 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { formatAud } from "@/lib/money";
+import { useEffect, useState, type ReactNode } from "react";
+import { formatAud, splitAud } from "@/lib/money";
+import { SuccessBurst } from "@/components/SuccessBurst";
 
 type Status = "pending" | "settled" | "expired";
 
@@ -16,84 +17,99 @@ type PollData = {
   settledAt?: string;
 };
 
-// Merchant-side poller. Polls every 1.5s until settled/expired.
-// On settle: renders the tick inline rather than navigating — the merchant
-// stays at the till rather than landing on a separate page.
+/**
+ * The counter screen: one amount, one code, one line of state.
+ *
+ * It used to take a prop called `ref`, which React reserves, so every charge
+ * landed on a runtime error instead of a QR code. The prop is `paymentRef`
+ * now — the payment's own name for itself, which is what it always was.
+ *
+ * The screen stays on this route the whole time it is waiting. A merchant
+ * mid-sale is holding the phone out to a stranger, and a screen that
+ * navigates under their hand is a screen they have to explain.
+ */
 export function MerchantPoller({
-  ref,
-  qrSvg,
+  paymentRef,
+  children,
 }: {
-  ref: string;
-  qrSvg: string;
+  paymentRef: string;
+  children: ReactNode;
 }) {
   const router = useRouter();
   const [data, setData] = useState<PollData | null>(null);
-  const [error, setError] = useState(false);
+  const [offline, setOffline] = useState(false);
+  const [settling, setSettling] = useState(false);
 
   useEffect(() => {
+    let live = true;
+    let timer: ReturnType<typeof setTimeout>;
+
     async function poll() {
       try {
-        const res = await fetch(`/api/payments/${ref}`);
-        if (!res.ok) { setError(true); return; }
+        const res = await fetch(`/api/payments/${paymentRef}`);
+        if (!live) return;
+        if (!res.ok) {
+          // A cold reload empties the in-process store, so an unknown ref is
+          // the demo restarting, not a fault. Keep asking.
+          setOffline(true);
+          timer = setTimeout(poll, 3000);
+          return;
+        }
+        setOffline(false);
         const d: PollData = await res.json();
         setData(d);
-        if (d.status === "settled" || d.status === "expired") return;
-        setTimeout(poll, 1500);
+        if (d.status === "settled") {
+          setSettling(true);
+          return;
+        }
+        if (d.status === "expired") return;
+        timer = setTimeout(poll, 1500);
       } catch {
-        setTimeout(poll, 3000); // back off on network error
+        if (!live) return;
+        setOffline(true);
+        timer = setTimeout(poll, 3000);
       }
     }
+
     poll();
-  }, [ref]);
+    return () => {
+      live = false;
+      clearTimeout(timer);
+    };
+  }, [paymentRef]);
 
-  if (!data) {
-    return (
-      <div className="flex flex-1 items-center justify-center">
-        <p className="text-muted-foreground text-[0.9375rem]">Connecting…</p>
-      </div>
-    );
+  // The demo's stand-in for the rail seeing the transfer land. The shopper's
+  // PIN screen posts to the same endpoint, so the two paths settle a payment
+  // exactly the same way.
+  async function confirm() {
+    setSettling(true);
+    try {
+      await fetch(`/api/payments/${paymentRef}`, { method: "POST" });
+    } catch {
+      // The poll will pick it up, or it will not and the screen says so.
+    }
   }
 
-  if (error) {
-    return (
-      <div className="flex flex-1 items-center justify-center">
-        <p className="text-foreground text-center text-[0.9375rem]">
-          Connection error. Waiting for payment.
-        </p>
-      </div>
-    );
-  }
+  const amount = data?.shopperPaysCents;
+  const { whole, fraction } = splitAud(amount ?? 0);
 
-  // ── Settled ─────────────────────────────────────────────────────────────
-  if (data.status === "settled") {
+  // ── Expired ───────────────────────────────────────────────────────────────
+  if (data?.status === "expired") {
     return (
-      <div className="bg-foreground -mx-5 flex flex-1 flex-col items-center justify-center gap-6 rounded-t-3xl px-5 pb-[max(2rem,env(safe-area-inset-bottom))] pt-12">
-        <div className="flex h-24 w-24 items-center justify-center rounded-full bg-[#fff401]">
-          <svg
-            width={48}
-            height={48}
-            viewBox="0 0 48 48"
-            fill="none"
-            stroke="#000"
-            strokeWidth={3.5}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            aria-label="Payment received"
-          >
-            <polyline points="10,25 20,35 38,15" />
-          </svg>
+      <div className="flex flex-1 flex-col justify-center gap-6 pb-16 text-center">
+        <div>
+          <h2 className="display text-foreground text-[2.25rem]">
+            Code expired
+          </h2>
+          <p className="text-muted-foreground mx-auto mt-3 max-w-[18rem] text-[1.0625rem] leading-relaxed">
+            Nobody paid within ten minutes, so the code stopped working. Ring
+            it up again.
+          </p>
         </div>
-        <h2 className="text-paper display text-[2.25rem] leading-none">
-          {formatAud(data.shopperPaysCents)}
-        </h2>
-        {data.payerName && (
-          <p className="text-paper/70 text-[1rem]">{data.payerName}</p>
-        )}
-        <p className="text-paper/50 font-mono text-[0.8125rem]">{ref}</p>
         <button
           type="button"
           onClick={() => router.push("/m")}
-          className="bg-paper text-foreground mt-4 flex h-14 w-full items-center justify-center rounded-2xl text-[1rem] font-semibold"
+          className="bg-foreground text-paper mx-auto flex h-16 items-center justify-center rounded-full px-8 text-[1.0625rem] font-semibold"
         >
           New charge
         </button>
@@ -101,43 +117,56 @@ export function MerchantPoller({
     );
   }
 
-  // ── Expired ─────────────────────────────────────────────────────────────
-  if (data.status === "expired") {
-    return (
-      <div className="flex flex-1 flex-col items-center justify-center gap-4 px-5">
-        <p className="text-foreground text-center text-[1.125rem] font-semibold">
-          Payment expired
-        </p>
-        <p className="text-muted-foreground text-center text-[0.9375rem]">
-          The QR code timed out after 10 minutes.
-        </p>
-        <button
-          type="button"
-          onClick={() => router.push("/m")}
-          className="bg-foreground text-paper mt-4 flex h-14 w-full items-center justify-center rounded-2xl text-[1rem] font-semibold"
-        >
-          New charge
-        </button>
-      </div>
-    );
-  }
-
-  // ── Pending ──────────────────────────────────────────────────────────────
   return (
-    <div className="flex flex-1 flex-col items-center gap-6">
-      {/* QR */}
-      <div
-        className="rounded-2xl bg-white p-4 shadow-sm"
-        dangerouslySetInnerHTML={{ __html: qrSvg }}
-        aria-label={`QR code for payment ${ref}`}
-      />
-      <p className="text-muted-foreground text-center text-[0.875rem]">
-        Waiting for payment…
+    <div className="flex flex-1 flex-col pb-[max(1.5rem,env(safe-area-inset-bottom))]">
+      {settling && (
+        <SuccessBurst
+          phase="enter"
+          label="Payment received"
+          onCovered={() => router.push(`/m/${paymentRef}/done`)}
+        />
+      )}
+
+      {/* The amount is the screen. The shopper reads it across the counter
+          before they read anything else. */}
+      <p className="display text-foreground text-center text-[3.5rem] tabular-nums">
+        {amount == null ? "—" : whole}
+        {amount != null && (
+          <span className="text-muted-foreground text-[1.75rem]">
+            .{fraction}
+          </span>
+        )}
       </p>
-      <div className="border-border w-full rounded-2xl border px-4 py-3 text-center">
-        <p className="text-muted-foreground text-[0.75rem]">Amount</p>
-        <p className="text-foreground mt-0.5 text-[1.375rem] font-bold tabular-nums">
-          {formatAud(data.shopperPaysCents)}
+      <p className="text-muted-foreground mt-2 text-center text-[1.0625rem]">
+        {data ? `${formatAud(data.amountCents)} less the CLEVR discount` : " "}
+      </p>
+
+      {/* Ink on Sun, straight on the page. A white card under a QR is a
+          scanner's habit, not a requirement: the code reads at 19:1 here and
+          the mark stays part of the page instead of sitting on top of it. */}
+      <div className="mx-auto mt-8 w-full max-w-[17rem]">{children}</div>
+
+      <p
+        aria-live="polite"
+        className="text-foreground mt-8 text-center text-[1.0625rem] font-semibold"
+      >
+        {offline ? "Reconnecting…" : "Waiting for payment"}
+      </p>
+      <p className="text-muted-foreground mt-1 text-center font-mono text-[0.8125rem] tracking-[0.08em]">
+        {paymentRef}
+      </p>
+
+      <div className="mt-auto pt-10">
+        <button
+          type="button"
+          onClick={confirm}
+          disabled={settling}
+          className="bg-foreground text-paper flex h-16 w-full items-center justify-center rounded-full text-[1.0625rem] font-semibold transition-opacity duration-200 disabled:opacity-40"
+        >
+          {settling ? "Settling…" : "Confirm purchase"}
+        </button>
+        <p className="text-muted-foreground mt-3 text-center text-[0.8125rem]">
+          Stands in for the bank transfer landing. Demo only.
         </p>
       </div>
     </div>
