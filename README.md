@@ -26,11 +26,15 @@ were losing to Visa. Money lands instantly, not T+1, with no chargebacks.
 
 1. **Scan** the merchant's QR at the counter (`/pay`).
 2. **Confirm** the amount in your banking app — one tap after the first PayTo mandate.
-3. **Keep the difference.** The receipt (`/p/[ref]/done`) shows what you saved, with a full-screen green cape-sweep + confetti burst.
+3. **Keep the difference.** The green sheet sweeps in over the confirm screen, the route swaps behind it, and it sweeps off to reveal the receipt (`/p/[ref]/done`) with confetti + tick. One continuous horizontal motion across two routes.
 4. **Track it.** Home and Insights show lifetime kept, weekly/monthly trends, per-merchant breakdown.
 
 The whole loop works from a stranger's phone with zero signup for the first
 payment.
+
+**Two audiences, one waitlist.** The landing hero shows *Get CLEVR* (shopper);
+scroll to the black "The card fee becomes your discount" band for *CLEVR for
+business*. Both post to the same Supabase table, tagged by `audience`.
 
 ## Run it
 
@@ -48,18 +52,19 @@ centres.
 
 | Path | Who | What |
 |---|---|---|
-| `/` | Public | Landing + waitlist (scannable QR) |
+| `/` | Public | Landing — hero, shopper waitlist, business band + business waitlist, QR |
 | `/join` | Public | Sign in / sign up |
 | `/app` · `/activity` · `/insights` · `/account` | Shopper | Home, receipts, analytics, profile |
-| `/pay` → `/p/[ref]` → `/p/[ref]/done` | Shopper | Scan → confirm → success burst → receipt |
-| `/m` · `/m/[ref]` · `/m/activity` · `/m/payouts` | Merchant | Till, sale QR, activity, payouts |
+| `/pay` → `/p/[ref]` → `/p/[ref]/done` | Shopper | Scan → confirm → cape-sweep → receipt |
+| `/m` · `/m/activity` · `/m/payouts` · `/m/account` | Merchant | Till, activity, payouts, profile |
+| `/m/[ref]` → `/m/[ref]/done` | Merchant | Live sale → paid confirmation (routes outside the tab-bar shell) |
 
 ## Stack
 
 - **Next.js 16** (App Router, Turbopack) · **React 19** · **TypeScript**
 - **Tailwind v4** — every token in [`app/globals.css`](app/globals.css)
 - **Supabase** — waitlist storage (server action → REST insert)
-- **Motion** (`motion/react`) — hero fade, dialog scale, cape-sweep success overlay
+- **Motion** (`motion/react`) — hero fade, dialog scale, two-phase cape-sweep success overlay (`SuccessBurst` — `phase="enter"` on confirm screen, navigates on `onCovered`, mounts as `phase="cover"` on receipt and sweeps off)
 - **dotLottie** — confetti + tick lotties on the payment success screen
 - **Vercel** — git-linked auto-deploy from `main`
 
