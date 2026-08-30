@@ -7,6 +7,9 @@ import { BIZ_MERCHANT } from "@/lib/biz-sample";
 
 const KEYS = ["1", "2", "3", "4", "5", "6", "7", "8", "9", ".", "0", "⌫"] as const;
 
+// The till rings up televisions, not just coffees.
+const MAX_AUD = 9999.99;
+
 export function Keypad() {
   const router = useRouter();
   const [raw, setRaw] = useState(""); // what the user typed, e.g. "9.95"
@@ -17,19 +20,20 @@ export function Keypad() {
       setRaw((s) => s.slice(0, -1));
       return;
     }
-    // Only one decimal point
-    if (k === "." && raw.includes(".")) return;
-    // Max 2 decimal places
-    const dot = raw.indexOf(".");
-    if (dot >= 0 && raw.length - dot > 2) return;
-    // Max $9,999.99 — the till rings up televisions, not just coffees.
-    if (raw.length > 7) return;
-    setRaw((s) => s + k);
+    const next = raw + k;
+    // Dollars, then at most two decimal places, and nothing above the
+    // ceiling. The length check this replaces let you keep typing past the
+    // maximum: the till would happily show $19,999.99 and then grey out
+    // Charge without saying why, which is a dead end a merchant reaches
+    // mid-sale. Refusing the keypress says it at the moment it happens.
+    if (!/^\d{0,5}(\.\d{0,2})?$/.test(next)) return;
+    if (parseFloat(next) > MAX_AUD) return; // NaN on a lone ".", which passes
+    setRaw(next);
   }
 
   function toCents(s: string): number | null {
     const n = parseFloat(s);
-    if (isNaN(n) || n <= 0 || n > 9999.99) return null;
+    if (isNaN(n) || n <= 0 || n > MAX_AUD) return null;
     return Math.round(n * 100);
   }
 
@@ -64,21 +68,33 @@ export function Keypad() {
     router.push(`/m/${dataRef}`);
   }
 
-  const display = raw ? `$${raw}` : "$0.00";
+  // Grouped as it is typed. Every other number in the app has a thousands
+  // separator, and the one the merchant is keying in should not be the
+  // exception at the exact moment they are checking it against a price tag.
+  const display = raw
+    ? `$${raw.replace(/^\d+/, (d) => Number(d).toLocaleString("en-AU"))}`
+    : "$0.00";
   const cents = toCents(raw);
 
   return (
     <div className="flex flex-col gap-6">
-      {/* Amount display */}
+      {/* Amount display.
+          The discount line is always in the layout, empty until there is an
+          amount to apply it to. Rendering it conditionally shoved the whole
+          keypad down the moment the first digit landed, which moves the key
+          under a finger that is already on its way to the next one. */}
       <div className="text-center">
-        <p className="display text-foreground text-[3.5rem] tabular-nums leading-none">
+        <p className="display text-foreground text-[3.5rem] leading-none tabular-nums">
           {display}
         </p>
-        {cents && (
-          <p className="text-muted-foreground mt-2 text-[0.9375rem]">
-            Shopper pays {formatAud(shopperPays(cents, BIZ_MERCHANT.discountBps))}
-          </p>
-        )}
+        <p
+          aria-live="polite"
+          className="text-muted-foreground mt-2 text-[0.9375rem]"
+        >
+          {cents
+            ? `Shopper pays ${formatAud(shopperPays(cents, BIZ_MERCHANT.discountBps))}`
+            : " "}
+        </p>
       </div>
 
       {/* Number grid */}
