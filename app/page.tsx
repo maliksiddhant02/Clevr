@@ -179,23 +179,12 @@ export default function Landing() {
         </p>
       </section>
 
-      {/* For business.
+      {/* For business. The table is the argument and it carries the 1.4%
+          itself, so the paragraph that used to sit above it was saying the
+          same thing again in prose. Heading, numbers, three words, the ask.
 
-          This started as a heading, a paragraph and three benefit rows, which
-          is the shape every generated landing page arrives in: two-word label,
-          one supporting sentence, three times. It said nothing a reader could
-          check. The rest of this page is full of real money — a receipt, an
-          amount, a saving — and the band was the only place talking in
-          adjectives.
-
-          So it does arithmetic instead. The table is the product: the fee stops
-          being a rate somebody else picks and becomes a dial, and the numbers
-          in it are computed by the same functions that settle a payment in the
-          app. A shop owner can check it against their own takings, which is
-          the only kind of claim worth making to one.
-
-          It takes the hero's inset rather than full bleed: a 40px corner needs
-          a gutter to read as a corner, and this band answers the hero. */}
+          Takes the hero's inset rather than full bleed: a 40px corner needs a
+          gutter to read as a corner. */}
       <section
         id="business"
         aria-labelledby="business-heading"
@@ -211,22 +200,14 @@ export default function Landing() {
           <br />
           your discount
         </h2>
-        <p className="text-on-ink mt-6 text-[1.0625rem] leading-relaxed">
-          An acquirer takes about{" "}
-          <span className="text-sun font-bold tabular-nums">1.4%</span> of every
-          card sale and never asks. Paid from a bank account that fee is not
-          charged at all, and what you hand back in its place is a number you
-          set. It goes to the person who just spent the money.
-        </p>
-
         <figure className="mt-10">
           <table className="w-full border-collapse text-[0.9375rem]">
-            <caption className="text-on-ink pb-4 text-left text-[0.9375rem] leading-relaxed">
-              On a {EXAMPLE_LABEL} sale, where a card would have taken{" "}
+            <caption className="text-on-ink pb-4 text-left text-[0.9375rem]">
+              {EXAMPLE_LABEL} sale. A card takes{" "}
               <span className="text-paper font-semibold tabular-nums">
                 {formatAud(CARD_FEE)}
               </span>
-              :
+              .
             </caption>
             <thead>
               <tr className="border-paper/20 border-b">
@@ -262,10 +243,8 @@ export default function Landing() {
           </table>
         </figure>
 
-        <p className="text-on-ink mt-8 text-[1.0625rem] leading-relaxed">
-          No terminal, no monthly fee, no contract. The money lands in your
-          bank account rather than in a processor&rsquo;s, on the day of the
-          sale.
+        <p className="text-on-ink mt-8 text-[0.9375rem]">
+          No surcharge. No terminal. No contract.
         </p>
 
         <div className="mt-10 flex justify-center">
